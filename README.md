@@ -11,6 +11,7 @@ Shadowing Commands:
 ```
 Nickname Commands:
 ------------------
+```
 20) Add/Remove !:       *! or *spectate
 21) Add/Remove (ST):    *st or *storytell
 22) Add/Remove (Co-ST): *cost or *co-st or *costorytell or *co-storytell
@@ -23,9 +24,10 @@ Nickname Commands:
 29) Change nickname temporarily: *vote <name>
 2A) Back to original nickname:   *unvote
 2B) Add/Remove [N] (Optional tag for new players): *n
-
+```
 Convenience Commands:
 ---------------------
+```
 30) Set the link to the grim: *grim <url> or *link <url>
 31) Get the link to the grim: *grim or *link
 32) Create a poll with base 3 scripts, custom, homebrew (1=TB, 2=SNV, 3=BMR, C=Custom, H=Homebrew): *poll [123ch]
@@ -49,7 +51,7 @@ Convenience Commands:
 3K) Get information on a BOTC character: *role <character name>
 3L) Get information on a BOTC fable: *fable <character name> (or *fabled/fables)
 3M) Get the list of jinxes and jinxed characters: *jinxes or *jinx or *djinn
-
+```
 Extra Commands:
 ---------------
 40) Tell a random joke:    *joke
