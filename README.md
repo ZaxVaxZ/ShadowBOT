@@ -54,10 +54,11 @@ Convenience Commands:
 ```
 Extra Commands:
 ---------------
+```
 40) Tell a random joke:    *joke
 41) Compliment someone <3: *compliment @<player>
 42) Celebrate with style with a slow clap: *slowclap or *slow clap
 43) My rules of how to run Oops All Pithags: *oopsallpithags or *oops or *oap
 44) Crediting the cool people who helped: *credits
-
+```
 -=> For any Suggestions or Bug reports, msg me on discord at `lieutenantdv20`
