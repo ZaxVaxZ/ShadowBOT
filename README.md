@@ -1,6 +1,6 @@
 # ShadowBOT
 
-<[+=-=-=-=+~{ ShadowBOT Commands }~+=-=-=-=+]>
+`<[+=-=-=-=+~{ ShadowBOT Commands }~+=-=-=-=+]>`
 
 Shadowing Commands:
 -------------------
