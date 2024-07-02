@@ -4,19 +4,19 @@ const { Client, Intents, MessageEmbed } = require('discord.js');
 const https = require("https");
 // const Database = require("@replit/database");
 // const db = new Database();
-const repl = require('repl')
-repl.start({
-  input: process.stdin,
-  output: process.stdout
-})
-process.on('beforeExit', (code) => {
-  process.nextTick(function() {
-    repl.start({
-      input: process.stdin,
-      output: process.stdout
-    });
-  });
-});
+// const repl = require('repl')
+// repl.start({
+//   input: process.stdin,
+//   output: process.stdout
+// })
+// process.on('beforeExit', (code) => {
+//   process.nextTick(function() {
+//     repl.start({
+//       input: process.stdin,
+//       output: process.stdout
+//     });
+//   });
+// });
 const client = new Client(
   {
     intents: [Intents.FLAGS.GUILDS,
