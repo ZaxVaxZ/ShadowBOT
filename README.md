@@ -1,13 +1,14 @@
-# `<[+=-=-=-=+~{ ShadowBOT Commands }~+=-=-=-=+]>`
+# ```<[+=-=-=-=+~{ ShadowBOT Commands }~+=-=-=-=+]>```
 
 Shadowing Commands:
 -------------------
+```
 10) Shadow a player:      *spec <player>
 11) Stop shadowing:       *spec
 12) List of your shadows: *specs
 13) Remove your shadows:  *nospec
 14) Do Not Disturb (can't be shadowed): *dnd
-
+```
 Nickname Commands:
 ------------------
 20) Add/Remove !:       *! or *spectate
