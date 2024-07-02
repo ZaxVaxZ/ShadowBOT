@@ -1,0 +1,30 @@
+{
+  "name": "shadowbot",
+  "version": "4.2.0",
+  "description": "ShadowBOT discord bot for assiting in BOTC games",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaxVaxZ/ShadowBOT.git"
+  },
+  "keywords": [
+    "Discord",
+    "Bot",
+    "NodeJS",
+    "BOTC"
+  ],
+  "author": "LieutenantDV20",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZaxVaxZ/ShadowBOT/issues"
+  },
+  "homepage": "https://github.com/ZaxVaxZ/ShadowBOT#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
