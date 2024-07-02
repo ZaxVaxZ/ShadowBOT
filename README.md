@@ -57,4 +57,4 @@ Extra Commands:
 43) My rules of how to run Oops All Pithags: *oopsallpithags or *oops or *oap
 44) Crediting the cool people who helped: *credits
 
--=> For any Suggestions or Bug reports, msg me at LieutenantDV20#0097
+-=> For any Suggestions or Bug reports, msg me on discord at `lieutenantdv20`
