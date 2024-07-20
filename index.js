@@ -90,8 +90,8 @@ var comps = [[3, 0, 1, 1],
 
 var timers = []
 
-let roles_url = "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/roles.json"
-let fabled_url = "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/fabled.json"
+let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/roles.json"
+let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/fabled.json"
 let jinxes = "https://media.discordapp.net/attachments/1031815607156490270/1148969672314720358/Jinxes_4.2.png\n(To see in better quality, right click and open in browser, or download the image)"//?width=621&height=473"
 
 let new_roles = `[
@@ -241,7 +241,7 @@ let new_roles = `[
   }
 ]`
 
-let new_fabled = `[
+let new_fabled = `,
   {
     "id": "08",
     "sn": "bootlegger",
@@ -461,11 +461,11 @@ async function only_letters(s) {
   var s2 = (' ' + s).slice(1);
   for (var i = 0; i < s2.length; i++) {
     if (s2.charCodeAt(i) < 65 || (s2.charCodeAt(i) > 90 && s2.charCodeAt(i) < 97) || s2.charCodeAt(i) > 122) {
-      s2 = s2.slice(0, i) + s2.slice(i + 1, s2.length - 1);
+      s2 = s2.slice(0, i) + s2.slice(i + 1, s2.length);
       i -= 1;
     }
   }
-  return s;
+  return s2;
 }
 
 async function match_role(name, json) {
@@ -2683,23 +2683,6 @@ client.on('messageCreate',
         xu = 7;
       }
       let role_name = msg.content.trim().substring(xu).toLowerCase();
-      try {
-        let json = JSON.parse(new_fabled);
-        let mr = await match_role(role_name, json);
-        if (mr != -1) {
-          let co = "#ffff00";
-          let rep = new MessageEmbed()
-            .setColor(co)
-          // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
-          rep.setDescription(json[mr]["ability"])
-            .setTitle(json[mr]["name"])
-            .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
-          await msg.reply({ embeds: [rep] })
-          return null;
-        }
-      } catch (error) {
-        console.error(error.message);
-      };
       https.get(fabled_url, async function(res) {
         let body = "";
 
@@ -2709,12 +2692,24 @@ client.on('messageCreate',
 
         res.on("end", async function() {
           try {
+            body = body.substring(0, body.length - 2) + new_fabled
             let json = JSON.parse(body);
             ////////////////////////
-
+            
             let mr = await match_role(role_name, json);
             if (mr == -1) {
               await respond(msg, "```Role Not Found.```");
+            }
+            if (json[mr]["sn"] != null) {
+              let co = "#ffff00";
+              let rep = new MessageEmbed()
+                .setColor(co)
+              // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
+              rep.setDescription(json[mr]["ability"])
+                .setTitle(json[mr]["name"])
+                .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
+              await msg.reply({ embeds: [rep] })
+              return null;
             }
             // await respond(msg, "**" + json[mr]["name"] + ":** " + json[mr]["ability"]);
 
@@ -2724,7 +2719,7 @@ client.on('messageCreate',
             // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
             rep.setDescription(json[mr]["ability"])
               .setTitle(json[mr]["name"])
-              .setThumbnail("https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
+              .setThumbnail("https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
           } catch (error) {
             console.error(error.message);
@@ -2762,66 +2757,66 @@ client.on('messageCreate',
   // )
       */
       let role_name = msg.content.trim().substring(6).toLowerCase();
-      try {
-        let json = JSON.parse(new_roles);
-        let mr = await match_role(role_name, json);
-        if (mr != -1) {
-          let team = "Townsfolk";
-          let co = "#0049ff";
-          if (json[mr]["team"] == "outsider") {
-            co = "#00bbff";
-            team = "Outsider";
-          }
-          if (json[mr]["team"] == "minion") {
-            co = "#ff8800";
-            team = "Minion";
-          }
-          if (json[mr]["team"] == "demon") {
-            co = "#ff0000";
-            team = "Demon";
-          }
-          if (json[mr]["team"] == "traveler") {
-            co = "#ff00ff";
-            team = "Traveler";
-          }
-          let rep = new MessageEmbed()
-            .setColor(co)
-          // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
-          let scr = "Experimental";
-          if (json[mr]["edition"] == "tb") {
-            scr = "Trouble Brewing";
-          }
-          if (json[mr]["edition"] == "snv") {
-            scr = "Sects & Violets";
-          }
-          if (json[mr]["edition"] == "bmr") {
-            scr = "Bad Moon Rising";
-          }
-          let setu = "False";
-          if (json[mr]["setup"]) {
-            setu = "True";
-          }
-          if (json[mr]["sn"] == "Harpy") {
-            rep.setDescription(json[mr]["ability"] + (setu == "True"? "\n\n**Affects Setup: **" + setu : ""))
-              .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
-              .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/" + json[mr]["sn"] + ".png")
-          }
-          else if (json[mr]["sn"] == "Kazali") {
-            rep.setDescription(json[mr]["ability"] + (setu == "True"? "\n\n**Affects Setup: **" + setu : ""))
-              .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
-              .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/" + json[mr]["sn"] + "_icon.png")
-          }
-          else {
-            rep.setDescription(json[mr]["ability"] + (setu == "True"? "\n\n**Affects Setup: **" + setu : ""))
-              .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
-              .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
-          }
-          await msg.reply({ embeds: [rep] })
-          return null;
-        }
-      } catch (error) {
-        console.error(error.message);
-      };
+      // try {
+      //   let json = JSON.parse(new_roles);
+      //   let mr = await match_role(role_name, json);
+      //   if (mr != -1) {
+      //     let team = "Townsfolk";
+      //     let co = "#0049ff";
+      //     if (json[mr]["team"] == "outsider") {
+      //       co = "#00bbff";
+      //       team = "Outsider";
+      //     }
+      //     if (json[mr]["team"] == "minion") {
+      //       co = "#ff8800";
+      //       team = "Minion";
+      //     }
+      //     if (json[mr]["team"] == "demon") {
+      //       co = "#ff0000";
+      //       team = "Demon";
+      //     }
+      //     if (json[mr]["team"] == "traveler") {
+      //       co = "#ff00ff";
+      //       team = "Traveler";
+      //     }
+      //     let rep = new MessageEmbed()
+      //       .setColor(co)
+      //     // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
+      //     let scr = "Experimental";
+      //     if (json[mr]["edition"] == "tb") {
+      //       scr = "Trouble Brewing";
+      //     }
+      //     if (json[mr]["edition"] == "snv") {
+      //       scr = "Sects & Violets";
+      //     }
+      //     if (json[mr]["edition"] == "bmr") {
+      //       scr = "Bad Moon Rising";
+      //     }
+      //     let setu = "False";
+      //     if (json[mr]["setup"]) {
+      //       setu = "True";
+      //     }
+      //     if (json[mr]["sn"] == "Harpy") {
+      //       rep.setDescription(json[mr]["ability"] + (setu == "True"? "\n\n**Affects Setup: **" + setu : ""))
+      //         .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
+      //         .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/" + json[mr]["sn"] + ".png")
+      //     }
+      //     else if (json[mr]["sn"] == "Kazali") {
+      //       rep.setDescription(json[mr]["ability"] + (setu == "True"? "\n\n**Affects Setup: **" + setu : ""))
+      //         .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
+      //         .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/" + json[mr]["sn"] + "_icon.png")
+      //     }
+      //     else {
+      //       rep.setDescription(json[mr]["ability"] + (setu == "True"? "\n\n**Affects Setup: **" + setu : ""))
+      //         .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
+      //         .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
+      //     }
+      //     await msg.reply({ embeds: [rep] })
+      //     return null;
+      //   }
+      // } catch (error) {
+      //   console.error(error.message);
+      // };
       https.get(roles_url, async function(res) {
         let body = "";
 
@@ -2876,7 +2871,7 @@ client.on('messageCreate',
             }
             rep.setDescription(json[mr]["ability"] + "\n\n**Affects Setup: **" + setu)
               .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
-              .setThumbnail("https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
+              .setThumbnail("https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
           } catch (error) {
             console.error(error.message);
