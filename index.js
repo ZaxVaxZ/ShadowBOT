@@ -3735,11 +3735,11 @@ client.on('rateLimit', async function(info) {
 
 // client.on('error', console.log);
 
-client.on('debug', (stuff) => {
-  console.log("DEBUGGER vvvvvvvvvvvv\n")
-  console.log(stuff)
-  console.log("DEBUGGER ^^^^^^^^^^^^\n")
-});
+// client.on('debug', (stuff) => {
+//   console.log("DEBUGGER vvvvvvvvvvvv\n")
+//   console.log(stuff)
+//   console.log("DEBUGGER ^^^^^^^^^^^^\n")
+// });
 
 try {
   client.login(process.env.DISCORD_TOKEN)
