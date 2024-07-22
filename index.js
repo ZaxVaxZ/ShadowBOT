@@ -874,7 +874,7 @@ async function msg_author(msg, rep) {
 
 async function msg_user(id, rep) {
   await client.users.fetch(id, false).then((user) => {
-   user.send('hello world');
+   user.send(rep);
   }).catch(err => {
       console.log(err);
   }); 
