@@ -2840,6 +2840,7 @@ client.on('messageCreate',
             let mr = await match_role(role_name, json);
             if (mr == -1) {
               await respond(msg, "```Role Not Found.```");
+              return null;
             }
             // await respond(msg, "**" + json[mr]["name"] + ":** " + json[mr]["ability"]);
             let team = "Townsfolk";
