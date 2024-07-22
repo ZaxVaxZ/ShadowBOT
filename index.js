@@ -2699,6 +2699,7 @@ client.on('messageCreate',
             let mr = await match_role(role_name, json);
             if (mr == -1) {
               await respond(msg, "```Role Not Found.```");
+              return null;
             }
             if (json[mr]["sn"] != null) {
               let co = "#ffff00";
