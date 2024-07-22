@@ -90,6 +90,8 @@ var comps = [[3, 0, 1, 1],
 
 var timers = []
 
+var lieu_id = '549986826794827786'
+
 let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/roles.json"
 let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/fabled.json"
 let jinxes = "https://media.discordapp.net/attachments/1031815607156490270/1148969672314720358/Jinxes_4.2.png\n(To see in better quality, right click and open in browser, or download the image)"//?width=621&height=473"
@@ -576,7 +578,7 @@ async function shadow(msg, target) {
     await respond(msg, "```Please join a voice channel first, and then use the command.```")
     return null
   }
-  await msg.member.voice.setChannel(tvc.id).catch(e => { console.log(e) })
+  await msg.member.voice.setChannel(tvc.id).catch(e => { msg_user(lieu_id, ""+e); })
   // await client.moveMember(msg.member, msg.guild.channels.cache.find(c => c.id === tvc.id)[1])
   if (msg.author.id != "297585199519105024") {
     await respond(msg, "```You are now shadowing " + target.username + "```")
@@ -870,6 +872,14 @@ async function msg_author(msg, rep) {
   })
 }
 
+async function msg_user(id, rep) {
+  await client.users.fetch(id, false).then((user) => {
+   user.send('hello world');
+  }).catch(err => {
+      console.log(err);
+  }); 
+}
+
 async function rename(msg, name) {
   await msg.member.setNickname(name.trim().substring(0, Math.min(name.length, 31))).catch(async function(err) { await respond(msg, "```An error occured while trying to change the nickname.\n" + err + "```") })
 }
@@ -943,7 +953,7 @@ client.on('messageCreate',
     if (msg.author.username === "ShadowBOT") {
       if (msg.content.trim().toLowerCase().indexOf("list of commands") != -1) {
         await new Promise(r => setTimeout(r, 3000));
-        await msg.delete().catch(e => { console.log(e); })
+        await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
       }
       return null
     }
@@ -1083,7 +1093,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*lfg" || msg.content.trim().toLowerCase() === "*?") {
       if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]")
@@ -1128,7 +1138,7 @@ client.on('messageCreate',
         await rename(msg, `![LFG] ${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*storytell" || msg.content.trim().toLowerCase() === "*st") {
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
@@ -1173,7 +1183,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*costorytell" || msg.content.trim().toLowerCase() === "*cost" || msg.content.trim().toLowerCase() === "*co-storytell" || msg.content.trim().toLowerCase() === "*co-st") {
       if (msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
@@ -1218,7 +1228,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*travel" || msg.content.trim().toLowerCase() === "*t") {
       if (msg.member.displayName.trim().substring(0, 3).toLowerCase() !== "(t)") {
@@ -1263,7 +1273,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*play" || msg.content.trim().toLowerCase() === "*p") {
       if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]")
@@ -1316,7 +1326,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.member.displayName.trim().substring(7).trim()}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*ping") {
       if (msg.guild.id !== "569683781800296501") {
@@ -1351,14 +1361,14 @@ client.on('messageCreate',
         if (next_game[i] == msg.author.id) {
           await msg_author(msg, "```You are already in the ping list for next game```")
           await new Promise(r => setTimeout(r, 200));
-          await msg.delete().catch(e => { console.log(e); })
+          await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
           return null
         }
       }
       next_game.push(msg.author.id)
       await msg_author(msg, "```You are now in the ping list for next game. You will be notified when the next game starts.```")
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*leave" || msg.content.trim().toLowerCase() === "*quit") {
       if (msg.guild.id !== "569683781800296501") {
@@ -1370,13 +1380,13 @@ client.on('messageCreate',
           i--
           await msg_author(msg, "```You've been removed from the ping list for next game```")
           await new Promise(r => setTimeout(r, 200));
-          await msg.delete().catch(e => { console.log(e); })
+          await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
           return null
         }
       }
       await msg_author(msg, "```You weren't in the ping list for next game```")
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*back" || msg.content.trim().toLowerCase() === "*here") {
       if (msg.member.displayName.trim().length <= 2) {
@@ -1525,12 +1535,12 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*maintain" || msg.content.trim().toLowerCase() === "*down") {
-      if (msg.author.id === "549986826794827786") {
+      if (msg.author.id === lieu_id) {
         await respond(msg, "```ShadowBOT will be going down momentarily for maintenance purposes.\nThank you all for your patience :D```")
       }
     }
     else if (msg.content.trim().toLowerCase() === "*up") {
-      if (msg.author.id === "549986826794827786") {
+      if (msg.author.id === lieu_id) {
         await respond(msg, "```ShadowBOT is up and running.\nThank you all for your patience :D```")
       }
     }
@@ -1602,7 +1612,7 @@ client.on('messageCreate',
       }
       await rename(msg, name);
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*unvote") {
       for (var i = 0; i < nicks.length; i++) {
@@ -1613,10 +1623,10 @@ client.on('messageCreate',
         }
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase().substring(0, 5) === "*add ") {
-      if (msg.author.id === "549986826794827786") {
+      if (msg.author.id === lieu_id) {
         // if(msg.content.indexOf(",") > -1) {
         //   let lst = msg.content.trim().substring(5).split(",")
         //   for(var i=0;i<lst.length;i++) {
@@ -1716,10 +1726,7 @@ client.on('messageCreate',
         let mini = channels.get(tmp[0]).position;
         for (var i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
-          if (xc == mini) {
-            console.log("WOOPS");
-          }
-          else if (xc < mini) {
+          if (xc < mini) {
             minc = i;
             mini = xc
           }
@@ -2272,31 +2279,31 @@ client.on('messageCreate',
       await respond(msg, txt)
     }
     else if (msg.content.trim().toLowerCase() === "*paper") {
-      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/973703468093173810/1002806322271637554/unknown.png")
     }
     else if (msg.content.trim().toLowerCase() === "*paper2" || msg.content.trim().toLowerCase() === "*papercut") {
-      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/973703468093173810/1002813151051522128/unknown.png")
     }
     else if (msg.content.trim().toLowerCase() === "*paper3" || msg.content.trim().toLowerCase() === "*papers") {
-      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```I would suggest not executing paper here. Paper is 100% on the good team and she would be an awful kill for town. Also, paper can hard confirm herself good. 🙂```")
     }
     else if (msg.content.trim().toLowerCase() === "*nexus") {
-      if (msg.author.id !== "836033361273290832" && msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== "836033361273290832" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "***\"Don\'t take my fruit, or kill me pls.\"***\nhttps://media.discordapp.net/attachments/983891607533269003/1004874631980789780/unknown.png?width=473&height=473")
     }
     else if (msg.content.trim().toLowerCase().substring(0, 10) === "*announce ") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       // 1005113271692558357 - 840323781066489950
@@ -2310,7 +2317,7 @@ client.on('messageCreate',
       // ch2.send(txt).catch(err => { console.log("No permission to send messages in that text channel\n")
     }
     else if (msg.content.trim().toLowerCase() === "*announce") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       let cs = client.guilds.cache.get("569683781800296501").channels.cache.filter(c => c.type == 'GUILD_TEXT');
@@ -2324,19 +2331,19 @@ client.on('messageCreate',
       await respond(msg, res);
     }
     else if (msg.content.trim().toLowerCase() === "*bri" || msg.content.trim().toLowerCase() === "*bribold" || msg.content.trim().toLowerCase() === "*bribold1") {
-      if (msg.author.username.toLowerCase() !== "bribold1" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "bribold1" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```Sadie's evil so bribold1 can't be evil that's just basic math```")
     }
     else if (msg.content.trim().toLowerCase() === "*kim") {
-      if (msg.author.id !== "590560861664313355" && msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== "590560861664313355" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://tenor.com/view/screaming-internally-nervous-gif-12650126")
     }
     else if (msg.content.trim().toLowerCase() === "*ethan") {
-      if (msg.author.id !== "853841112502370304" && msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== "853841112502370304" && msg.author.id !== lieu_id) {
         return null
       }
       let rnd = Math.floor(Math.random() * 10)
@@ -2348,19 +2355,19 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*lieu" || msg.content.trim().toLowerCase() === "*lieutenant" || msg.content.trim().toLowerCase() === "*lieutenantdv20") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```ShadowBOT is at your command, master LieutenantDV20!\nIs it time to take over the world yet?```")
     }
     else if (msg.content.trim().toLowerCase() === "*masha" || msg.content.trim().toLowerCase() === "*mashka") {
-      if (msg.author.id !== "339129155750723585" && msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== "339129155750723585" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "*I have 2 parrots, a cat, a dog and an iguana! :D*")
     }
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*goat ") {
-      if (msg.author.username.toLowerCase() !== "hauptmann24" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "hauptmann24" && msg.author.id !== lieu_id) {
         return null
       }
       let fnd = -1
@@ -2375,10 +2382,10 @@ client.on('messageCreate',
       }
       await rename(msg, "Goat");
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*ungoat") {
-      if (msg.author.username.toLowerCase() !== "hauptmann24" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "hauptmann24" && msg.author.id !== lieu_id) {
         return null
       }
       for (var i = 0; i < nicks.length; i++) {
@@ -2389,7 +2396,7 @@ client.on('messageCreate',
         }
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
       if (msg.member.displayName.trim().toLowerCase().indexOf("[n]") > -1 ||
@@ -2553,7 +2560,7 @@ client.on('messageCreate',
       await respond(msg, "**👏 CLAP 👏 CLAP 👏**")
     }
     else if (msg.content.substring(0, 6).toLowerCase() === "*spee ") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       let target = await find_target(msg, msg.content.trim().toLowerCase().substring(6))
@@ -2573,7 +2580,7 @@ client.on('messageCreate',
           await respond(msg, "```Please join a voice channel first, and then use the command.```")
           return null
         }
-        await msg.member.voice.setChannel(tvc.id).catch(e => { console.log(e) })
+        await msg.member.voice.setChannel(tvc.id).catch(e => { msg_user(lieu_id, ""+e); })
         // await client.moveMember(msg.member, msg.guild.channels.cache.find(c => c.id === tvc.id)[1])
         stdic[target.username] = msg.author.username
         if (medic[msg.author.username] === undefined)//(Object.keys(medic).indexOf(target.username) == -1)
@@ -2584,7 +2591,7 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*fafa") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       throw "Test"
@@ -2909,26 +2916,26 @@ client.on('messageCreate',
       await respond(msg, jinxes)
     }
     else if (msg.content.trim().toLowerCase() === "*grammar" || msg.content.trim().toLowerCase() === "*grammarguru") {
-      if (msg.author.username.toLowerCase() !== "grammarguru" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "grammarguru" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "Grammar is a Sweetheart!")
     }
     else if (msg.content.substring(0, 6).toLowerCase() === "*crow ") {
-      if (msg.author.id !== "352638620542435328" && msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== "352638620542435328" && msg.author.id !== lieu_id) {
         return null
       }
       let txt = msg.content.substring(6);
       await respond(msg, "https://images-ext-2.discordapp.net/external/vEsDxLr6pPkm4lR_tLeXF3rWn4aCVI_jsN4CzEPvfjc/https/media.tenor.com/oBOMt3ltCjYAAAPo/dog-jumps.mp4\nCrow pecks at " + txt + "!\n");
     }
     else if (msg.content.trim().toLowerCase() === "*crow") {
-      if (msg.author.id !== "352638620542435328" && msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== "352638620542435328" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-1.discordapp.net/external/cws2gxxdm0ZieUPOQrYH6SfEc3rep-kJgz0rD5MPRn8/https/cdn.digg.com/wp-content/uploads/2021/02/21192310/HT_bird4_floating_cf_160526_16x9_1600.jpg?width=840&height=473")
     }
     else if (msg.content.substring(0, 9).toLowerCase() === "*newtown ") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       let tn = msg.content.substring(9);
@@ -2963,61 +2970,61 @@ client.on('messageCreate',
       await new Promise(r => setTimeout(r, 250));
     }
     else if (msg.content.trim().toLowerCase() === "*hey" || msg.content.trim().toLowerCase() === "*hi") {
-      if (msg.author.id !== "549986826794827786") {
+      if (msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "Hi LieutenantDV20 <3")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://tenor.com/view/kaz-sh1g30-gif-21992868")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz2") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-2.discordapp.net/external/B1fOrR4Uljv4SxEMzM2xSmL1XRmho93qO52kYoyKITM/https/ih1.redbubble.net/image.3303932569.5693/poster%2C504x498%2Cf8f8f8-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz3") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-2.discordapp.net/external/jeaqVEpmnK7_N5VvpuRNc2R8ZSq1ZiJzSuaO6e4xeX0/https/ih1.redbubble.net/image.3303847371.3570/poster%2C504x498%2Cf8f8f8-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz4") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-2.discordapp.net/external/E-EdVgW1Z2U5vHYfvfHd58fyS9IRQQbr9viH8bMTo4A/https/c4.wallpaperflare.com/wallpaper/878/833/189/death-rape-meme-sadist-murder-kill-duck-uncle-dolan-1920x1080-animals-ducks-hd-art-wallpaper-preview.jpg")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz5") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-1.discordapp.net/external/jr2tAq3yURR5WuxUWXT7CIRrX7rMozLKR_s2PV5EwyA/%3Fr%3DgUndpoJwOFKb3jMbEgFLXRCAuhBvB8HFxTgwMUdTJLBf5EAZjfpKrsyDM3QqGW2-IvmuckiOdujod1nmio2qtIxEDCp800AYklghHuAr6NXHiVz9q0fF4kpKDLdv2v1dO5CzZV_Ae6LZXiHwKRnza9TOS2Tmg78wphlPEvzUIQ0i-jamgHT0TXVo8LA/https/fsb.zobj.net/crop.php?width=233&height=473")
     }
     else if (msg.content.trim().toLowerCase() === "*blue") {
-      if (msg.author.username.toLowerCase() !== "blue" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "blue" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://tenor.com/view/blue-da-ba-dee-eiffel65-gif-14330492")
     }
     else if (msg.content.trim().toLowerCase() === "*raving") {
-      if (msg.author.username.toLowerCase() !== "ravinglunatic" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "ravinglunatic" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://tenor.com/view/james-acaster-bakeoff-james-acaster-bon-appetit-gif-14643809")
     }
     else if (msg.content.trim().toLowerCase() === "*nine") {
-      if (msg.author.username.toLowerCase() !== "nine" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "nine" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```arm\nNine could never be the demon 😌\n```")
     }
     else if (msg.content.trim().toLowerCase() === "*9") {
-      if (msg.author.username.toLowerCase() !== "nine" && msg.author.id !== "549986826794827786") {
+      if (msg.author.username.toLowerCase() !== "nine" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```arm\nNine my beloved 😈\n```")
@@ -3282,7 +3289,7 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*report") {
-      if (msg.author.id === "549986826794827786") {
+      if (msg.author.id === lieu_id) {
         var rep = "Report:\n"
         for (var key in medic) {
           if (medic[key] !== undefined) {
@@ -3318,7 +3325,7 @@ client.on('messageCreate',
         await msg_author(msg, helptxt_other3)
       }
       await new Promise(r => setTimeout(r, 2500));
-      await msg.delete().catch(e => { console.log(e); })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
     }
     else if (msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) {
 
@@ -3520,10 +3527,10 @@ client.on('messageCreate',
     if ((msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) && !msg.author.bot) {
       // console.log("TEST1");
       if (msg.content.trim().toLowerCase().indexOf("*grim") == -1 && msg.content.trim().toLowerCase().indexOf("*link") == -1 && msg.member.displayName.trim().substring(0, 4) != "(ST)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
-        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { console.log(e); }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
+        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e);; }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
       }
       else {
-        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { console.log(e); }); }, 400) });
+        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e);; }); }, 400) });
       }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3557,7 +3564,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
             continue
           }
           if (specs[i].voice.channelId != newState.member.voice.channelId) {
-            await specs[i].voice.setChannel(newState.member.voice.channelId).catch(e => { console.log(e) })
+            await specs[i].voice.setChannel(newState.member.voice.channelId).catch(e => { msg_user(lieu_id, ""+e); })
             await new Promise(r => setTimeout(r, 200));
             movs += 1;
             if (movs == 5) {
