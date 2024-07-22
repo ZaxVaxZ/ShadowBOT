@@ -2961,6 +2961,12 @@ client.on('messageCreate',
       await respond(msg, oap_ban);
       await new Promise(r => setTimeout(r, 250));
     }
+    else if (msg.content.trim().toLowerCase() === "*hey") {
+      if (msg.author.id !== "549986826794827786") {
+        return null
+      }
+      await respond(msg, "Hi LieutenantDV20 <3")
+    }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== "549986826794827786") {
         return null
