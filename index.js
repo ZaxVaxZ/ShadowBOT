@@ -2730,13 +2730,13 @@ client.on('messageCreate',
               .setThumbnail("https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
           } catch (error) {
-            console.error(error.message);
+            msg_user(lieu_id, error.message);
           };
         });
 
 
       }).on("error", (error) => {
-        console.error(error.message);
+        msg_user(lieu_id, error.message);
       });
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*role ") {
@@ -2823,7 +2823,7 @@ client.on('messageCreate',
       //     return null;
       //   }
       // } catch (error) {
-      //   console.error(error.message);
+      //   msg_user(lieu_id, error.message);
       // };
       https.get(roles_url, async function(res) {
         let body = "";
@@ -2882,13 +2882,13 @@ client.on('messageCreate',
               .setThumbnail("https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
           } catch (error) {
-            console.error(error.message);
+            msg_user(lieu_id, error.message);
           };
         });
 
 
       }).on("error", (error) => {
-        console.error(error.message);
+        msg_user(lieu_id, error.message);
       });
     }
     else if (msg.content.trim().substring(0, 4).toLowerCase() === "*cs ") {
