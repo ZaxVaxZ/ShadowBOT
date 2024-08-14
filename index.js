@@ -56,6 +56,7 @@ var teensies = {
 };
 
 var last_joke = -1
+
 var last_compliment = -1
 
 var grim_serv = -1
