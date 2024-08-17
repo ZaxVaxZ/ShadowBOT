@@ -2978,13 +2978,13 @@ client.on('messageCreate',
       await respond(msg, "Hi LieutenantDV20 <3")
     }
     else if (msg.content.trim().toLowerCase() === "*gather") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)') {
+      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
         return null
       }
       await respond(msg, "# Nomination time!\n### Please make your way back to town");
     }
     else if (msg.content.trim().toLowerCase() === "*noms") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)') {
+      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
         return null
       }
       await respond(msg, "# Nominations are now open!");
