@@ -2990,6 +2990,12 @@ client.on('messageCreate',
       }
       await respond(msg, "# Nominations are now open!");
     }
+    else if (msg.content.trim().toLowerCase() === "*exitserver") {
+      if (msg.author.id !== lieu_id) {
+        return null
+      }
+      await msg.guild.leave();
+    }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
