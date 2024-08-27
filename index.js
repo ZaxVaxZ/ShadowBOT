@@ -30,7 +30,6 @@ const client = new Client(
 client.options.http.api = "https://discordapp.com/api"
 
 var stdic = {};
-
 var medic = {};
 
 var scripts = {
