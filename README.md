@@ -51,8 +51,8 @@ Convenience Commands:
 3K) Select a player from your current game at random: *randomplayer or *rp
 3L) Get the typical number of each role type (TF/Outsider/Minion/Demon): *count or *comp
 3M) Get information on a BOTC character: *role <character name>
-3P) Get information on a BOTC fable: *fable <character name> (or *fabled/fables)
-3Q) Get the list of jinxes and jinxed characters: *jinxes or *jinx or *djinn
+3N) Get information on a BOTC fable: *fable <character name> (or *fabled/fables)
+3P) Get the list of jinxes and jinxed characters: *jinxes or *jinx or *djinn
 ```
 Extra Commands:
 ---------------
