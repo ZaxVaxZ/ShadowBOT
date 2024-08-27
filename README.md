@@ -31,26 +31,28 @@ Convenience Commands:
 30) Set the link to the grim: *grim <url> or *link <url>
 31) Get the link to the grim: *grim or *link
 32) Create a poll with base 3 scripts, custom, homebrew (1=TB, 2=SNV, 3=BMR, C=Custom, H=Homebrew): *poll [123ch]
-33) Get notified for next game:   *wait or *ng or *nextgame
-34) Show the ping list:      *wl or *waitlist or *list or *queue
-35) Leave the ping list:     *leave or *quit
-36) Ping players in queue (Only ST): *ping
-37) Link to the ST Feedback Form:    *feedback
-38) Basics for beginners: *basics or *info
-39) Travelers' Guide for beginners:  *travelers
-3A) Move a player to AFK channel (Only ST): *move <player mention>
-3B) Create a secret poll (anonymous voting): *sp <title> <options>
-3C) View secret poll results (adding a p displays the results publicly instead of privately): *results <p>
-3D) Ask Storyteller for a consultation (ST must click OK on the msg): *consult <optional text/mentions>
-3E) Show the saved list of commonly played custom scripts: *scripts or *script
-3F) Get the links to a specific custom script from the list: *get <id>
-3G) Show the saved list of commonly played teensy scripts: *teensies or *teensy
-3H) Get the links to a specific teensy script from the list: *get t <id>
-3I) Select a player from your current game at random: *randomplayer or *rp
-3J) Get the typical number of each role type (TF/Outsider/Minion/Demon): *count or *comp
-3K) Get information on a BOTC character: *role <character name>
-3L) Get information on a BOTC fable: *fable <character name> (or *fabled/fables)
-3M) Get the list of jinxes and jinxed characters: *jinxes or *jinx or *djinn
+33) Request that players go back to town: *gather (Storyteller only)
+34) Announce that nominations are open:   *noms   (Storyteller only)
+35) Get notified for next game:   *wait or *ng or *nextgame
+36) Show the ping list:      *wl or *waitlist or *list or *queue
+37) Leave the ping list:     *leave or *quit
+38) Ping players in queue (Only ST): *ping
+39) Link to the ST Feedback Form:    *feedback
+3A) Basics for beginners: *basics or *info
+3B) Travelers' Guide for beginners:  *travelers
+3C) Move a player to AFK channel (Only ST): *move <player mention>
+3D) Create a secret poll (anonymous voting): *sp <title> <options>
+3E) View secret poll results (adding a p displays the results publicly instead of privately): *results <p>
+3F) Ask Storyteller for a consultation (ST must click OK on the msg): *consult <optional text/mentions>
+3G) Show the saved list of commonly played custom scripts: *scripts or *script
+3H) Get the links to a specific custom script from the list: *get <id>
+3I) Show the saved list of commonly played teensy scripts: *teensies or *teensy
+3J) Get the links to a specific teensy script from the list: *get t <id>
+3K) Select a player from your current game at random: *randomplayer or *rp
+3L) Get the typical number of each role type (TF/Outsider/Minion/Demon): *count or *comp
+3M) Get information on a BOTC character: *role <character name>
+3P) Get information on a BOTC fable: *fable <character name> (or *fabled/fables)
+3Q) Get the list of jinxes and jinxed characters: *jinxes or *jinx or *djinn
 ```
 Extra Commands:
 ---------------
