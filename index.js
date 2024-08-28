@@ -276,10 +276,10 @@ let new_jinxes = ""
 let responding = true;
 let running_cycle = false;
 
-await msg_user(lieu_id,"ALRIGHT, STARTING UP!!!")
+console.log(lieu_id,"ALRIGHT, STARTING UP!!!");
 
 client.on('ready', function(e) {
-  await msg_user(lieu_id,`Logged in as ${client.user.tag}!`)
+  console.log(lieu_id,`Logged in as ${client.user.tag}!`)
 })
 
 async function count_pages(teensy) {
@@ -829,7 +829,7 @@ async function secret_poll(msg, question, items) {
 async function respond(msg, rep) {
   await msg.reply(rep).catch(err => {
     await msg_user(lieu_id,"No permission to send messages in that text channel\n")
-    await msg_user(lieu_id,err)
+    await msg_user(lieu_id,""+err)
   })
 }
 
@@ -949,7 +949,7 @@ client.on('messageCreate',
     if (msg.author.username === "ShadowBOT") {
       if (msg.content.trim().toLowerCase().indexOf("list of commands") != -1) {
         await new Promise(r => setTimeout(r, 3000));
-        await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+        await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
       }
       return null
     }
@@ -1089,7 +1089,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*lfg" || msg.content.trim().toLowerCase() === "*?") {
       if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]")
@@ -1134,7 +1134,7 @@ client.on('messageCreate',
         await rename(msg, `![LFG] ${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*storytell" || msg.content.trim().toLowerCase() === "*st") {
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
@@ -1179,7 +1179,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*costorytell" || msg.content.trim().toLowerCase() === "*cost" || msg.content.trim().toLowerCase() === "*co-storytell" || msg.content.trim().toLowerCase() === "*co-st") {
       if (msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
@@ -1224,7 +1224,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*travel" || msg.content.trim().toLowerCase() === "*t") {
       if (msg.member.displayName.trim().substring(0, 3).toLowerCase() !== "(t)") {
@@ -1269,7 +1269,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.author.username}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*play" || msg.content.trim().toLowerCase() === "*p") {
       if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]")
@@ -1322,7 +1322,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.member.displayName.trim().substring(7).trim()}`)
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*ping") {
       if (msg.guild.id !== "569683781800296501") {
@@ -1356,14 +1356,14 @@ client.on('messageCreate',
         if (next_game[i] == msg.author.id) {
           await msg_author(msg, "```You are already in the ping list for next game```")
           await new Promise(r => setTimeout(r, 200));
-          await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+          await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
           return null
         }
       }
       next_game.push(msg.author.id)
       await msg_author(msg, "```You are now in the ping list for next game. You will be notified when the next game starts.```")
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*leave" || msg.content.trim().toLowerCase() === "*quit") {
       if (msg.guild.id !== "569683781800296501") {
@@ -1375,13 +1375,13 @@ client.on('messageCreate',
           i--
           await msg_author(msg, "```You've been removed from the ping list for next game```")
           await new Promise(r => setTimeout(r, 200));
-          await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+          await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
           return null
         }
       }
       await msg_author(msg, "```You weren't in the ping list for next game```")
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*back" || msg.content.trim().toLowerCase() === "*here") {
       if (msg.member.displayName.trim().length <= 2) {
@@ -1607,7 +1607,7 @@ client.on('messageCreate',
       }
       await rename(msg, name);
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*unvote") {
       for (var i = 0; i < nicks.length; i++) {
@@ -1618,7 +1618,7 @@ client.on('messageCreate',
         }
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase().substring(0, 5) === "*add ") {
       if (msg.author.id === lieu_id) {
@@ -2102,7 +2102,6 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase().substring(0, 8) === "*results") {
       let poll = -1
-      await msg_user(lieu_id,secret_polls)
       for (var i = 0; i < secret_polls.length; i++) {
         if (secret_polls[i][1] == msg.author.username) {
           poll = i
@@ -2377,7 +2376,7 @@ client.on('messageCreate',
       }
       await rename(msg, "Goat");
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*ungoat") {
       if (msg.author.username.toLowerCase() !== "hauptmann24" && msg.author.id !== lieu_id) {
@@ -2391,7 +2390,7 @@ client.on('messageCreate',
         }
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
       if (msg.member.displayName.trim().toLowerCase().indexOf("[n]") > -1 ||
@@ -3339,7 +3338,7 @@ client.on('messageCreate',
         await msg_author(msg, helptxt_other3)
       }
       await new Promise(r => setTimeout(r, 2500));
-      await msg.delete().catch(e => { msg_user(lieu_id, ""+e);; })
+      await msg.delete().catch(e => { msg_user(lieu_id, ""+e); })
     }
     else if (msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) {
 
@@ -3524,7 +3523,7 @@ client.on('messageCreate',
         return null;
       }
       const strole = msg.guild.roles.cache.get("1005037278751621131");
-      msg.member.roles.remove(strole).catch(err => { await msg_user(lieu_id,err); });
+      msg.member.roles.remove(strole).catch(err => { await msg_user(lieu_id,""+err); });
     }
     else if (msg.content.trim().toLowerCase() === "*pause") {
       if (msg.author.username != "LieutenantDV20") {
@@ -3541,10 +3540,10 @@ client.on('messageCreate',
     if ((msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) && !msg.author.bot) {
       // await msg_user(lieu_id,"TEST1");
       if (msg.content.trim().toLowerCase().indexOf("*grim") == -1 && msg.content.trim().toLowerCase().indexOf("*link") == -1 && msg.member.displayName.trim().substring(0, 4) != "(ST)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
-        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e);; }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
+        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e); }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
       }
       else {
-        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e);; }); }, 400) });
+        await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e); }); }, 400) });
       }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
