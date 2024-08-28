@@ -3731,7 +3731,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
         next_game = []
         let ch = client.channels.cache.get('572830989315997696');
         ch.send(txt).catch(err => {
-          await msg_author("No permission to send messages in " + ch.name + "\n");
+          msg_author(msg, "No permission to send messages in " + ch.name + "\n");
         })
       }
     }
