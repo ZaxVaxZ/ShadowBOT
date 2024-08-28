@@ -344,9 +344,9 @@ async function scripts_to_txt(teensy, page) {
 async function find_consult(msg, categoryid) {
   let channels = msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === 'GUILD_VOICE');
   for (const [channelID, channel] of channels) {
-    // await msg_user(lieu_id,channelID+"- "+channel.name.toLowerCase())
+    // msg_user(lieu_id,channelID+"- "+channel.name.toLowerCase())
     if (channel.name.toLowerCase().indexOf("consult") != -1) {
-      // await msg_user(lieu_id,"JASKDFJLAKSDFJKLASJDFKLAJSDFKLAS");
+      // msg_user(lieu_id,"JASKDFJLAKSDFJKLASJDFKLAJSDFKLAS");
       return channel
     }
   }
@@ -369,7 +369,7 @@ async function txt_compare(s1, s2) {
     // if(s2.includes(s1)) {
     //   return 0;
     // }
-    // await msg_user(lieu_id,"TC1");
+    // msg_user(lieu_id,"TC1");
     let k = 0;
     for (var i = 0; i < s1.length && k < s2.length; i++) {
       if (s1[i] == s2[k]) {
@@ -410,7 +410,7 @@ async function txt_compare(s1, s2) {
     if (pos == 0) {
       return -10;
     }
-    // await msg_user(lieu_id,"TC2");
+    // msg_user(lieu_id,"TC2");
     let k = 0;
     for (var i = 0; i < s2.length && k < s1.length; i++) {
 
@@ -448,9 +448,9 @@ async function txt_compare(s1, s2) {
     c = Math.max(s1.length, s2.length) - Math.min(c, mintem);
   }
   else {
-    // await msg_user(lieu_id,"TC3");
+    // msg_user(lieu_id,"TC3");
     for (var i = 0; i < s1.length; i++) {
-      // await msg_user(lieu_id,s1[i] + " " + s2[i]);
+      // msg_user(lieu_id,s1[i] + " " + s2[i]);
       if (s1[i] == s2[i]) {
         c += 1;
       }
@@ -528,7 +528,7 @@ async function decide_night(msg, fw, cid) {
   if (fw.toLowerCase() == "ravenswood" && msg.guild.id == "840323781066489946") {
     for (const [channelID, channel] of cs) {
       cfw = await first_word(channel.name);
-      // await msg_user(lieu_id,cfw.toLowerCase()+" - "+channel.name);
+      // msg_user(lieu_id,cfw.toLowerCase()+" - "+channel.name);
       if (cfw.toLowerCase() == "cottages") {
         return channel
       }
@@ -536,7 +536,7 @@ async function decide_night(msg, fw, cid) {
   }
   else {
     for (const [channelID, channel] of cs) {
-      // await msg_user(lieu_id,fw.toLowerCase()+" - "+channel.name);
+      // msg_user(lieu_id,fw.toLowerCase()+" - "+channel.name);
       cfw = await first_word(channel.name);
       if (cfw.toLowerCase() == fw.toLowerCase()) {
         return channel
@@ -612,7 +612,7 @@ async function ping_players(msg) {
   next_game = []
   let ch = client.channels.cache.get('572830989315997696');
   ch.send(txt).catch(err => {
-    await msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
+    msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
   })
 }
 
@@ -700,7 +700,7 @@ async function respolld(msg, custom = false, homebrew = false, selection = []) {
     //   msg.react('5️⃣')
     // }
   }).catch(err => {
-    await msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
+    msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
   })
 }
 
@@ -793,7 +793,7 @@ async function secret_poll(msg, question, items) {
     // const col = msg.createReactionCollector(filter, {max: 1, time: 3600000})
     // col.on('collect', (reaction) => {
     //     // in case you want to do something when someone reacts with 
-    //     await msg_user(lieu_id,`Collected a new ${reaction.emoji.name} reaction`);
+    //     msg_user(lieu_id,`Collected a new ${reaction.emoji.name} reaction`);
 
     //   });
 
@@ -807,35 +807,35 @@ async function secret_poll(msg, question, items) {
     ///////////////////////////////////////
     // msg.awaitReactions((reaction, user) => {
     // let nummojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣' ,'7️⃣', '8️⃣', '9️⃣', '🔟']
-    // await msg_user(lieu_id,"A")
+    // msg_user(lieu_id,"A")
     // for(var i=1;i<=10;i++) {
     //   if(reaction.emoji.name == nummojis[i-1]) {
-    //     await msg_user(lieu_id,"B")
+    //     msg_user(lieu_id,"B")
     //     return true
     //   }
     // }
-    // await msg_user(lieu_id,"C")
+    // msg_user(lieu_id,"C")
     // return false}, { max: 1, time: 30000 }).then(collected => {
-    //   await msg_user(lieu_id,"D")
+    //   msg_user(lieu_id,"D")
     //   if (collected.first().emoji.name == '1️⃣') {
-    //     await msg_user(lieu_id,"BINGOOOOOOOOOOOOOOOOOOO")
+    //     msg_user(lieu_id,"BINGOOOOOOOOOOOOOOOOOOO")
     //   }
-    // }).catch(async function(msg) {await msg_user(lieu_id,"SHHHHHHHHHHHHH");});
+    // }).catch(async function(msg) {msg_user(lieu_id,"SHHHHHHHHHHHHH");});
   }).catch(err => {
-    await msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
+    msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
   })
 }
 
 async function respond(msg, rep) {
   await msg.reply(rep).catch(err => {
-    await msg_user(lieu_id,"No permission to send messages in that text channel\n")
-    await msg_user(lieu_id,""+err)
+    msg_user(lieu_id,"No permission to send messages in that text channel\n")
+    msg_user(lieu_id,""+err)
   })
 }
 
 async function send_message(msg, rep) {
   await msg.channel.send(rep).catch(err => {
-    await msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
+    msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
   })
 }
 
@@ -864,7 +864,7 @@ async function send_message(msg, rep) {
 
 async function msg_author(msg, rep) {
   await msg.author.send(rep).catch(err => {
-    await msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
+    msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
   })
 }
 
@@ -899,14 +899,14 @@ client.on('messageReactionAdd', async function(reaction, user) {
       await send_message(reaction.message, "```Consultation channel not found```")
       return null
     }
-    // await msg_user(lieu_id,consult.name+", "+consult.id);
-    // await msg_user(lieu_id,mem)
-    // await msg_user(lieu_id,reaction.message.member)
-    reaction.message.member.voice.setChannel(consult.id).catch(async function(e) { await msg_user(lieu_id, "```An Error has occured while using the command```") });
+    // msg_user(lieu_id,consult.name+", "+consult.id);
+    // msg_user(lieu_id,mem)
+    // msg_user(lieu_id,reaction.message.member)
+    reaction.message.member.voice.setChannel(consult.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```") });
     await new Promise(r => setTimeout(r, 200));
-    mem.voice.setChannel(consult.id).catch(async function(e) { await msg_user(lieu_id, "```An Error has occured while using the command```") });
+    mem.voice.setChannel(consult.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```") });
     await new Promise(r => setTimeout(r, 200));
-    await reaction.message.delete().catch(e => { await msg_user(lieu_id, "ERROR"); });
+    await reaction.message.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
   }
   let nummojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
   if ((reaction.message.guild.id != "840323781066489946" && reaction.message.guild.id != "569683781800296501" && reaction.message.guild.id != "930132389592715274" && reaction.message.guild.id != "996462531038171136") || !nummojis.includes(reaction.emoji.name) || reaction.message.author.id === user.id || reaction.message.author.id !== "952917064035741706") {
@@ -1014,7 +1014,7 @@ client.on('messageCreate',
     ///if(msg.content.trim().lower().indexOf("https://clocktower.online/#", msg.content.trim().lower()) > -1) {
     //  msg.suppressEmbeds(true)
     //}
-    // await msg_user(lieu_id,"GOES ON?");
+    // msg_user(lieu_id,"GOES ON?");
     if (!responding) {
       return null
     }
@@ -1655,11 +1655,11 @@ client.on('messageCreate',
         return null
       }
       let town = channels.get(channelsarr[0]);
-      // await msg_user(lieu_id,town.name);
+      // msg_user(lieu_id,town.name);
       let fw = await first_word(town.name);
-      // await msg_user(lieu_id,fw);
+      // msg_user(lieu_id,fw);
       let night = await decide_night(msg, fw, town.id);
-      // await msg_user(lieu_id,night.name);
+      // msg_user(lieu_id,night.name);
       if (night == null) {
         await respond(msg, "```Cottages not found!```")
         running_cycle = false;
@@ -1738,7 +1738,7 @@ client.on('messageCreate',
       }
       let mpc = 0;
       for (var i = 0; i < spects.length; i++) {
-        await spects[i].voice.setChannel(spechan.id).catch(async function(e) { await msg_user(lieu_id, "```An Error has occured while using the command```" + e) });
+        await spects[i].voice.setChannel(spechan.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) });
         mpc += 1;
         // responding = false;
         await new Promise(r => setTimeout(r, 200));
@@ -1750,7 +1750,7 @@ client.on('messageCreate',
         }
       }
       for (var i = 0; i < sts.length; i++) {
-        await sts[i].voice.setChannel(stchan.id).catch(async function(e) { await msg_user(lieu_id,"```An Error has occured while using the command```" + e) });
+        await sts[i].voice.setChannel(stchan.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```" + e) });
         mpc += 1;
         // responding = false;
         await new Promise(r => setTimeout(r, 200));
@@ -1766,7 +1766,7 @@ client.on('messageCreate',
         for (var i = start; i < channelsarr.length; i++) {
           membarr = Array.from(channels.get(channelsarr[i]).members.keys());
           if (membarr.length == 0) {
-            await players[q].voice.setChannel(channelsarr[i]).catch(async function(e) { await msg_user(lieu_id,"```An Error has occured while using the command```" + e) });
+            await players[q].voice.setChannel(channelsarr[i]).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```" + e) });
             start = i + 1;
             break;
           }
@@ -1784,7 +1784,7 @@ client.on('messageCreate',
       mpc = 0;
       running_cycle = false;
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { await msg_user(lieu_id,"ERROR"); });
+      await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
     else if (msg.content.trim().toLowerCase() === "*day") {
       if (running_cycle) {
@@ -1826,7 +1826,7 @@ client.on('messageCreate',
         }
       }
       town = channels.get(mc);
-      // await msg_user(lieu_id,town);
+      // msg_user(lieu_id,town);
       // await respond(msg, town.id+", "+town.name);
       channels = msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
       let tmp = Array.from(channels.keys());
@@ -1837,7 +1837,7 @@ client.on('messageCreate',
         for (var i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
           if (xc == mini) {
-            await msg_user(lieu_id,"WOOPS");
+            msg_user(lieu_id,"WOOPS");
           }
           else if (xc < mini) {
             minc = i;
@@ -1851,9 +1851,9 @@ client.on('messageCreate',
       let mvc = 0;
       for (var i = 0; i < channelsarr.length; i++) {
         membarr = Array.from(channels.get(channelsarr[i]).members.keys());
-        // await msg_user(lieu_id,i+", "+membarr);
+        // msg_user(lieu_id,i+", "+membarr);
         for (var j = 0; j < membarr.length; j++) {
-          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { await msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
+          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
           mvc += 1;
           // responding = false;
           await new Promise(r => setTimeout(r, 200));
@@ -1868,7 +1868,7 @@ client.on('messageCreate',
       mvc = 0;
       running_cycle = false;
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { await msg_user(lieu_id,"ERROR"); });
+      await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
     else if (msg.content.trim().toLowerCase() === "*town") {
       if (running_cycle) {
@@ -1911,7 +1911,7 @@ client.on('messageCreate',
         for (var i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
           if (xc == mini) {
-            await msg_user(lieu_id,"WOOPS");
+            msg_user(lieu_id,"WOOPS");
           }
           else if (xc < mini) {
             minc = i;
@@ -1925,9 +1925,9 @@ client.on('messageCreate',
       let mvc = 0;
       for (var i = 0; i < channelsarr.length; i++) {
         membarr = Array.from(channels.get(channelsarr[i]).members.keys());
-        // await msg_user(lieu_id,i+", "+membarr);
+        // msg_user(lieu_id,i+", "+membarr);
         for (var j = 0; j < membarr.length; j++) {
-          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { await msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
+          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
           mvc += 1;
           // responding = false;
           await new Promise(r => setTimeout(r, 200));
@@ -1942,7 +1942,7 @@ client.on('messageCreate',
       mvc = 0;
       running_cycle = false;
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { await msg_user(lieu_id,"ERROR"); });
+      await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
     else if (msg.content.trim().toLowerCase().substring(0, 7) === "*timer ") {
       if (running_cycle) {
@@ -1985,7 +1985,7 @@ client.on('messageCreate',
         for (var i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
           if (xc == mini) {
-            await msg_user(lieu_id,"WOOPS");
+            msg_user(lieu_id,"WOOPS");
           }
           else if (xc < mini) {
             minc = i;
@@ -2077,9 +2077,9 @@ client.on('messageCreate',
       let mvc = 0;
       for (var i = 0; i < channelsarr.length; i++) {
         membarr = Array.from(channels.get(channelsarr[i]).members.keys());
-        // await msg_user(lieu_id,i+", "+membarr);
+        // msg_user(lieu_id,i+", "+membarr);
         for (var j = 0; j < membarr.length; j++) {
-          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { await msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
+          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
           mvc += 1;
           responding = false;
           await new Promise(r => setTimeout(r, 200));
@@ -2094,7 +2094,7 @@ client.on('messageCreate',
       }
       running_cycle = false;
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { await msg_user(lieu_id,"ERROR"); });
+      await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
     else if (msg.content.trim().toLowerCase().substring(0, 8) === "*consult" || msg.content.trim().toLowerCase().substring(0, 13) === "*consultation") {
       await new Promise(r => setTimeout(r, 100));
@@ -2153,7 +2153,7 @@ client.on('messageCreate',
       if (!tvc) {
         return null
       }
-      await target.voice.setChannel("623058156058181633").catch(async function(e) { await msg_user(lieu_id,"```An Error has occured while using the command```" + e) })
+      await target.voice.setChannel("623058156058181633").catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```" + e) })
       await respond(msg, "```Player moved to AFK channel```")
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*setrole ") {
@@ -2306,9 +2306,9 @@ client.on('messageCreate',
       let ch1 = client.channels.cache.get('1005113271692558357');
       // let ch2 = client.channels.cache.get('840323781066489950');
       ch1.send(txt).catch(err => {
-        await msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
+        msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
       })
-      // ch2.send(txt).catch(err => { await msg_user(lieu_id,"No permission to send messages in that text channel\n")
+      // ch2.send(txt).catch(err => { msg_user(lieu_id,"No permission to send messages in that text channel\n")
     }
     else if (msg.content.trim().toLowerCase() === "*announce") {
       if (msg.author.id !== lieu_id) {
@@ -2415,7 +2415,7 @@ client.on('messageCreate',
         await rename(msg, `${msg.member.displayName.trim()} [N]`);
       }
       await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { await msg_user(lieu_id,"ERROR"); });
+      await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
     // else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
     //   if(msg.member.displayName.trim().toLowerCase().substring(0, 3) == "[n]" || msg.member.displayName.trim().toLowerCase().substring(0, 3) == "(n)") {
@@ -2890,7 +2890,7 @@ client.on('messageCreate',
       let car = msg.content.trim().substring(4).toLowerCase().split(" ");
       let s1 = car[0];
       let s2 = car[1];
-      // await msg_user(lieu_id,car+" "+s1+" "+s2);
+      // msg_user(lieu_id,car+" "+s1+" "+s2);
       let cc = await txt_compare(s1, s2);
       await respond(msg, "Result: " + cc);
     }
@@ -3346,7 +3346,7 @@ client.on('messageCreate',
         // return null
       }
       else {
-        // await msg_user(lieu_id,"CAUGHT ST LINK");
+        // msg_user(lieu_id,"CAUGHT ST LINK");
         thelink = ""
         for (var i = msg.content.trim().toLowerCase().indexOf("https://clocktower."); i < msg.content.trim().length; i++) {
           if (msg.content.trim()[i] == " ") {
@@ -3523,7 +3523,7 @@ client.on('messageCreate',
         return null;
       }
       const strole = msg.guild.roles.cache.get("1005037278751621131");
-      msg.member.roles.remove(strole).catch(err => { await msg_user(lieu_id,""+err); });
+      msg.member.roles.remove(strole).catch(err => { msg_user(lieu_id,""+err); });
     }
     else if (msg.content.trim().toLowerCase() === "*pause") {
       if (msg.author.username != "LieutenantDV20") {
@@ -3536,9 +3536,9 @@ client.on('messageCreate',
       responding = true;
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // await msg_user(lieu_id,msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#"));
+    // msg_user(lieu_id,msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#"));
     if ((msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) && !msg.author.bot) {
-      // await msg_user(lieu_id,"TEST1");
+      // msg_user(lieu_id,"TEST1");
       if (msg.content.trim().toLowerCase().indexOf("*grim") == -1 && msg.content.trim().toLowerCase().indexOf("*link") == -1 && msg.member.displayName.trim().substring(0, 4) != "(ST)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, ""+e); }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
       }
@@ -3555,10 +3555,10 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     return null
   }
   if (oldState.channelId === newState.channelId) {
-    // await msg_user(lieu_id,'a user has not moved!')
+    // msg_user(lieu_id,'a user has not moved!')
   }
   if (oldState.channelId != null && newState.channelId != null && newState.channelId != oldState.channelId) {
-    // await msg_user(lieu_id,'a user switched channels')
+    // msg_user(lieu_id,'a user switched channels')
     // await new Promise(resolve => setTimeout(resolve, 1000));
     if (newState.channel.name.toLowerCase().indexOf("town") != -1 && newState.member.user.id == "297585199519105024" && newState.member.displayName[0] != '!') {
       delete stdic[newState.member.user.username];
@@ -3597,7 +3597,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     }
   }
   if (oldState.channelId === null) {
-    // await msg_user(lieu_id,'a user joined!')
+    // msg_user(lieu_id,'a user joined!')
   }
   if (newState.channelId === null) {
     for (var i = 0; i < pinfo.length; i++) {
@@ -3616,7 +3616,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
         break
       }
     }
-    // await msg_user(lieu_id,'a user left!')
+    // msg_user(lieu_id,'a user left!')
     if (medic[newState.member.user.username] !== undefined && medic[newState.member.user.username] != -1)//(Object.keys(medic).indexOf(newState.member.user.username) != -1)
     {
       var specs = medic[newState.member.user.username]
@@ -3645,8 +3645,8 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
       }
     }
   }
-  //   // await msg_user(lieu_id,oldMember.displayName)
-  //   // await msg_user(lieu_id,newMember.displayName)
+  //   // msg_user(lieu_id,oldMember.displayName)
+  //   // msg_user(lieu_id,newMember.displayName)
   //   remove role discord.js
 
   //   const Role = message.guild.roles.cache.get("RoleID");
@@ -3677,9 +3677,9 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
       newMember.guild.id === "569683781800296501") {
       // const specrole = client.guilds.cache.get("569683781800296501").roles.cache.get("1003428487375364216");
       // const strole = client.guilds.cache.get("569683781800296501").roles.cache.get("745730857976725536");
-      // newMember.roles.remove(specrole).catch(err => { await msg_user(lieu_id,err); });
-      // newMember.roles.remove(strole).catch(err => { await msg_user(lieu_id,err); });
-      // await msg_user(lieu_id,"Caught Player");
+      // newMember.roles.remove(specrole).catch(err => { msg_user(lieu_id,err); });
+      // newMember.roles.remove(strole).catch(err => { msg_user(lieu_id,err); });
+      // msg_user(lieu_id,"Caught Player");
       // specrole.members.forEach((member, i) => { // Looping through the members of Role.
       //     setTimeout(() => {
       //         member.roles.remove(Role); // Removing the Role.
@@ -3700,18 +3700,18 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
       newMember.guild.id === "569683781800296501") {
       // const specrole = client.guilds.cache.get("569683781800296501").roles.cache.get("1003428487375364216");
       // const strole = client.guilds.cache.get("569683781800296501").roles.cache.get("745730857976725536");
-      // newMember.roles.add(specrole).catch(err => { await msg_user(lieu_id,err); });
-      // newMember.roles.remove(strole).catch(err => { await msg_user(lieu_id,err); });
-      // await msg_user(lieu_id,"Caught Spectator");
+      // newMember.roles.add(specrole).catch(err => { msg_user(lieu_id,err); });
+      // newMember.roles.remove(strole).catch(err => { msg_user(lieu_id,err); });
+      // msg_user(lieu_id,"Caught Spectator");
     }
     else if ((newMember.displayName.trim().substring(0, 4).toLowerCase() === "(st)" ||
       newMember.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") &&
       newMember.guild.id === "569683781800296501") {
       // const specrole = client.guilds.cache.get("569683781800296501").roles.cache.get("1003428487375364216");
       // const strole = client.guilds.cache.get("569683781800296501").roles.cache.get("745730857976725536");
-      // newMember.roles.remove(specrole).catch(err => { await msg_user(lieu_id,err); });
-      // newMember.roles.add(strole).catch(err => { await msg_user(lieu_id,err); });
-      // await msg_user(lieu_id,"Caught ST");
+      // newMember.roles.remove(specrole).catch(err => { msg_user(lieu_id,err); });
+      // newMember.roles.add(strole).catch(err => { msg_user(lieu_id,err); });
+      // msg_user(lieu_id,"Caught ST");
     }
     //ROLESSSSSSSSSSSSSS
     if (oldMember.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && newMember.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
@@ -3720,7 +3720,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
           return null;
         }
         //let ch1 = client.channels.cache.get('981318418806472815');
-        //ch1.send(newMember.user.id+" "+newMember.user.username+"#").catch(err => { await msg_user(lieu_id,"No permission to send messages in that text channel\n")
+        //ch1.send(newMember.user.id+" "+newMember.user.username+"#").catch(err => { msg_user(lieu_id,"No permission to send messages in that text channel\n")
         let txt = "**Game About to Start**\n**Storyteller:** " + newMember.displayName + "\n"
         if (newMember.voice.channel) {
           txt += "**Channel:** " + newMember.voice.channel.name + "\n"
@@ -3750,10 +3750,10 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
 
 client.on('rateLimit', async function(info) {
   let timeout = info.timeDifference ? info.timeDifference : info.timeout ? info.timeout : -1
-  await msg_user(lieu_id,`Rate limit hit ${timeout != -1 ? timeout : 'Unknown timeout'}`)
+  msg_user(lieu_id,`Rate limit hit ${timeout != -1 ? timeout : 'Unknown timeout'}`)
   if (timeout > 3600000) {
-    await msg_user(lieu_id,"\n\nHuge Timeout!\n\n")
-  } else { await msg_user(lieu_id,"\n\nSmall Pause\n\n") }
+    msg_user(lieu_id,"\n\nHuge Timeout!\n\n")
+  } else { msg_user(lieu_id,"\n\nSmall Pause\n\n") }
   responding = false;
   await new Promise(resolve => setTimeout(resolve, timeout));
   responding = true;   
@@ -3762,25 +3762,25 @@ client.on('rateLimit', async function(info) {
 // client.on('error', console.log);
 
 // client.on('debug', (stuff) => {
-//   await msg_user(lieu_id,"DEBUGGER vvvvvvvvvvvv\n")
-//   await msg_user(lieu_id,stuff)
-//   await msg_user(lieu_id,"DEBUGGER ^^^^^^^^^^^^\n")
+//   msg_user(lieu_id,"DEBUGGER vvvvvvvvvvvv\n")
+//   msg_user(lieu_id,stuff)
+//   msg_user(lieu_id,"DEBUGGER ^^^^^^^^^^^^\n")
 // });
 
 try {
   client.login(process.env.DISCORD_TOKEN)
 } catch (e) {
-  await msg_user(lieu_id,"Login Error!")
+  console.log("Login Error!")
   exec("kill 1", (error, stdout, stderr) => {
     if (error) {
-      await msg_user(lieu_id,`error: ${error.message}`);
+      console.log(`error: ${error.message}`);
       return;
     }
     if (stderr) {
-      await msg_user(lieu_id,`stderr: ${stderr}`);
+      console.log(`stderr: ${stderr}`);
       return;
     }
-    await msg_user(lieu_id,`stdout: ${stdout}`);
+    console.log(`stdout: ${stdout}`);
   });
 }
 
