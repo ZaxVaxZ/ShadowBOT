@@ -862,6 +862,11 @@ async function send_message(msg, rep) {
 //     return matches;
 // };
 
+async function run_timer(user_id, millis) {
+  
+  await new Promise(r => setTimeout(r, (mtime - 3) * 60000));
+}
+
 async function msg_author(msg, rep) {
   await msg.author.send(rep).catch(err => {
     msg_user(lieu_id, "No permission to send messages in " + ch.name + "\n");
@@ -1965,6 +1970,12 @@ client.on('messageCreate',
         running_cycle = false;
         return null
       }
+      let my_timer_found = false;
+      for (let i = 0; i < timers.length; i++)
+      {
+        if (timers[i][0] == msg.author.id)
+          timers[i][0]
+      }
       let town = channels.get(channelsarr[0]);
       channels = msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
       channelsarr = Array.from(channels.keys());
@@ -2000,11 +2011,11 @@ client.on('messageCreate',
       for (var i = 0; i < time.length; i++) {
         if (time.charCodeAt(i) < 48 || time.charCodeAt(i) > 57) {
           if (time[i] != ".") {
-            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
+            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 9.5, 10```")
             return null
           }
           if (crt != 1) {
-            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
+            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 9.5, 10```")
             return null
           }
           else {
@@ -2021,12 +2032,12 @@ client.on('messageCreate',
         }
       }
       if (crt != 1 && crt != 3) {
-        await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
+        await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 9.5, 10```")
         return null
       }
       let mtime = parseFloat(time);
-      if (mtime > 20) {
-        await respond(msg, "```The specified time cannot exceed 20 minutes```")
+      if (mtime > 10) {
+        await respond(msg, "```The specified time cannot exceed 10 minutes```")
         return null;
       }
       if (mtime < 0.5) {
@@ -2043,37 +2054,37 @@ client.on('messageCreate',
         intime = parseInt(mtime);
       }
       else {
-        await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
+        await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 9.5, 10```")
         return null
       }
       if (half) {
         if (intime == 0) {
-          await send_message(msg, "**Whispers close in 30 seconds**");
+          await send_message(msg, "### Whispers close in 30 seconds");
         }
         else {
           if (intime == 1)
-            await send_message(msg, "**Whispers close in " + intime + " minute and 30 seconds**");
+            await send_message(msg, "### Whispers close in " + intime + " minute and 30 seconds");
           else
-            await send_message(msg, "**Whispers close in " + intime + " minutes and 30 seconds**");
+            await send_message(msg, "### Whispers close in " + intime + " minutes and 30 seconds");
         }
       }
       else {
-        await send_message(msg, "**Whispers close in " + intime + " minutes**");
+        await send_message(msg, "### Whispers close in " + intime + " minutes");
       }
       if (mtime > 3) {
         await new Promise(r => setTimeout(r, (mtime - 3) * 60000));
         mtime = 3;
         intime = 3;
-        await send_message(msg, "**Whispers close in 3 minutes**");
+        await send_message(msg, "### Whispers close in 3 minutes");
       }
       if (mtime > 1) {
         await new Promise(r => setTimeout(r, (mtime - 1) * 60000));
         mtime = 1;
         intime = 1;
-        await send_message(msg, "**Whispers close in 1 minute**");
+        await send_message(msg, "### Whispers close in 1 minute");
       }
       await new Promise(r => setTimeout(r, (mtime - 0.25) * 60000));
-      await send_message(msg, "**Whispers close in 15 seconds**");
+      await send_message(msg, "### Whispers close in 15 seconds");
       await new Promise(r => setTimeout(r, 15000));
       await send_message(msg, "# Nomination time!\n### Please make your way back to town");
       // let membarr = null;
