@@ -2000,11 +2000,11 @@ client.on('messageCreate',
       for (var i = 0; i < time.length; i++) {
         if (time.charCodeAt(i) < 48 || time.charCodeAt(i) > 57) {
           if (time[i] != ".") {
-            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 7.5, 8```")
+            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
             return null
           }
           if (crt != 1) {
-            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 7.5, 8```")
+            await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
             return null
           }
           else {
@@ -2043,7 +2043,7 @@ client.on('messageCreate',
         intime = parseInt(mtime);
       }
       else {
-        await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 7.5, 8```")
+        await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 19.5, 20```")
         return null
       }
       if (half) {
@@ -2051,7 +2051,10 @@ client.on('messageCreate',
           await send_message(msg, "**Whispers close in 30 seconds**");
         }
         else {
-          await send_message(msg, "**Whispers close in " + intime + " minutes and 30 seconds**");
+          if (intime == 1)
+            await send_message(msg, "**Whispers close in " + intime + " minute and 30 seconds**");
+          else
+            await send_message(msg, "**Whispers close in " + intime + " minutes and 30 seconds**");
         }
       }
       else {
@@ -2072,29 +2075,29 @@ client.on('messageCreate',
       await new Promise(r => setTimeout(r, (mtime - 0.25) * 60000));
       await send_message(msg, "**Whispers close in 15 seconds**");
       await new Promise(r => setTimeout(r, 15000));
-      await send_message(msg, "**Returning players to Town Square**");
-      let membarr = null;
-      let mvc = 0;
-      for (var i = 0; i < channelsarr.length; i++) {
-        membarr = Array.from(channels.get(channelsarr[i]).members.keys());
-        // msg_user(lieu_id,i+", "+membarr);
-        for (var j = 0; j < membarr.length; j++) {
-          await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
-          mvc += 1;
-          responding = false;
-          await new Promise(r => setTimeout(r, 200));
-          responding = true;
-          if (mvc % 10 == 0) {
-            mvc = 0;
-            responding = false;
-            await new Promise(r => setTimeout(r, 2600));
-            responding = true;
-          }
-        }
-      }
-      running_cycle = false;
-      await new Promise(r => setTimeout(r, 200));
-      await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
+      await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+      // let membarr = null;
+      // let mvc = 0;
+      // for (var i = 0; i < channelsarr.length; i++) {
+      //   membarr = Array.from(channels.get(channelsarr[i]).members.keys());
+      //   // msg_user(lieu_id,i+", "+membarr);
+      //   for (var j = 0; j < membarr.length; j++) {
+      //     await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
+      //     mvc += 1;
+      //     responding = false;
+      //     await new Promise(r => setTimeout(r, 200));
+      //     responding = true;
+      //     if (mvc % 10 == 0) {
+      //       mvc = 0;
+      //       responding = false;
+      //       await new Promise(r => setTimeout(r, 2600));
+      //       responding = true;
+      //     }
+      //   }
+      // }
+      // running_cycle = false;
+      // await new Promise(r => setTimeout(r, 200));
+      // await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
     else if (msg.content.trim().toLowerCase().substring(0, 8) === "*consult" || msg.content.trim().toLowerCase().substring(0, 13) === "*consultation") {
       await new Promise(r => setTimeout(r, 100));
