@@ -1961,7 +1961,7 @@ client.on('messageCreate',
         return null
       }
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939") {
-        if (msg.author.id != "549986826794827786")
+        
             return null
       }
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
@@ -1993,7 +1993,7 @@ client.on('messageCreate',
       }
       // return null
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939") {
-        if (msg.author.id != "549986826794827786")
+        
             return null
       }
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
