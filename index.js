@@ -2095,18 +2095,18 @@ client.on('messageCreate',
           await send_message(msg, "### Whispers close in " + intime + " minutes");
       }
       if (timers[my_timer_found][1] > 3) {
-        run_timer(my_timer_found, timers[my_timer_found][1] - 3) * 60000);
+        run_timer(my_timer_found, timers[my_timer_found][1] - 3 * 60000);
         timers[my_timer_found][1] = 3;
         intime = 3;
         await send_message(msg, "### Whispers close in 3 minutes");
       }
       if (timers[my_timer_found][1] > 1) {
-        run_timer(my_timer_found, timers[my_timer_found][1] - 1) * 60000);
+        run_timer(my_timer_found, timers[my_timer_found][1] - 1 * 60000);
         timers[my_timer_found][1] = 1;
         intime = 1;
         await send_message(msg, "### Whispers close in 1 minute");
       }
-      run_timer(my_timer_found, timers[my_timer_found][1] - 0.25) * 60000);
+      run_timer(my_timer_found, timers[my_timer_found][1] - 0.25 * 60000);
       await send_message(msg, "### Whispers close in 15 seconds");
       run_timer(my_timer_found, 15000);
       await send_message(msg, "# Nomination time!\n### Please make your way back to town");
