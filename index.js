@@ -862,9 +862,15 @@ async function send_message(msg, rep) {
 //     return matches;
 // };
 
-async function run_timer(user_id, millis) {
-  
-  await new Promise(r => setTimeout(r, (mtime - 3) * 60000));
+async function run_timer(ind, millis) {
+  if (ind >= timers.length)
+      return null;
+  let sum = 0;
+  while (timers[ind][1] > 0 && sum < millis)
+  {
+    await new Promise(r => setTimeout(r, 100));
+    sum += 100;
+  }
 }
 
 async function msg_author(msg, rep) {
@@ -1949,6 +1955,37 @@ client.on('messageCreate',
       await new Promise(r => setTimeout(r, 200));
       await msg.delete().catch(e => { msg_user(lieu_id,"ERROR"); });
     }
+    else if (msg.content.trim().toLowerCase() === "*stoptimer") {
+      if (running_cycle) {
+        await respond(msg, "```Already in the process of moving, please wait :D```")
+        return null
+      }
+      if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939") {
+        if (msg.author.id != "549986826794827786")
+            return null
+      }
+      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+        await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
+        return null
+      }
+      let my_timer_found = -1;
+      for (let i = 0; i < timers.length; i++)
+      {
+        if (timers[i][0] == msg.author.id) {
+          my_timer_found = i;
+          break;
+        }
+      }
+      if (my_timer_found == -1)
+      {
+        await respond(msg, "```No timers started```");
+        return null;
+      }
+      timers[my_timer_found][1] = 0;
+      await new Promise(r => setTimeout(r, 110));
+      timers.splice(my_timer_found, 1);
+      await respond(msg, "```Timer stopped```");
+    }
     else if (msg.content.trim().toLowerCase().substring(0, 7) === "*timer ") {
       if (running_cycle) {
         await respond(msg, "```Already in the process of moving, please wait :D```")
@@ -1969,42 +2006,6 @@ client.on('messageCreate',
         await respond(msg, "```Text channel must be in a channel group!```")
         running_cycle = false;
         return null
-      }
-      let my_timer_found = false;
-      for (let i = 0; i < timers.length; i++)
-      {
-        if (timers[i][0] == msg.author.id)
-          timers[i][0]
-      }
-      let town = channels.get(channelsarr[0]);
-      channels = msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
-      channelsarr = Array.from(channels.keys());
-      let mc = channelsarr[0];
-      let mic = channels.get(mc).position;
-      for (var i = 1; i < channelsarr.length; i++) {
-        if (channels.get(channelsarr[i]).position < mic) {
-          mic = channels.get(channelsarr[i]).position;
-          mc = channelsarr[i];
-        }
-      }
-      town = channels.get(mc);
-      let tmp = Array.from(channels.keys());
-      channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; i++) {
-        let minc = 0;
-        let mini = channels.get(tmp[0]).position;
-        for (var i = 1; i < tmp.length; i++) {
-          xc = channels.get(tmp[i]).position;
-          if (xc == mini) {
-            msg_user(lieu_id,"WOOPS");
-          }
-          else if (xc < mini) {
-            minc = i;
-            mini = xc
-          }
-        }
-        channelsarr.push(tmp[minc]);
-        tmp.splice(minc, 1);
       }
       let time = msg.content.trim().substring(7)
       let crt = 0;
@@ -2057,6 +2058,25 @@ client.on('messageCreate',
         await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 9.5, 10```")
         return null
       }
+      let my_timer_found = -1;
+      for (let i = 0; i < timers.length; i++)
+      {
+        if (timers[i][0] == msg.author.id) {
+          my_timer_found = i;
+          break;
+        }
+      }
+      if (my_timer_found == -1)
+      {
+        timers.append([msg.author.id, mtime]);
+        my_timer_found = timers.length - 1;
+      }
+      else
+      {
+        timers[my_timer_found][1] = 0;
+        await new Promise(r => setTimeout(r, 110));
+        timers[my_timer_found][1] = mtime;
+      }
       if (half) {
         if (intime == 0) {
           await send_message(msg, "### Whispers close in 30 seconds");
@@ -2069,24 +2089,28 @@ client.on('messageCreate',
         }
       }
       else {
-        await send_message(msg, "### Whispers close in " + intime + " minutes");
+        if (intime == 1)
+          await send_message(msg, "### Whispers close in " + intime + " minute");
+        else
+          await send_message(msg, "### Whispers close in " + intime + " minutes");
       }
-      if (mtime > 3) {
-        await new Promise(r => setTimeout(r, (mtime - 3) * 60000));
-        mtime = 3;
+      if (timers[my_timer_found][1] > 3) {
+        run_timer(my_timer_found, timers[my_timer_found][1] - 3) * 60000);
+        timers[my_timer_found][1] = 3;
         intime = 3;
         await send_message(msg, "### Whispers close in 3 minutes");
       }
-      if (mtime > 1) {
-        await new Promise(r => setTimeout(r, (mtime - 1) * 60000));
-        mtime = 1;
+      if (timers[my_timer_found][1] > 1) {
+        run_timer(my_timer_found, timers[my_timer_found][1] - 1) * 60000);
+        timers[my_timer_found][1] = 1;
         intime = 1;
         await send_message(msg, "### Whispers close in 1 minute");
       }
-      await new Promise(r => setTimeout(r, (mtime - 0.25) * 60000));
+      run_timer(my_timer_found, timers[my_timer_found][1] - 0.25) * 60000);
       await send_message(msg, "### Whispers close in 15 seconds");
-      await new Promise(r => setTimeout(r, 15000));
+      run_timer(my_timer_found, 15000);
       await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+      timers.splice(my_timer_found, 1);
       // let membarr = null;
       // let mvc = 0;
       // for (var i = 0; i < channelsarr.length; i++) {
