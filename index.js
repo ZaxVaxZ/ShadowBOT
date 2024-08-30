@@ -3788,10 +3788,10 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
 
 client.on('rateLimit', async function(info) {
   let timeout = info.timeDifference ? info.timeDifference : info.timeout ? info.timeout : -1
-  msg_user(lieu_id,`Rate limit hit ${timeout != -1 ? timeout : 'Unknown timeout'}`)
+  // msg_user(lieu_id,`Rate limit hit ${timeout != -1 ? timeout : 'Unknown timeout'}`)
   if (timeout > 3600000) {
     msg_user(lieu_id,"\n\nHuge Timeout!\n\n")
-  } else { msg_user(lieu_id,"\n\nSmall Pause\n\n") }
+  }// else { msg_user(lieu_id,"\n\nSmall Pause\n\n") }
   responding = false;
   await new Promise(resolve => setTimeout(resolve, timeout));
   responding = true;   
