@@ -2095,20 +2095,30 @@ client.on('messageCreate',
           await send_message(msg, "### Whispers close in " + intime + " minutes");
       }
       if (timers[my_timer_found][1] > 3) {
-        await run_timer(my_timer_found, timers[my_timer_found][1] - 3 * 60000);
+        await run_timer(my_timer_found, (timers[my_timer_found][1] - 3) * 60000);
+        if (timers[my_timer_found][1] == 0)
+            return null;
         timers[my_timer_found][1] = 3;
         intime = 3;
         await send_message(msg, "### Whispers close in 3 minutes");
       }
       if (timers[my_timer_found][1] > 1) {
-        await run_timer(my_timer_found, timers[my_timer_found][1] - 1 * 60000);
+        await run_timer(my_timer_found, (timers[my_timer_found][1] - 1) * 60000);
+        if (timers[my_timer_found][1] == 0)
+            return null;
         timers[my_timer_found][1] = 1;
         intime = 1;
         await send_message(msg, "### Whispers close in 1 minute");
       }
-      await run_timer(my_timer_found, timers[my_timer_found][1] - 0.25 * 60000);
+      await run_timer(my_timer_found, (timers[my_timer_found][1] - 0.25) * 60000);
+      if (timers[my_timer_found][1] == 0)
+          return null;
+      timers[my_timer_found][1] = 0.25;
       await send_message(msg, "### Whispers close in 15 seconds");
       await run_timer(my_timer_found, 15000);
+      if (timers[my_timer_found][1] == 0)
+          return null;
+      timers[my_timer_found][1] = 0;
       await send_message(msg, "# Nomination time!\n### Please make your way back to town");
       timers.splice(my_timer_found, 1);
       // let membarr = null;
