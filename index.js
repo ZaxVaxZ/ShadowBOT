@@ -3022,6 +3022,12 @@ client.on('messageCreate',
         return null
       }
       await msg.guild.leave();
+    } 
+    else if (msg.content.trim().toLowerCase() === "*moon") {
+      if (msg.author.id != "1194403683300032612" && msg.author.id !== lieu_id) {
+        return null
+      }
+      await respond(msg, "https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://fdczvxmwwjwpwbeeqcth.supabase.co/storage/v1/object/public/images/2baaeccd-9bdf-45aa-b0d7-9552b52d9636/3bb27302-7c69-4c49-a770-4e267b70eaf8.png")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
