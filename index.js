@@ -3029,18 +3029,18 @@ client.on('messageCreate',
       }
       await respond(msg, "https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://fdczvxmwwjwpwbeeqcth.supabase.co/storage/v1/object/public/images/2baaeccd-9bdf-45aa-b0d7-9552b52d9636/3bb27302-7c69-4c49-a770-4e267b70eaf8.png")
     }
-    else if (msg.content.trim().toLowerCase() === "*luc") {
-      if (msg.author.id != "231515768750080000" && msg.author.id !== lieu_id) {
-        return null
-      }
-      await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1304827352160927775/kids-goku-peace.gif?ex=67356beb&is=67341a6b&hm=ce0282e0e37b4fcb97ecddf805bd310d0bc34f0beeb5fe4850d4711647c96d50&")
-    }
-    else if (msg.content.trim().toLowerCase() === "*lucas") {
-      if (msg.author.id != "231515768750080000" && msg.author.id !== lieu_id) {
-        return null
-      }
-      await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1304827352756256788/kid-goku-orange-stars-wallpaper-scaled.png?ex=67356beb&is=67341a6b&hm=e1741e5ced68ca41f97098b268c23d256d85d8c7fa8b3acf6e95b796a24d970c&")
-    }
+    // else if (msg.content.trim().toLowerCase() === "*luc") {
+    //   if (msg.author.id != "231515768750080000" && msg.author.id !== lieu_id) {
+    //     return null
+    //   }
+    //   await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1304827352160927775/kids-goku-peace.gif?ex=67356beb&is=67341a6b&hm=ce0282e0e37b4fcb97ecddf805bd310d0bc34f0beeb5fe4850d4711647c96d50&")
+    // }
+    // else if (msg.content.trim().toLowerCase() === "*lucas") {
+    //   if (msg.author.id != "231515768750080000" && msg.author.id !== lieu_id) {
+    //     return null
+    //   }
+    //   await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1304827352756256788/kid-goku-orange-stars-wallpaper-scaled.png?ex=67356beb&is=67341a6b&hm=e1741e5ced68ca41f97098b268c23d256d85d8c7fa8b3acf6e95b796a24d970c&")
+    // }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
         return null
@@ -3491,8 +3491,9 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*info" || msg.content.trim().toLowerCase() === "*basics") {
-      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n\
-                      **<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentionally evil. (e.g Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet, More specifically the roles that get all of their information on the first night of the game.")
+      await respond(msg, "Test");
+      // await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n\
+      //                 **<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentionally evil. (e.g Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet, More specifically the roles that get all of their information on the first night of the game.")
     }
     else if (msg.content.trim().toLowerCase() === "*ma" || msg.content.trim().toLowerCase() === "*muteall" || msg.content.trim().toLowerCase() === "*mute-all" || msg.content.trim().toLowerCase() === "*mute all") {
       try {
