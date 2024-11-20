@@ -2164,8 +2164,8 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" || msg.guild.id != "569683781800296501") {
-        if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
-          await respond(msg, "```Only Storytellers can use this command```")
+        if (!msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892")) {
+          await respond(msg, "```Only Storytellers and Staff can use this command```")
         }
         return null
       }
@@ -3017,6 +3017,12 @@ client.on('messageCreate',
       }
       await respond(msg, "# Nominations are now open!");
     }
+    else if (msg.content.trim().toLowerCase() === "*noms2" || msg.content.trim().toLowerCase() === "*second") {
+      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
+        return null
+      }
+      await respond(msg, "# Second call for nominations");
+    }
     else if (msg.content.trim().toLowerCase() === "*exitserver") {
       if (msg.author.id !== lieu_id) {
         return null
@@ -3492,7 +3498,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*info" || msg.content.trim().toLowerCase() === "*basics") {
       // await respond(msg, "Test");
-      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentionally evil. (e.g Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet, More specifically the roles that get all of their information on the first night of the game.")
+      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet, More specifically the roles that get all of their information on the first night of the game.")
     }
     else if (msg.content.trim().toLowerCase() === "*ma" || msg.content.trim().toLowerCase() === "*muteall" || msg.content.trim().toLowerCase() === "*mute-all" || msg.content.trim().toLowerCase() === "*mute all") {
       try {
