@@ -2163,7 +2163,7 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
-      if (msg.guild.id != "")
+      if (msg.guild.id != "569683781800296501")
           return null;
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996")) {
         await respond(msg, "```Only Storytellers and Staff can use this command```")
