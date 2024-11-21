@@ -3053,9 +3053,9 @@ client.on('messageCreate',
       }
       let rnd = Math.floor(Math.random() * 10);
       if (rnd < 5)
-        await respond(msg, "https://tenor.com/en-GB/view/baby-elephant-elephant-running-water-cute-gif-16361687")
+        await respond(msg, "https://media1.tenor.com/m/r0R0N3dI3kIAAAAd/dancing-cat-dance.gif")
       else
-        await respond(msg, "https://tenor.com/en-GB/view/dancing-cat-dance-cat-cat-meme-chinese-cat-gif-12629347036627000898")
+        await respond(msg, "https://media1.tenor.com/m/x4E55_BDqsYAAAAd/baby-elephant-elephant.gif")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
