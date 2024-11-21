@@ -2163,10 +2163,10 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" || msg.guild.id != "569683781800296501") {
-        if (!msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892")) {
-          await respond(msg, "```Only Storytellers and Staff can use this command```")
-        }
+      if (msg.guild.id != "")
+          return null;
+      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996")) {
+        await respond(msg, "```Only Storytellers and Staff can use this command```")
         return null
       }
       if (move_blacklist.includes(msg.author.id)) {
@@ -3046,6 +3046,16 @@ client.on('messageCreate',
         return null
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1304827352756256788/kid-goku-orange-stars-wallpaper-scaled.png?ex=67356beb&is=67341a6b&hm=e1741e5ced68ca41f97098b268c23d256d85d8c7fa8b3acf6e95b796a24d970c&")
+    }
+    else if (msg.content.trim().toLowerCase() === "*sun") {
+      if (msg.author.id != "698218440065810452" && msg.author.id !== lieu_id) {
+        return null
+      }
+      let rnd = Math.floor(Math.random() * 10);
+      if (rnd < 5)
+        await respond(msg, "https://tenor.com/en-GB/view/baby-elephant-elephant-running-water-cute-gif-16361687")
+      else
+        await respond(msg, "https://tenor.com/en-GB/view/dancing-cat-dance-cat-cat-meme-chinese-cat-gif-12629347036627000898")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
