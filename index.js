@@ -3668,17 +3668,18 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     }
   }
   if (oldState.channelId === null) {
-    if (newState.guild.id == "569683781800296501" && newState.member.displayName.trim().substring(0, 4).toLowerCase() == "(st)") {
-      if (!st_list.includes(newState.user.id))
-      {
-        if (st_list.length() < 4)
-          st_list.append(newState.user.id);
-        else
-          st_list[stlc] = newState.user.id;
-        stlc = (stlc + 1) % 4;
-        await ping_players(newState.member.displayName, newState.channel);
-      }
-    }
+    // if (newState.guild.id == "569683781800296501" && newState.member.displayName.trim().substring(0, 4).toLowerCase() == "(st)") {
+    //   if (!st_list.includes(newState.user.id))
+    //   {
+    //     if (st_list.length() < 4)
+    //       st_list.append(newState.user.id);
+    //     else
+    //       st_list[stlc] = newState.user.id;
+    //     stlc = (stlc + 1) % 4;
+    //     msg_user(lieu_id,"THIS IS WORKING!!");
+    //     await ping_players(newState.member.displayName, newState.channel);
+    //   }
+    // }
   }
   if (newState.channelId === null) {
     for (var i = 0; i < pinfo.length; i++) {
