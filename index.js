@@ -3668,7 +3668,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     }
   }
   if (oldState.channelId === null) {
-    if (newState.guild.id == "" && newState.member.displayName.trim().substring(0, 4).toLowerCase() == "(st)") {
+    if (newState.guild.id == "569683781800296501" && newState.member.displayName.trim().substring(0, 4).toLowerCase() == "(st)") {
       if (!st_list.includes(newState.user.id))
       {
         if (st_list.length() < 4)
