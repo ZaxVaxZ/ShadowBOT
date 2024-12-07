@@ -77,6 +77,9 @@ var nicks = []
 
 var pinfo = []
 
+var st_list = []
+var stlc = 0;
+
 var comps = [[3, 0, 1, 1],
 [3, 1, 1, 1],
 [5, 0, 1, 1],
@@ -598,13 +601,13 @@ async function shadow(msg, target) {
   }
 }
 
-async function ping_players(msg) {
+async function ping_players(name, channel) {
   if (next_game.length == 0) {
     return null
   }
-  let txt = "**Game About to Start**\n**Storyteller:** " + msg.member.displayName + "\n"
-  if (msg.member.voice.channel) {
-    txt += "**Channel:** " + msg.member.voice.channel.name + "\n"
+  let txt = "**Game About to Start**\n**Storyteller:** " + name + "\n"
+  if (channel) {
+    txt += "**Channel:** " + channel.name + "\n"
   }
   for (var i = 0; i < next_game.length; i++) {
     txt += "<@" + next_game[i] + "> "
@@ -1334,7 +1337,7 @@ client.on('messageCreate',
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         return null
       }
-      await ping_players(msg)
+      await ping_players(msg.member.displayName, msg.member.voice.channel)
     }
     else if (msg.content.trim().toLowerCase() === "*waitlist" || msg.content.trim().toLowerCase() === "*wl" || msg.content.trim().toLowerCase() === "*list" || msg.content.trim().toLowerCase() === "*queue") {
       if (msg.guild.id !== "569683781800296501" && msg.author.username != "LieutenantDV20") {
@@ -3281,7 +3284,6 @@ client.on('messageCreate',
           grim_servs[fnd] = msg.guild.id
         }
         else {
-          //await ping_players(msg)
           grim_setters.push(msg.member)
           grim_links.push(msg.content.trim().substring(6))
           grim_servs.push(msg.guild.id)
@@ -3445,7 +3447,6 @@ client.on('messageCreate',
           grim_servs[fnd] = msg.guild.id
         }
         else {
-          //await ping_players(msg)
           grim_setters.push(msg.member)
           grim_links.push(thelink)
           grim_servs.push(msg.guild.id)
@@ -3667,7 +3668,17 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     }
   }
   if (oldState.channelId === null) {
-    // msg_user(lieu_id,'a user joined!')
+    if (newState.guild.id == "" && newState.member.displayName.trim().substring(0, 4).toLowerCase() == "(st)") {
+      if (!st_list.includes(newState.user.id))
+      {
+        if (st_list.length() < 4)
+          st_list.append(newState.user.id);
+        else
+          st_list[stlc] = newState.user.id;
+        stlc = (stlc + 1) % 4;
+        await ping_players(newState.member.displayName, newState.channel);
+      }
+    }
   }
   if (newState.channelId === null) {
     for (var i = 0; i < pinfo.length; i++) {
@@ -3785,7 +3796,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
     }
     //ROLESSSSSSSSSSSSSS
     if (oldMember.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && newMember.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
-      if (next_game.length > 0 && newMember.guild.id === "569683781800296501") {
+      if (next_game.length > 0 && newMember.guild.id === "569683781800296501" && newMember.voice.channel) {
         if (newMember.voice.channel && (newMember.voice.channel.id == "1134270809804914698" || newMember.voice.channel.id == "1134270208408821770")) {
           return null;
         }
