@@ -58,6 +58,7 @@ var teensies = {
 var last_joke = -1
 
 var last_compliment = -1
+var last_insult = -1
 
 var grim_serv = -1
 var grim_link = -1
@@ -1547,6 +1548,31 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*credits" || msg.content.trim().toLowerCase() === "*credit") {
       await respond(msg, "```ShadowBOT is a bot created by LieutenantDV20#0097 to allow spectators and STs to shadow players, as well as some quality of life commands.\n\nThis bot was only possible with the help of a lot of awesome people, so thanks to the people who helped me test the bot like blue, Zaba, bmessy, melodia and others, and thanks to all the people who suggested great additions to the bot like Walter, Kaz, melodia, Naizea, Inty and others.. and to all the cool people who's supported me and endured listening to me geek out about the bot lol (like blue) <3\nMore thanks to:\nLucas and Sun```")
+    }
+    else if (msg.content.trim().substring(0, 8).toLowerCase() === "*insult " || msg.content.trim().substring(0, 7).toLowerCase() === "*roast ") {
+      let target = msg.mentions.users.values().next().value
+      if (!target) {
+        await respond(msg, "```No user mentions in your command.\nPlease use a player mention after *roast (like *roast @LieutenantDV20)```")
+        return null;
+      }
+      let compliments = [", Are you the drunk? or are you just normally like this?*",
+        ", Must be nice being invincible the first time, YOU FOOL!*",
+        ", You're the kind of person to philo into Snakecharmer and think you're doing some crazy original play.*",
+        ", I'd rather lose than starpass to you :)*",
+        ", You don't have to be an outsider to be a hindrance to your team!*",
+        ", You don't need to be a cerenovus to make me mad for an entire day!*",
+        ", You're the kind of player to enjoy playing the butler, because you can't think for yourself.*",
+        ", You're the kind of player to ask your evil team for a 3f3...*",
+        ", You're so gullible you probably never find out you're the lunatic*",
+        ", If you get sheeped any harder you'll be baaing in no time*",
+        ", You're the kind of person to use artist question for Vortox check... yuck*",
+        ", Hey I'm the grandmother, and I saw you as the Idiot!*"]
+      let rnd = Math.floor(Math.random() * compliments.length)
+      while (rnd == last_insult) {
+        rnd = Math.floor(Math.random() * compliments.length)
+      }
+      last_insult = rnd
+      await respond(msg, "*" + target.member.displayName + compliments[rnd])
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*compliment ") {
       let target = msg.mentions.users.values().next().value
