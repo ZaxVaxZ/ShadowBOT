@@ -1551,10 +1551,12 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().substring(0, 8).toLowerCase() === "*insult " || msg.content.trim().substring(0, 7).toLowerCase() === "*roast ") {
       let target = msg.mentions.users.values().next().value
+      await respond(msg, "*" + target.member.displayName);
       if (!target) {
         await respond(msg, "```No user mentions in your command.\nPlease use a player mention after *roast (like *roast @LieutenantDV20)```")
         return null;
       }
+      await respond(msg, "*" + target.member.displayName);
       let compliments = [", Are you the drunk? or are you just normally like this?*",
         ", Must be nice being invincible the first time, YOU FOOL!*",
         ", You're the kind of person to philo into Snakecharmer and think you're doing some crazy original play.*",
