@@ -1550,6 +1550,7 @@ client.on('messageCreate',
       await respond(msg, "```ShadowBOT is a bot created by LieutenantDV20#0097 to allow spectators and STs to shadow players, as well as some quality of life commands.\n\nThis bot was only possible with the help of a lot of awesome people, so thanks to the people who helped me test the bot like blue, Zaba, bmessy, melodia and others, and thanks to all the people who suggested great additions to the bot like Walter, Kaz, melodia, Naizea, Inty and others.. and to all the cool people who's supported me and endured listening to me geek out about the bot lol (like blue) <3\nMore thanks to:\nLucas and Sun```")
     }
     else if (msg.content.trim().substring(0, 8).toLowerCase() === "*insult " || msg.content.trim().substring(0, 7).toLowerCase() === "*roast ") {
+      await respond(msg, "hi");
       let target = msg.mentions.users.values().next().value
       if (!target) {
         await respond(msg, "```No user mentions in your command.\nPlease use a player mention after *roast (like *roast @LieutenantDV20)```")
@@ -1572,7 +1573,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_insult = rnd
-      await respond(msg, "*" + target.member.displayName + compliments[rnd])
+      await respond(msg, "*" + target.member.displayName + compliments[rnd]);
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*compliment ") {
       let target = msg.mentions.users.values().next().value
