@@ -1572,7 +1572,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_insult = rnd
-      await respond(msg, "*" + target.user.member.displayName + compliments[rnd]);
+      await respond(msg, "*" + msg.guild.members.cache.get(target.id) + compliments[rnd]);
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*compliment ") {
       let target = msg.mentions.users.values().next().value
