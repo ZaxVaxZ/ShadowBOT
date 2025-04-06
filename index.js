@@ -345,6 +345,44 @@ async function scripts_to_txt(teensy, page) {
   return txt
 }
 
+function defer() {
+
+    let res = () => {};
+    let rej = () => {};
+
+    const promise = new Promise((resolve, reject) => {
+        res = resolve;
+        rej = reject;
+    });
+
+    promise.resolve = (value) => {
+        res(value);
+        return promise;
+    };
+
+    promise.reject = (reason) => {
+        rej(reason);
+        return promise;
+    };
+
+    return promise;
+
+}
+
+function createTimer(time) {
+
+    const promise = defer();
+    const timeout = setTimeout(() => promise.resolve(), time);
+
+    promise.cancel = () => {
+        promise.reject("cancelled");
+        clearTimeout(timeout);
+    };
+
+    return promise;
+
+}
+
 async function find_consult(msg, categoryid) {
   let channels = msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === 'GUILD_VOICE');
   for (const [channelID, channel] of channels) {
@@ -865,15 +903,6 @@ async function send_message(msg, rep) {
 //     let matches = await db.list(prefix);
 //     return matches;
 // };
-async function run_timer(ind, millis) {
-  if (ind >= timers.length)
-    return null;
-  let sum = 0;
-  while (timers[ind][1] > 0 && sum < millis) {
-    await new Promise(r => setTimeout(r, 100));
-    sum += 100;
-  }
-}
 
 async function msg_author(msg, rep) {
   await msg.author.send(rep).catch(err => {
@@ -1992,7 +2021,7 @@ client.on('messageCreate',
         await respond(msg, "```No timers started```");
         return null;
       }
-      timers[my_timer_found][1] = 0;
+      timers[my_timer_found][1].cancel();
       await new Promise(r => setTimeout(r, 110));
       timers.splice(my_timer_found, 1);
       await respond(msg, "```Timer stopped```");
@@ -2077,13 +2106,11 @@ client.on('messageCreate',
         }
       }
       if (my_timer_found == -1) {
-        timers.push([msg.author.id, mtime]);
+        timers.push([msg.author.id, null]);
         my_timer_found = timers.length - 1;
       }
       else {
-        timers[my_timer_found][1] = 0;
-        await new Promise(r => setTimeout(r, 110));
-        timers[my_timer_found][1] = mtime;
+        timers[my_timer_found][1] = null;
       }
       if (half) {
         if (intime == 0) {
@@ -2102,33 +2129,69 @@ client.on('messageCreate',
         else
           await send_message(msg, "### Whispers close in " + intime + " minutes");
       }
-      if (timers[my_timer_found][1] > 3) {
-        await run_timer(my_timer_found, (timers[my_timer_found][1] - 3) * 60000);
-        if (timers[my_timer_found][1] == 0)
-          return null;
-        timers[my_timer_found][1] = 3;
-        intime = 3;
-        await send_message(msg, "### Whispers close in 3 minutes");
+      if (mtime > 3) {
+        timers[my_timer_found][1] = createTimer((mtime - 3) * 60000);
+        timers[my_timer_found][1].then(async () => {
+          mtime = 3;
+          intime = 3;
+          await send_message(msg, "### Whispers close in 3 minutes");
+          timers[my_timer_found][1] = createTimer((mtime - 1) * 60000);
+          timers[my_timer_found][1].then(async () => {
+            mtime = 1;
+            intime = 1;
+            await send_message(msg, "### Whispers close in 1 minute");
+            timers[my_timer_found][1] = createTimer((mtime - 0.25) * 60000);
+            timers[my_timer_found][1].then(async () => {
+              mtime = 0.25;
+              intime = 0;
+              await send_message(msg, "### Whispers close in 15 seconds");
+              timers[my_timer_found][1] = createTimer(15000);
+              timers[my_timer_found][1].then(async () => {
+                mtime = 0;
+                intime = 0;
+                await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+                timers.splice(my_timer_found, 1);
+              });
+            });
+          });
+        });
       }
-      if (timers[my_timer_found][1] > 1) {
-        await run_timer(my_timer_found, (timers[my_timer_found][1] - 1) * 60000);
-        if (timers[my_timer_found][1] == 0)
-          return null;
-        timers[my_timer_found][1] = 1;
-        intime = 1;
-        await send_message(msg, "### Whispers close in 1 minute");
+      else if (mtime > 1) {
+        timers[my_timer_found][1] = createTimer((mtime - 1) * 60000);
+        timers[my_timer_found][1].then(async () => {
+          mtime = 1;
+          intime = 1;
+          await send_message(msg, "### Whispers close in 1 minute");
+          timers[my_timer_found][1] = createTimer((mtime - 0.25) * 60000);
+          timers[my_timer_found][1].then(async () => {
+            mtime = 0.25;
+            intime = 0;
+            await send_message(msg, "### Whispers close in 15 seconds");
+            timers[my_timer_found][1] = createTimer(15000);
+            timers[my_timer_found][1].then(async () => {
+              mtime = 0;
+              intime = 0;
+              await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+              timers.splice(my_timer_found, 1);
+            });
+          });
+        });
       }
-      await run_timer(my_timer_found, (timers[my_timer_found][1] - 0.25) * 60000);
-      if (timers[my_timer_found][1] == 0)
-        return null;
-      timers[my_timer_found][1] = 0.25;
-      await send_message(msg, "### Whispers close in 15 seconds");
-      await run_timer(my_timer_found, 15000);
-      if (timers[my_timer_found][1] == 0)
-        return null;
-      timers[my_timer_found][1] = 0;
-      await send_message(msg, "# Nomination time!\n### Please make your way back to town");
-      timers.splice(my_timer_found, 1);
+      else if (mtime < 1) {
+        timers[my_timer_found][1] = createTimer((mtime - 0.25) * 60000);
+        timers[my_timer_found][1].then(async () => {
+          mtime = 0.25;
+          intime = 0;
+          await send_message(msg, "### Whispers close in 15 seconds");
+          timers[my_timer_found][1] = createTimer(15000);
+          timers[my_timer_found][1].then(async () => {
+            mtime = 0;
+            intime = 0;
+            await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+            timers.splice(my_timer_found, 1);
+          });
+        });
+      }
       // let membarr = null;
       // let mvc = 0;
       // for (var i = 0; i < channelsarr.length; i++) {
