@@ -350,8 +350,10 @@ async function scripts_to_txt(teensy, page) {
   else {
     scrarr = Array.from(Object.keys(scripts));
   }
+  let line = "";
   for (var i = (page - 1) * 10; i < Math.min((page - 1) * 10 + 10, arr.length); i++) {
     // txt += i+1 +"- "+dict[arr[i]]+"\n";
+    line = "";
     if (teensy) {
       sjson = teensies[scrarr[i]];
       spdf = teensies[scrarr[i]] + "_pdf";
@@ -360,9 +362,10 @@ async function scripts_to_txt(teensy, page) {
       sjson = scripts[scrarr[i]];
       spdf = scripts[scrarr[i]] + "_pdf";
     }
-    txt += (i + 1) + "- " + arr[i];
-    txt = txt.padEnd(30, " ");
-    txt += " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
+    line = (i + 1) + "- " + arr[i];
+    line = line.padEnd(30, " ");
+    line += " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
+    txt += line;
   }
   if (teensy) {
     // txt += "To get the link to a script's json/pdf use `*get t <id>`"
