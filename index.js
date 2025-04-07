@@ -34,14 +34,29 @@ var medic = {};
 
 var scripts = {
   "Trouble with Violets": "https://botcscripts.com/script/136/1.0.0/download",
-  "Catfishing": "https://botcscripts.com/script/3/11.1.0/download",
+  "Pies Baking": "https://botcscripts.com/script/1774/0.1.0/download",
+  "Catfishing": "https://botcscripts.com/script/67/6.0.0/download",
   "With Greater Power": "https://botcscripts.com/script/215/4.0.0/download",
   "Hide and Seek": "https://botcscripts.com/script/69/4.0.0/download",
   "Outed": "https://botcscripts.com/script/197/8.0.0/download",
   "No Rolls Barred": "https://botcscripts.com/script/258/1.0.1/download",
-  "Poppyganda": "https://botcscripts.com/script/79/3.0.0/download",
-  "Tax Fraud": "https://botcscripts.com/script/189/2.2.1/download",
+  "Ricochet": "https://botcscripts.com/script/5554/1.0.0/download",
+  "Information Overload": "https://botcscripts.com/script/4334/2.4.0/download",
+  "Uncertain Death": "https://botcscripts.com/script/68/1.0.1/download",
   "Where are the outsiders??": "https://botcscripts.com/script/214/1.2.0/download"
+  "Everyone can play": "https://botcscripts.com/script/1945/1.0.2/download"
+  "Tax Fraud": "https://botcscripts.com/script/189/2.2.1/download",
+  "Boozling": "https://botcscripts.com/script/173/9.0.0/download",
+  "Darkest Before Dawn": "https://botcscripts.com/script/67/6.0.0/download",
+  "42 Halloween": "https://botcscripts.com/script/6991/download",
+  "Extension Cord": "https://botcscripts.com/script/42/5.1.0/download",
+  "School of Alteration": "https://botcscripts.com/script/2256/1.0.0/download",
+  "Lunar Eclipse": "https://botcscripts.com/script/312/1.6.0/download",
+  "Word Around Town": "https://botcscripts.com/script/5395/1.1.0/download",
+  "Poppyganda": "https://botcscripts.com/script/79/3.0.0/download",
+  "Reptiles II - Lizards in the City": "https://botcscripts.com/script/445/1.2.0/download",
+  "The Midnight Oasis": "https://botcscripts.com/script/104/3.8.0/download",
+  "Poppyganda": "https://botcscripts.com/script/79/3.0.0/download",
 };
 
 var teensies = {
@@ -326,22 +341,39 @@ async function scripts_to_txt(teensy, page) {
     }
     txt = "**Scripts (" + page + " of " + pages + "):**\n"
   }
-  for (var i = (page - 1) * 10; i < Math.min((page - 1) * 10 + 10, arr.length); i++) {
-    // txt += i+1 +"- "+dict[arr[i]]+"\n";
-    txt += i + 1 + "- " + arr[i] + "\n";
-  }
+  let spdf = "";
+  let sjson = "";
+  let scrarr = null;
   if (teensy) {
-    txt += "To get the link to a script's json/pdf use `*get t <id>`"
-    if (page != pages) {
-      txt += "To go to the next page use `*teensy " + (page + 1) + "`"
-    }
+    scrarr = Array.from(Object.keys(teensies));
   }
   else {
-    txt += "To get the link to a script's json/pdf use `*get <id>`"
-    if (page != pages) {
-      txt += "To go to the next page use `*scripts " + (page + 1) + "`"
-    }
+    scrarr = Array.from(Object.keys(scripts));
   }
+  for (var i = (page - 1) * 10; i < Math.min((page - 1) * 10 + 10, arr.length); i++) {
+    // txt += i+1 +"- "+dict[arr[i]]+"\n";
+    if (teensy) {
+      sjson = teensies[scrarr[i]];
+      spdf = teensies[scrarr[i]] + "_pdf";
+    }
+    else {
+      sjson = scripts[scrarr[i]];
+      spdf = scripts[scrarr[i]] + "_pdf";
+    }
+    txt += (i + 1) + "- " + arr[i] + " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ") + ")\n";
+  }
+  // if (teensy) {
+  //   txt += "To get the link to a script's json/pdf use `*get t <id>`"
+  //   if (page != pages) {
+  //     txt += "To go to the next page use `*teensy " + (page + 1) + "`"
+  //   }
+  // }
+  // else {
+  //   txt += "To get the link to a script's json/pdf use `*get <id>`"
+  //   if (page != pages) {
+  //     txt += "To go to the next page use `*scripts " + (page + 1) + "`"
+  //   }
+  // }
   return txt
 }
 
@@ -947,7 +979,7 @@ client.on('messageReactionAdd', async function(reaction, user) {
     reaction.message.member.voice.setChannel(consult.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```") });
     await new Promise(r => setTimeout(r, 200));
     mem.voice.setChannel(consult.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```") });
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => setTimeout(r, 1000));
     await reaction.message.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
   }
   let nummojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
@@ -1129,7 +1161,7 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.author.username}`)
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*lfg" || msg.content.trim().toLowerCase() === "*?") {
@@ -1173,7 +1205,7 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `![LFG] ${msg.author.username}`)
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*storytell" || msg.content.trim().toLowerCase() === "*st") {
@@ -1217,7 +1249,7 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.author.username}`)
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*costorytell" || msg.content.trim().toLowerCase() === "*cost" || msg.content.trim().toLowerCase() === "*co-storytell" || msg.content.trim().toLowerCase() === "*co-st") {
@@ -1261,7 +1293,7 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.author.username}`)
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*travel" || msg.content.trim().toLowerCase() === "*t") {
@@ -1305,7 +1337,7 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.author.username}`)
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*play" || msg.content.trim().toLowerCase() === "*p") {
@@ -1357,7 +1389,7 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.member.displayName.trim().substring(7).trim()}`)
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*ping") {
@@ -1391,14 +1423,14 @@ client.on('messageCreate',
       for (var i = 0; i < next_game.length; i++) {
         if (next_game[i] == msg.author.id) {
           await msg_author(msg, "```You are already in the ping list for next game```")
-          await new Promise(r => setTimeout(r, 200));
+          await new Promise(r => setTimeout(r, 1000));
           await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
           return null
         }
       }
       next_game.push(msg.author.id)
       await msg_author(msg, "```You are now in the ping list for next game. You will be notified when the next game starts.```")
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*leave" || msg.content.trim().toLowerCase() === "*quit") {
@@ -1410,13 +1442,13 @@ client.on('messageCreate',
           next_game.splice(i, 1)
           i--
           await msg_author(msg, "```You've been removed from the ping list for next game```")
-          await new Promise(r => setTimeout(r, 200));
+          await new Promise(r => setTimeout(r, 1000));
           await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
           return null
         }
       }
       await msg_author(msg, "```You weren't in the ping list for next game```")
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*back" || msg.content.trim().toLowerCase() === "*here") {
@@ -1659,7 +1691,7 @@ client.on('messageCreate',
         nicks.push([msg.author.username, msg.member.displayName])
       }
       await rename(msg, name);
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*unvote") {
@@ -1670,7 +1702,7 @@ client.on('messageCreate',
           return
         }
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase().substring(0, 5) === "*add ") {
@@ -1836,7 +1868,7 @@ client.on('messageCreate',
       }
       mpc = 0;
       running_cycle = false;
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
     }
     else if (msg.content.trim().toLowerCase() === "*day") {
@@ -1920,7 +1952,7 @@ client.on('messageCreate',
       }
       mvc = 0;
       running_cycle = false;
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
     }
     else if (msg.content.trim().toLowerCase() === "*town") {
@@ -1994,7 +2026,7 @@ client.on('messageCreate',
       }
       mvc = 0;
       running_cycle = false;
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
     }
     else if (msg.content.trim().toLowerCase() === "*stoptimer") {
@@ -2280,7 +2312,7 @@ client.on('messageCreate',
         return null;
       }
       if (msg.member.displayName.toLowerCase().trim().charAt(0) === "!" || msg.member.displayName.toLowerCase().trim().substring(0, 4) === "(st)" || msg.member.displayName.toLowerCase().trim().substring(0, 6) === "(cost)" || msg.member.displayName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 1000));
         await msg.delete();
         return null;
       }
@@ -2312,7 +2344,7 @@ client.on('messageCreate',
         return null;
       }
       if (msg.member.displayName.toLowerCase().trim().charAt(0) === "!" || msg.member.displayName.toLowerCase().trim().substring(0, 4) === "(st)" || msg.member.displayName.toLowerCase().trim().substring(0, 6) === "(cost)" || msg.member.displayName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 1000));
         await msg.delete();
         return null;
       }
@@ -2331,7 +2363,7 @@ client.on('messageCreate',
         return null;
       }
       if (msg.member.displayName.toLowerCase().trim().charAt(0) === "!" || msg.member.displayName.toLowerCase().trim().substring(0, 4) === "(st)" || msg.member.displayName.toLowerCase().trim().substring(0, 6) === "(cost)" || msg.member.displayName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 1000));
         await msg.delete();
         return null;
       }
@@ -2508,7 +2540,7 @@ client.on('messageCreate',
           return
         }
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
@@ -2533,7 +2565,7 @@ client.on('messageCreate',
       else {
         await rename(msg, `${msg.member.displayName.trim()} [N]`);
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
     }
     // else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
@@ -3137,9 +3169,9 @@ client.on('messageCreate',
       }
       let rnd = Math.floor(Math.random() * 10);
       if (rnd < 5)
-        await respond(msg, "https://media1.tenor.com/m/r0R0N3dI3kIAAAAd/dancing-cat-dance.gif")
+        await respond(msg, "https://cdn.discordapp.com/attachments/1149152764438515823/1358631960439947314/catty.gif?ex=67f48c1d&is=67f33a9d&hm=4960826b8b49927e6d813e1eaad11c089fbe59bb6fbe03bf127b95f1b40a7d2c&")
       else
-        await respond(msg, "https://media1.tenor.com/m/x4E55_BDqsYAAAAd/baby-elephant-elephant.gif")
+        await respond(msg, "https://cdn.discordapp.com/attachments/1149152764438515823/1358631960792141966/elephant.gif?ex=67f48c1d&is=67f33a9d&hm=029c6e1b9b67d3dd9c028018ef57725c21fb2bddbf523b4e16c4a4aca1729693&")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
