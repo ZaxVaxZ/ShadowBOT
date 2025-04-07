@@ -2214,7 +2214,7 @@ client.on('messageCreate',
           });
         });
       }
-      else if (mtime < 1) {
+      else
         timers[my_timer_found][1] = createTimer((mtime - 0.25) * 60000);
         timers[my_timer_found][1].then(async () => {
           mtime = 0.25;
