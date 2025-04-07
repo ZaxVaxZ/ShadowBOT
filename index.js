@@ -43,8 +43,8 @@ var scripts = {
   "Ricochet": "https://botcscripts.com/script/5554/1.0.0/download",
   "Information Overload": "https://botcscripts.com/script/4334/2.4.0/download",
   "Uncertain Death": "https://botcscripts.com/script/68/1.0.1/download",
-  "Where are the outsiders??": "https://botcscripts.com/script/214/1.2.0/download"
-  "Everyone can play": "https://botcscripts.com/script/1945/1.0.2/download"
+  "Where are the outsiders??": "https://botcscripts.com/script/214/1.2.0/download",
+  "Everyone can play": "https://botcscripts.com/script/1945/1.0.2/download",
   "Tax Fraud": "https://botcscripts.com/script/189/2.2.1/download",
   "Boozling": "https://botcscripts.com/script/173/9.0.0/download",
   "Darkest Before Dawn": "https://botcscripts.com/script/67/6.0.0/download",
@@ -360,7 +360,7 @@ async function scripts_to_txt(teensy, page) {
       sjson = scripts[scrarr[i]];
       spdf = scripts[scrarr[i]] + "_pdf";
     }
-    txt += (i + 1) + "- " + arr[i] + " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ") + ")\n";
+    txt += (i + 1) + "- " + arr[i] + " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
   }
   // if (teensy) {
   //   txt += "To get the link to a script's json/pdf use `*get t <id>`"
