@@ -360,20 +360,22 @@ async function scripts_to_txt(teensy, page) {
       sjson = scripts[scrarr[i]];
       spdf = scripts[scrarr[i]] + "_pdf";
     }
-    txt += (i + 1) + "- " + arr[i] + " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
+    txt += (i + 1) + "- " + arr[i];
+    txt = txt.padEnd(30, " ");
+    txt += " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
   }
-  // if (teensy) {
-  //   txt += "To get the link to a script's json/pdf use `*get t <id>`"
-  //   if (page != pages) {
-  //     txt += "To go to the next page use `*teensy " + (page + 1) + "`"
-  //   }
-  // }
-  // else {
-  //   txt += "To get the link to a script's json/pdf use `*get <id>`"
-  //   if (page != pages) {
-  //     txt += "To go to the next page use `*scripts " + (page + 1) + "`"
-  //   }
-  // }
+  if (teensy) {
+    // txt += "To get the link to a script's json/pdf use `*get t <id>`"
+    if (page != pages) {
+      txt += "To go to the next page use `*teensy " + (page + 1) + "`"
+    }
+  }
+  else {
+    // txt += "To get the link to a script's json/pdf use `*get <id>`"
+    if (page != pages) {
+      txt += "To go to the next page use `*scripts " + (page + 1) + "`"
+    }
+  }
   return txt
 }
 
