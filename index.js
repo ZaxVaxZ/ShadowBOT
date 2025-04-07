@@ -339,7 +339,7 @@ async function scripts_to_txt(teensy, page) {
     if (page > pages) {
       return "ERROR"
     }
-    txt = "**Scripts (" + page + " of " + pages + "):**\n"
+    txt = "**Scripts (" + page + " of " + pages + "):**\n\n"
   }
   let spdf = "";
   let sjson = "";
@@ -363,20 +363,20 @@ async function scripts_to_txt(teensy, page) {
       spdf = scripts[scrarr[i]] + "_pdf";
     }
     line = (i + 1) + "- " + arr[i];
-    line = line.padEnd(30, " ");
+    line = line.padEnd(30, "\t");
     line += " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
     txt += line;
   }
   if (teensy) {
     // txt += "To get the link to a script's json/pdf use `*get t <id>`"
     if (page != pages) {
-      txt += "To go to the next page use `*teensy " + (page + 1) + "`"
+      txt += "\n### To go to the next page use `*teensy " + (page + 1) + "`"
     }
   }
   else {
     // txt += "To get the link to a script's json/pdf use `*get <id>`"
     if (page != pages) {
-      txt += "To go to the next page use `*scripts " + (page + 1) + "`"
+      txt += "\n### To go to the next page use `*scripts " + (page + 1) + "`"
     }
   }
   return txt
