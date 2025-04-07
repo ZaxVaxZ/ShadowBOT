@@ -362,8 +362,8 @@ async function scripts_to_txt(teensy, page) {
       sjson = scripts[scrarr[i]];
       spdf = scripts[scrarr[i]] + "_pdf";
     }
-    line = (i + 1) + "- " + arr[i];
-    line = line.padEnd(30, "\t");
+    line = (i + 1) + "- " + arr[i] + " ";
+    line = line.padEnd(30, "-");
     line += " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
     txt += line;
   }
