@@ -330,7 +330,7 @@ async function scripts_to_txt(teensy, page) {
     if (page > pages) {
       return "ERROR"
     }
-    txt = "**Teensy Scripts (" + page + " of " + pages + "):**\n"
+    txt = "**Teensy Scripts (Page " + page + " of " + pages + "):**\n"
   }
   else {
     dict = scripts
@@ -339,7 +339,7 @@ async function scripts_to_txt(teensy, page) {
     if (page > pages) {
       return "ERROR"
     }
-    txt = "**Scripts (" + page + " of " + pages + "):**\n\n"
+    txt = "**Scripts (Page " + page + " of " + pages + "):**\n\n"
   }
   let spdf = "";
   let sjson = "";
@@ -364,7 +364,7 @@ async function scripts_to_txt(teensy, page) {
     }
     line = (i + 1) + "- " + arr[i] + " ";
     line = line.padEnd(30, "-");
-    line += " [**PDF**](" + spdf + ") [**JSON**](" + sjson + ")\n";
+    line += " [**PDF**](" + spdf + ") / [**JSON**](" + sjson + ")\n";
     txt += line;
   }
   if (teensy) {
