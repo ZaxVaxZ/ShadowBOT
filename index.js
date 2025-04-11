@@ -35,20 +35,20 @@ var medic = {};
 var scripts = {
   "Trouble with Violets": "https://botcscripts.com/script/136/1.0.0/download",
   "Pies Baking": "https://botcscripts.com/script/1774/0.1.0/download",
-  "Catfishing": "https://botcscripts.com/script/67/6.0.0/download",
+  "Catfishing": "https://botcscripts.com/script/3/11.1.0/download",
   "With Greater Power": "https://botcscripts.com/script/215/4.0.0/download",
   "Hide and Seek": "https://botcscripts.com/script/69/4.0.0/download",
   "Outed": "https://botcscripts.com/script/197/8.0.0/download",
   "No Rolls Barred": "https://botcscripts.com/script/258/1.0.1/download",
+  "TB + Fun": "https://botcscripts.com/script/6994/1.0.0/download",
   "Ricochet": "https://botcscripts.com/script/5554/1.0.0/download",
-  "Information Overload": "https://botcscripts.com/script/4334/2.4.0/download",
   "Uncertain Death": "https://botcscripts.com/script/68/1.0.1/download",
   "Where are the outsiders??": "https://botcscripts.com/script/214/1.2.0/download",
   "Everyone can play": "https://botcscripts.com/script/1945/1.0.2/download",
-  "Tax Fraud": "https://botcscripts.com/script/189/2.2.1/download",
+  "Tax Fraud": "https://botcscripts.com/script/189/2.3.6/download",
   "Boozling": "https://botcscripts.com/script/173/9.0.0/download",
   "Darkest Before Dawn": "https://botcscripts.com/script/67/6.0.0/download",
-  "42 Halloween": "https://botcscripts.com/script/6991/download",
+  "42 Halloween": "https://botcscripts.com/script/6991/1.0.0/download",
   "Extension Cord": "https://botcscripts.com/script/42/5.1.0/download",
   "School of Alteration": "https://botcscripts.com/script/2256/1.0.0/download",
   "Lunar Eclipse": "https://botcscripts.com/script/312/1.6.0/download",
@@ -1466,6 +1466,23 @@ client.on('messageCreate',
         }
         return null
       } if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[brb]" || msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]") {
+        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()}`)
+      }
+    }
+    else if (msg.content.trim().toLowerCase() === "*text" || msg.content.trim().toLowerCase() === "*txt") {
+      if (msg.member.displayName.trim().length <= 4) {
+        await rename(msg, `${msg.member.displayName.trim()} [TEXT]`)
+        return null
+      }
+      if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[brb]" && msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[afk]") {
+        await rename(msg, `${msg.member.displayName.trim()} [TEXT]`)
+      }
+      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]") {
+        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()} [TEXT]`)
+      }
+      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[text]") {
+        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()}`)
       }
     }
