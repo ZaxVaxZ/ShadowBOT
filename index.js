@@ -1470,7 +1470,11 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*text" || msg.content.trim().toLowerCase() === "*txt") {
-      if (msg.member.displayName.trim().length <= 4) {
+      if (msg.member.displayName.includes("[TEXT]")) {
+        await rename(msg, `${msg.member.displayName.trim().replace("[TEXT]", "")}`)
+        return null
+      }
+      if (msg.member.displayName.trim().length <= 5) {
         await rename(msg, `${msg.member.displayName.trim()} [TEXT]`)
         return null
       }
@@ -1481,10 +1485,10 @@ client.on('messageCreate',
         // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()} [TEXT]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 6).toLowerCase() === "[text]") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 6).trim()}`)
-      }
+      // else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 6).toLowerCase() === "[text]") {
+      //   // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+      //   await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 6).trim()}`)
+      // }
     }
     else if (msg.content.trim().toLowerCase() === "*brb") {
       if (msg.member.displayName.trim().length <= 4) {
