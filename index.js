@@ -1477,7 +1477,7 @@ client.on('messageCreate',
       if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[brb]" && msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[afk]") {
         await rename(msg, `${msg.member.displayName.trim()} [TEXT]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]") {
+      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]" || msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[brb]") {
         // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
         await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()} [TEXT]`)
       }
