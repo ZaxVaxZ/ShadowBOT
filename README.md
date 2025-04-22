@@ -20,10 +20,11 @@ Nickname Commands:
 25) Remove previous tags: *p or *play
 26) Add/Remove [AFK]:      *afk
 27) Add/Remove [BRB]:      *brb
-28) Remove AFK/BRB tags: *back or *here
-29) Change nickname temporarily: *vote <name>
-2A) Back to original nickname:   *unvote
-2B) Add/Remove [N] (Optional tag for new players): *n
+28) Add/Remove [TEXT]:     *text or *txt (for text-only players in live games)
+29) Remove AFK/BRB tags: *back or *here
+2A) Change nickname temporarily: *vote <name>
+2B) Back to original nickname:   *unvote
+2C) Add/Remove [N] (Optional tag for new players): *n
 ```
 Convenience Commands:
 ---------------------
