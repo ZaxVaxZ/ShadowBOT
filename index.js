@@ -3394,7 +3394,7 @@ client.on('messageCreate',
       //   await respond(msg, "```Grim link set to "+grim_link+"\nPlayers can get the link by using the command *grim```")
       // }
       x = msg.content.trim().substring(6)
-      if (x.trim().toLowerCase().substring(0, 27).trim() !== "https://clocktower.online/#" && x.trim().toLowerCase().substring(0, 25).trim() !== "https://clocktower.live/#") {
+      if (x.trim().toLowerCase().substring(0, 27).trim() !== "https://clocktower.online/#" && x.trim().toLowerCase().substring(0, 25).trim() !== "https://clocktower.live/#" && x.trim().toLowerCase().substring(0, 28).trim() != "https://yoyosource.github.io") {
         await respond(msg, "```Please provide a link to the grim in the command.```")
         // return null
       }
@@ -3546,7 +3546,7 @@ client.on('messageCreate',
       await new Promise(r => setTimeout(r, 2500));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
-    else if (msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) {
+    else if (msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://yoyosource.github.io/") > -1) {
 
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         // return null
@@ -3743,7 +3743,7 @@ client.on('messageCreate',
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////////////////////////
     // msg_user(lieu_id,msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#"));
-    if ((msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1) && !msg.author.bot) {
+    if ((msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://yoyosource.github.io/") > -1) && !msg.author.bot) {
       // msg_user(lieu_id,"TEST1");
       if (msg.content.trim().toLowerCase().indexOf("*grim") == -1 && msg.content.trim().toLowerCase().indexOf("*link") == -1 && msg.member.displayName.trim().substring(0, 4) != "(ST)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, "" + e); }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
