@@ -57,6 +57,10 @@ var scripts = {
   "Reptiles II - Lizards in the City": "https://botcscripts.com/script/445/1.2.0/download",
   "The Midnight Oasis": "https://botcscripts.com/script/104/3.8.0/download",
   "Poppyganda": "https://botcscripts.com/script/79/3.0.0/download",
+  "Anyone for a Threesome?": "https://botcscripts.com/script/1839/1.0.0/download",
+  "Strong, Independent Marionette": "https://botcscripts.com/script/3234/1.0.1/download",
+  "Weak, Dependent Minion": "https://botcscripts.com/script/6995/1.0.0/download",
+  "Storytold by Ben Burns": "https://botcscripts.com/script/6996/1.0.0/download",
 };
 
 var teensies = {
@@ -3161,17 +3165,30 @@ client.on('messageCreate',
       }
       await respond(msg, "# Second call for nominations");
     }
+    else if (msg.content.trim().toLowerCase() === "*strules" || msg.content.trim().toLowerCase() === "*st-rules") {
+      await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1375077292270813305/image.png?ex=68437dc6&is=68422c46&hm=bc94292358a827db3eb56973ca72a2a97245f0b764b9e31b15e776ef00ad2536&");
+    }
+    else if (msg.content.trim().toLowerCase() === "*stguide" || msg.content.trim().toLowerCase() === "*st-guide") {
+      if (msg.guild.id != "569683781800296501") {
+        return null
+      }
+      await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1375230629263835278/Overtalking_Final.jpg?ex=684363d4&is=68421254&hm=9697df98f628916037519385d06b81a7d19692fb78f55925222f2011f987e341&");
+    }
     else if (msg.content.trim().toLowerCase() === "*exitserver") {
       if (msg.author.id !== lieu_id) {
         return null
       }
       await msg.guild.leave();
-    } 
+    }
     else if (msg.content.trim().toLowerCase() === "*moon") {
       if (msg.author.id != "1194403683300032612" && msg.author.id !== lieu_id) {
         return null
       }
-      await respond(msg, "https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://fdczvxmwwjwpwbeeqcth.supabase.co/storage/v1/object/public/images/2baaeccd-9bdf-45aa-b0d7-9552b52d9636/3bb27302-7c69-4c49-a770-4e267b70eaf8.png")
+      let rnd = Math.floor(Math.random() * 10);
+      if (rnd < 5)
+        await respond(msg, "https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://fdczvxmwwjwpwbeeqcth.supabase.co/storage/v1/object/public/images/2baaeccd-9bdf-45aa-b0d7-9552b52d9636/3bb27302-7c69-4c49-a770-4e267b70eaf8.png")
+      else
+        await respond(msg, "https://cdn.discordapp.com/attachments/1234778104657088565/1379761023665307679/good-night-moon.gif?ex=68436456&is=684212d6&hm=d16fcf540043260d5dedfd2362252aeae7279989fbfd85dcb30653bdf60ff2b3&")
     }
     else if (msg.content.trim().toLowerCase() === "*luc") {
       if (msg.author.id != "231515768750080000" && msg.author.id !== lieu_id) {
