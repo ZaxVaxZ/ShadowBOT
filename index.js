@@ -2084,6 +2084,13 @@ client.on('messageCreate',
       timers.splice(my_timer_found, 1);
       await respond(msg, "```Timer stopped```");
     }
+    else if (msg.content.trim().toLowerCase() === "*quiet" || msg.content.trim().toLowerCase() === "*hl") {
+      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+        await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
+        return null
+      }
+      await respond(msg, "> # Hell's Librarian is now in play!! :closed_book:\n> - All players must remain **silent**.\n> - The storyteller will direct which players who are allowed to speak and when HL is over.\n> - If a nomination is present, only the accuser speaks 1st, then the defense only, then pertinent info.\n> - Once votes are called, discussion **must** be taken to town square and **VOTES** are expected to happen **ASAP**.");
+    }
     else if (msg.content.trim().toLowerCase().substring(0, 7) === "*timer ") {
       if (running_cycle) {
         await respond(msg, "```Already in the process of moving, please wait :D```")
@@ -4309,3 +4316,4 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
