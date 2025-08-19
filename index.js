@@ -3036,7 +3036,7 @@ client.on('messageCreate',
               co = "#ff0000";
               team = "Demon";
             }
-            if (json[mr]["team"] == "traveler") {
+            if (json[mr]["team"] == "traveler" || json[mr]["team"] == "traveller") {
               co = "#ff00ff";
               team = "Traveler";
             }
@@ -3726,7 +3726,7 @@ client.on('messageCreate',
         msg_author(msg, "oh no")
       }
     }
-    else if (msg.content.trim().toLowerCase() === "*travelers") {
+    else if (msg.content.trim().toLowerCase() === "*travelers" || msg.content.trim().toLowerCase() === "*travellers") {
       await respond(msg, "**<[=+----+={ Travellers Guide }=+----+=]>**\n**Travelers** are a special type of roles given to players who join the game late or have to leave it before it finishes. Typically powerful, their alignment (Good/Evil) is decided by the Storyteller as soon as they join.\n**If Evil**, they learn who the demon is, Evil players do **not learn** if the traveler is evil.\nA traveler cannot be **executed** instead they are **exiled**; Once per day any player, dead or alive, can call for the exile of the traveler, **all players** whether alive, dead or without a dead vote can still vote on the exile, dead votes are not spent when dead players vote on the exile. The majority required is relative to the number of all players, not just the alive ones.")
     }
     else if (msg.content.trim().toLowerCase() === "*feedback") {
@@ -4317,6 +4317,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
