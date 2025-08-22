@@ -2906,7 +2906,7 @@ client.on('messageCreate',
             // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
             rep.setDescription(json[mr]["ability"])
               .setTitle(json[mr]["name"])
-              .setThumbnail("https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
+              .setThumbnail("https://github.com/tomozbot/botc-icons/blob/main/PNG/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
           } catch (error) {
             msg_user(lieu_id, error.message);
@@ -3059,7 +3059,7 @@ client.on('messageCreate',
             }
             rep.setDescription(json[mr]["ability"] + "\n\n**Affects Setup: **" + setu)
               .setTitle(json[mr]["name"] + " (" + team + ") - " + scr)
-              .setThumbnail("https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png")
+              .setThumbnail("https://github.com/tomozbot/botc-icons/blob/main/PNG/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
           } catch (error) {
             msg_user(lieu_id, error.message);
@@ -4317,6 +4317,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
