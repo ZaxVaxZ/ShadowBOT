@@ -3204,6 +3204,9 @@ client.on('messageCreate',
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1304827352160927775/kids-goku-peace.gif?ex=67356beb&is=67341a6b&hm=ce0282e0e37b4fcb97ecddf805bd310d0bc34f0beeb5fe4850d4711647c96d50&")
     }
+    else if (msg.content.trim().toLowerCase() === "*livegames" || msg.content.trim().toLowerCase() === "*lg") {
+      await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1414696984333390039/image.png?ex=68c86bbc&is=68c71a3c&hm=cc27a7ec3467b39677e440bbb6e95343d4bbf9751e37e4963d224daaef7e4b26")
+    }
     else if (msg.content.trim().toLowerCase() === "*lucas") {
       if (msg.author.id != "231515768750080000" && msg.author.id !== lieu_id) {
         return null
@@ -4317,6 +4320,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
