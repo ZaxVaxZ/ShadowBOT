@@ -118,7 +118,7 @@ var lieu_id = '549986826794827786'
 
 let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/roles.json"
 let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/fabled.json"
-let jinxes = "https://media.discordapp.net/attachments/1031815607156490270/1148969672314720358/Jinxes_4.2.png\n(To see in better quality, right click and open in browser, or download the image)"//?width=621&height=473"
+let jinxes = "https://media.discordapp.net/attachments/904250103588597790/1395583215984578582/jinx_rules_1.png\nhttps://media.discordapp.net/attachments/904250103588597790/1395583217213374574/jinx_rules_2.png\n\n(To see in better quality, right click and open in browser, or download the image)"
 
 let new_roles = `[
   {
@@ -4330,6 +4330,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
