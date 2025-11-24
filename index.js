@@ -116,8 +116,9 @@ var timers = []
 
 var lieu_id = '549986826794827786'
 
-let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/roles.json"
-let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/develop/src/fabled.json"
+let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/characters.json"
+let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/non_player_characters.json"
+let jinxes_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/jinxes.json"
 let jinxes = "https://media.discordapp.net/attachments/904250103588597790/1395583215984578582/jinx_rules_1.png\nhttps://media.discordapp.net/attachments/904250103588597790/1395583217213374574/jinx_rules_2.png\n\n(To see in better quality, right click and open in browser, or download the image)"
 
 let new_roles = `[
@@ -386,6 +387,8 @@ async function scripts_to_txt(teensy, page) {
   return txt
 }
 
+const properCase = str => str.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase());
+
 function defer() {
 
     let res = () => {};
@@ -554,12 +557,12 @@ async function only_letters(s) {
   return s2;
 }
 
-async function match_role(name, json) {
+async function match_role(name, json, id_match = false) {
   let n = await only_letters(name.trim().toLowerCase());
   let mii = 0;
   let mix = -1;
   for (var i = 0; i < json.length; i++) {
-    let nn = await only_letters(json[i]["name"].trim().toLowerCase());
+    let nn = await only_letters(json[i][id_match ? "id" : "name"].trim().toLowerCase());
     let vv = await txt_compare(n, nn);
     if (mix == -1) {
       mix = vv;
@@ -2918,6 +2921,40 @@ client.on('messageCreate',
         msg_user(lieu_id, error.message);
       });
     }
+    else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx ") {
+      let role_name = msg.content.trim().substring(6).toLowerCase();
+      https.get(jinxes_url, async function(res) {
+        let body = "";
+
+        res.on("data", (chunk) => {
+          body += chunk;
+        });
+
+        res.on("end", async function() {
+          try {
+            let json = JSON.parse(body);
+            ////////////////////////
+
+            let mr = await match_role(role_name, json, true);
+            if (mr == -1) {
+              await respond(msg, "```Role Not Found.```");
+              return null;
+            }
+            let resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
+            for (let q = 0; q < json[mr]["jinx"].length; q++) {
+              resp += "*" + properCase(json[mr]["jinx"][q]["id"]) + ":* " + json[mr]["jinx"][q]["reason"] + "\n";
+            }
+            await msg.reply(resp);
+          } catch (error) {
+            msg_user(lieu_id, error.message);
+          };
+        });
+
+
+      }).on("error", (error) => {
+        msg_user(lieu_id, error.message);
+      });
+    }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*role ") {
       /*
       let rep = new MessageEmbed()
@@ -3102,7 +3139,7 @@ client.on('messageCreate',
 
     //   }
     // }
-    else if (msg.content.trim().toLowerCase() === "*jinxes" || msg.content.trim().toLowerCase() === "*jinx" || msg.content.trim().toLowerCase() === "*djinn") {
+    else if (msg.content.trim().toLowerCase() === "*jinxes" || msg.content.trim().toLowerCase() === "*jinx") {
       await respond(msg, jinxes)
     }
     else if (msg.content.trim().toLowerCase() === "*grammar" || msg.content.trim().toLowerCase() === "*grammarguru") {
@@ -4330,6 +4367,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
