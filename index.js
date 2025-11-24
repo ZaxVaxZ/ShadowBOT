@@ -2842,7 +2842,7 @@ client.on('messageCreate',
         msg_author(msg, "oh no")
       }
     }
-    else if (msg.content.trim().substring(0, 8).toLowerCase() === "*fabled " || msg.content.trim().substring(0, 8).toLowerCase() === "*fables " || msg.content.trim().substring(0, 7).toLowerCase() === "*fable ") {
+    else if (msg.content.trim().substring(0, 8).toLowerCase() === "*fabled " || msg.content.trim().substring(0, 8).toLowerCase() === "*fables " || msg.content.trim().substring(0, 7).toLowerCase() === "*fable " || msg.content.trim().substring(0, 7).toLowerCase() === "*loric ") {
       /*
       let rep = new MessageEmbed()
     .setColor('#ffffff')
@@ -2871,7 +2871,7 @@ client.on('messageCreate',
       if (msg.content.trim().substring(0, 8).toLowerCase() === "*fabled " || msg.content.trim().substring(0, 8).toLowerCase() === "*fables ") {
         xu = 7;
       }
-      let role_name = msg.content.trim().substring(xu).toLowerCase();
+      let role_name = msg.content.trim().substring(xu).trim().toLowerCase();
       https.get(fabled_url, async function(res) {
         let body = "";
 
@@ -2895,7 +2895,7 @@ client.on('messageCreate',
               let rep = new MessageEmbed()
                 .setColor(co)
               // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
-              rep.setDescription(json[mr]["ability"])
+              rep.setDescription(json[mr]["ability"]+"\n\n**Type: **"+properCase(json[mr]["team"]))
                 .setTitle(json[mr]["name"])
                 .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
               await msg.reply({ embeds: [rep] })
@@ -4367,6 +4367,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
