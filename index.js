@@ -2942,7 +2942,7 @@ client.on('messageCreate',
             }
             let resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
             for (let q = 0; q < json[mr]["jinx"].length; q++) {
-              resp += "*" + properCase(json[mr]["jinx"][q]["id"]) + ":* " + json[mr]["jinx"][q]["reason"] + "\n";
+              resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
             }
             await msg.reply(resp);
           } catch (error) {
@@ -4367,6 +4367,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
