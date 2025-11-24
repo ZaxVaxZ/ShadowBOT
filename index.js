@@ -2907,7 +2907,7 @@ client.on('messageCreate',
             let rep = new MessageEmbed()
               .setColor(co)
             // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
-            rep.setDescription(json[mr]["ability"])
+            rep.setDescription(json[mr]["ability"]+"\n\n**Type: **"+properCase(json[mr]["team"]))
               .setTitle(json[mr]["name"])
               .setThumbnail("https://raw.githubusercontent.com/tomozbot/botc-icons/refs/heads/main/PNG/" + json[mr]["id"] + ".png")
             await msg.reply({ embeds: [rep] })
@@ -4367,6 +4367,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
