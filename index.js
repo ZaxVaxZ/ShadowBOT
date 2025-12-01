@@ -33,30 +33,33 @@ var stdic = {};
 var medic = {};
 
 var scripts = {
-  "Trouble with Violets": "https://botcscripts.com/script/136/1.0.0/download",
   "Pies Baking": "https://botcscripts.com/script/1774/0.1.0/download",
-  "Catfishing": "https://botcscripts.com/script/3/11.1.0/download",
-  "With Greater Power": "https://botcscripts.com/script/215/4.0.0/download",
-  "Hide and Seek": "https://botcscripts.com/script/69/4.0.0/download",
-  "Outed": "https://botcscripts.com/script/197/8.0.0/download",
-  "No Rolls Barred": "https://botcscripts.com/script/258/1.0.1/download",
   "TB + Fun": "https://botcscripts.com/script/6994/1.0.0/download",
-  "Ricochet": "https://botcscripts.com/script/5554/1.0.0/download",
+  "Ricochet": "https://botcscripts.com/script/9025/1.0.0/download",
+  "Information Overload": "https://www.botcscripts.com/script/9026/1.0.0/download",
   "Uncertain Death": "https://botcscripts.com/script/68/1.0.1/download",
-  "Where are the outsiders??": "https://botcscripts.com/script/214/1.2.0/download",
-  "Everyone can play": "https://botcscripts.com/script/1945/1.0.2/download",
-  "Tax Fraud": "https://botcscripts.com/script/189/2.3.6/download",
-  "Boozling": "https://botcscripts.com/script/173/9.0.0/download",
-  "Darkest Before Dawn": "https://botcscripts.com/script/67/6.0.0/download",
-  "42 Halloween": "https://botcscripts.com/script/6991/1.0.0/download",
+  "Everyone Can Play": "https://botcscripts.com/script/1945/1.0.2/download",
+  "Darkest Before Dawn": "https://www.botcscripts.com/script/67/6.0.0/download",
+  "Catfishing": "https://botcscripts.com/script/3/11.1.0/download",
+  "Boozling": "https://www.botcscripts.com/script/173/9.0.0/download",
+  "Tour": "https://www.botcscripts.com/script/8575/1.2.0/download",
   "Extension Cord": "https://botcscripts.com/script/42/5.1.0/download",
   "School of Alteration": "https://botcscripts.com/script/2256/1.0.0/download",
-  "Lunar Eclipse": "https://botcscripts.com/script/312/1.6.0/download",
+  "Lunar Eclipse": "https://www.botcscripts.com/script/312/1.6.0/download",
+  "Hide & Seek": "https://botcscripts.com/script/69/6.1.0/download",
   "Word Around Town": "https://botcscripts.com/script/5395/1.1.0/download",
-  "Poppyganda": "https://botcscripts.com/script/79/3.0.0/download",
-  "Reptiles II - Lizards in the City": "https://botcscripts.com/script/445/1.2.0/download",
+  "Poppyganda": "https://botcscripts.com/script/79/2.0.0/download",
+  "Midnight Sun": "https://botcscripts.com/script/3431/1.0.0/download",
+  "Reptiles II": "https://botcscripts.com/script/445/1.2.0/download",
   "The Midnight Oasis": "https://botcscripts.com/script/104/3.8.0/download",
-  "Poppyganda": "https://botcscripts.com/script/79/3.0.0/download",
+  "Clockwork Cyborg": "https://botcscripts.com/script/3936/5.2.0/download",
+  "Trouble with Violets": "https://botcscripts.com/script/136/1.0.0/download",
+  "With Greater Power": "https://botcscripts.com/script/215/4.0.0/download",
+  "Outed": "https://botcscripts.com/script/197/8.0.0/download",
+  "Where are the outsiders??": "https://botcscripts.com/script/214/1.2.0/download",
+  "No Rolls Barred": "https://botcscripts.com/script/258/1.0.1/download",
+  "42 Halloween": "https://botcscripts.com/script/6991/1.0.0/download",
+  "Tax Fraud": "https://botcscripts.com/script/189/2.3.6/download",
   "Anyone for a Threesome?": "https://botcscripts.com/script/1839/1.0.0/download",
   "Strong, Independent Marionette": "https://botcscripts.com/script/3234/1.0.1/download",
   "Weak, Dependent Minion": "https://botcscripts.com/script/6995/1.0.0/download",
@@ -3719,7 +3722,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*info" || msg.content.trim().toLowerCase() === "*basics") {
       // await respond(msg, "Test");
-      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet, More specifically the roles that get all of their information on the first night of the game.")
+      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet. More specifically the roles that get all of their information on the first night of the game.\n**Round Robin:** On the last day of the game (likely final 3), players have the choice to participate in a round-robin, 1 by 1 stating their claim and any relevant information.")
     }
     else if (msg.content.trim().toLowerCase() === "*ma" || msg.content.trim().toLowerCase() === "*muteall" || msg.content.trim().toLowerCase() === "*mute-all" || msg.content.trim().toLowerCase() === "*mute all") {
       try {
@@ -4367,6 +4370,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
