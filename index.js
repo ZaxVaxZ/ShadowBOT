@@ -2332,12 +2332,12 @@ client.on('messageCreate',
       if (!target) {
         return null
       }
+      const uname = target.username;
+      delete stdic[uname];
       target = msg.guild.members.cache.get(target.id)
       if (!target) {
         return null
       }
-      const uname = target.displayName;
-      delete stdic[target.displayName];
       let tid = target.voice.channelId
       if (!tid) {
         return null
@@ -4372,6 +4372,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
