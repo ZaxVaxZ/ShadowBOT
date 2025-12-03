@@ -2927,7 +2927,9 @@ client.on('messageCreate',
       });
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx ") {
-      let role_name = msg.content.trim().substring(6).toLowerCase();
+      const roles = msg.content.trim().substring(6).toLowerCase().split();
+      let role_name = roles[0];
+      let secondrole = roles.length > 1 ? null : roles[1];
       https.get(jinxes_url, async function(res) {
         let body = "";
 
@@ -2945,9 +2947,22 @@ client.on('messageCreate',
               await respond(msg, "```Role Not Found.```");
               return null;
             }
-            let resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
-            for (let q = 0; q < json[mr]["jinx"].length; q++) {
-              resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
+            let resp;
+            if (!secondrole) {
+              resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
+              for (let q = 0; q < json[mr]["jinx"].length; q++) {
+                resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
+              }
+            }
+            else {
+              resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
+              for (let q = 0; q < json[mr]["jinx"].length; q++) {
+                if (json[mr]["jinx"][q]["id"] == secondrole) {
+                  resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][q]["id"]) + ":\n";
+                  resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
+                  break ;
+                }
+              }
             }
             await msg.reply(resp);
           } catch (error) {
@@ -3724,7 +3739,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*info" || msg.content.trim().toLowerCase() === "*basics") {
       // await respond(msg, "Test");
-      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet. More specifically the roles that get all of their information on the first night of the game.\n**Round Robin:** On the last day of the game (likely final 3), players have the choice to participate in a round-robin, 1 by 1 stating their claim and any relevant information.")
+      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet. More specifically the roles that get all of their information on the first night of the game.\n**Round Robin:** Players go 1 by 1 clockwise sharing their claim and info, if they choose to, in order to help solve the game.")
     }
     else if (msg.content.trim().toLowerCase() === "*ma" || msg.content.trim().toLowerCase() === "*muteall" || msg.content.trim().toLowerCase() === "*mute-all" || msg.content.trim().toLowerCase() === "*mute all") {
       try {
@@ -4372,6 +4387,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
