@@ -2929,7 +2929,7 @@ client.on('messageCreate',
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx ") {
       const roles = msg.content.trim().substring(6).toLowerCase().split();
       let role_name = roles[0];
-      let secondrole = roles.length > 1 ? null : roles[1];
+      let secondrole = roles.length > 1 ? roles[1] : null;
       https.get(jinxes_url, async function(res) {
         let body = "";
 
@@ -4387,6 +4387,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
