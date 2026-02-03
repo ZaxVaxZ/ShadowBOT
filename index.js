@@ -1692,7 +1692,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_compliment = rnd
-      await respond(msg, "*" + target.user.member.displayName() + compliments[rnd])
+      await respond(msg, "*" + msg.guild.members.cache.get(target.id).displayName + compliments[rnd])
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*complinent ") {
       if (msg.author.username.toLowerCase() !== "zaba" && msg.author.username.toLowerCase() !== "greg") {
@@ -4387,6 +4387,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
