@@ -1993,7 +1993,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939") {
+      if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
@@ -2104,7 +2104,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "569683781800296501" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1462191765263224957") {
+      if (msg.guild.id != "840323781066489946" && msg.guild.id != "569683781800296501" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1462191765263224957" && msg.guild.id != "1395748840228917258") {
 
         return null
       }
@@ -4387,6 +4387,7 @@ var oap_jinx = `**Jinxes: (By LieutenantDV20)**
 
 var changes =
   `**Latest Changes:**\n- Added the newly released roles and fables.`;
+
 
 
 
