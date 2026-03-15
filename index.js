@@ -1001,6 +1001,7 @@ client.on('messageReactionAdd', async function(reaction, user) {
   if ((reaction.message.guild.id != "840323781066489946" && reaction.message.guild.id != "569683781800296501" && reaction.message.guild.id != "930132389592715274" && reaction.message.guild.id != "996462531038171136") || !nummojis.includes(reaction.emoji.name) || reaction.message.author.id === user.id || reaction.message.author.id !== "952917064035741706") {
     return;
   }
+  
   // let mem = reaction.message.guild.members.cache().find(user.id)
   let poll = -1
   for (var i = 0; i < secret_polls.length; i++) {
