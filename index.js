@@ -1144,7 +1144,7 @@ client.on('messageCreate',
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.author.username}`)
+          await rename(msg, `!${msg.member.displayName}`)
         }
       }
       else if (msg.member.displayName.trim().charAt(0) != '!') {
@@ -1233,7 +1233,7 @@ client.on('messageCreate',
           }
           else {
             // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(ST) ${msg.author.username}`)
+            await rename(msg, `(ST) ${msg.member.displayName}`)
           }
         }
         else if (msg.member.displayName.trim().charAt(0) == '!') {
@@ -1277,7 +1277,7 @@ client.on('messageCreate',
           }
           else {
             // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(Co-ST) ${msg.author.username}`)
+            await rename(msg, `(Co-ST) ${msg.member.displayName}`)
           }
         }
         else if (msg.member.displayName.trim().charAt(0) == '!') {
@@ -1321,7 +1321,7 @@ client.on('messageCreate',
           }
           else {
             // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(T) ${msg.author.username}`)
+            await rename(msg, `(T) ${msg.member.displayName}`)
           }
         }
         else if (msg.member.displayName.trim().charAt(0) == '!') {
@@ -3740,7 +3740,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*info" || msg.content.trim().toLowerCase() === "*basics") {
       // await respond(msg, "Test");
-      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet. More specifically the roles that get all of their information on the first night of the game.\n**Round Robin:** Players go 1 by 1 clockwise sharing their claim and info, if they choose to, in order to help solve the game.")
+      await respond(msg, "**<[=+----+={ Welcome to Blood On The Clocktower }=+----+=]>**\n\n**The Storyteller will message you during the game, remember to check your message requests!**\n----------------------------\n**<[=+----+={  Bra1n Tool Basics  }=+----+=]>**\n\n**1- Click** on your **name** on the grim and choose **Claim Seat** to claim your seat.\n**2- Press R** to see the **Role Sheet**.\n**3- Press V** to see the **Vote History**.\n**4- Press N** to see the roles' **Night Order**.\n**5- Press Up/Down Arrow** to vote/unvote during **nominations**.\n\nIf you want to speak or nominate without interrupting someone, **Press Spacebar** to raise your hand.\n\n**<[=+----+={  Basic BOTC Slang Terminology  }=+----+=]>**\n\n**Starpass:** The Imp can kill themselves, and an alive minion becomes the new Imp.\n**Mayor Bounce:** If the Demon attacks the Mayor in the night, another player might die instead (ST Chooses whether that happens and who gets killed instead).\n**Three-for-three or Two-for-Two:** The players exchange a number of roles, and would *typically* include their real role.\n**Hard Claim:** A claim of a single role that is *supposed* to be the player's real role.\n**Pings:** A player having pings on them means there's information pointing to what their role or alignment might be. (e.g Washerwoman, Investigator, Fortune Teller, etc).\n**Evil Ping:** When information points to someone being potentially evil. (e.g. Investigator, Empath, etc)\n**Proc:** To trigger a trigger-based ability. (e.g Virgin).\n**Top Four:** Top 4 roles of the role sheet. More specifically the roles that get all of their information on the first night of the game.\n**Round Robin:** Players go 1 by 1 clockwise sharing their claim and info, if they choose to, in order to help solve the game.")
     }
     else if (msg.content.trim().toLowerCase() === "*ma" || msg.content.trim().toLowerCase() === "*muteall" || msg.content.trim().toLowerCase() === "*mute-all" || msg.content.trim().toLowerCase() === "*mute all") {
       try {
