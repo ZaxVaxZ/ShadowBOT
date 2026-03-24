@@ -3741,6 +3741,8 @@ client.on('messageCreate',
           await respond(msg, "```There are only " + players.length + " players in this channel group```")
           return null
         }
+        await respond(msg, "" + cnti)
+        return null
         let selected = []
         let respy = "The random players you received are:\n**";
         while (selected.length < cnti) {
