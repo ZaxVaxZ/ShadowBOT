@@ -3715,9 +3715,53 @@ client.on('messageCreate',
         await respond(msg, "```Your shadows have been removed and you are now in Do Not Disturb mode```")
       }
     }
+    else if (msg.content.trim().substring(0, 4).toLowerCase() === "*rp ") {
+      try {
+        const cnt = msg.content.trim().substring(4).toLowerCase()
+        if (cnt.length > 2 || cnt.length < 1) {
+          await respond(msg, "```The command must be followed by a number between 1 and 15```")
+          return null
+        }
+        for (let i = 0; i < cnt.length; i++) {
+          if (cnt.charCodeAt(i) < 48 || cnt.charCodeAt(i) > 57) {
+              await respond(msg, "```The command must be followed by a number between 1 and 15```")
+              return null
+          }
+        }
+        const cnti = parseInt(cnt)
+        const channels = msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        players = []
+        for (const [channelID, channel] of channels) {
+          for (const [memberID, member] of channel.members) {
+            if ((member.displayName.trim().substring(0, 3).toLowerCase() === "(t)" || member.displayName.trim().substring(0, 3).toLowerCase() === "[t]")
+              || (member.displayName.trim().charAt(0) !== '!' && member.displayName.trim().charAt(0) !== '(' && member.displayName.trim().charAt(0) !== '[')) {
+              players.push(member.displayName)
+            }
+          }
+        }
+        if (players.length == 0) {
+          await respond(msg, "```There are currently no players in the voice channels of this channel group```")
+          return null
+        }
+        if (players.length < cnti) {
+          await respond(msg, "```There are only " + players.length + "players in this channel group```")
+          return null
+        }
+        let selected = []
+        let respy = "The random players you received are:\n**";
+        while (selected.length < cnti) {
+          let r = Math.floor((Math.random() * players.length));
+          selected.push_back(players[r])
+          respy += players[r] + "\n"
+          players.splice(r, 1)
+        }
+        await respond(msg, respy + "**")
+      } catch (Exception) {
+        await msg_author(msg, "oh no")
+      }
+    }
     else if (msg.content.trim().toLowerCase() === "*rp" || msg.content.trim().toLowerCase() === "*randomplayer") {
       try {
-
         const channels = msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
         players = []
         for (const [channelID, channel] of channels) {
