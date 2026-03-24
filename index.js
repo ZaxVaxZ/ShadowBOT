@@ -3741,15 +3741,15 @@ client.on('messageCreate',
           await respond(msg, "```There are only " + players.length + " players in this channel group```")
           return null
         }
-        await respond(msg, "" + cnti)
-        return null
         let selected = []
         let respy = "The random players you received are:\n**";
-        while (selected.length < cnti) {
+        let sel = 0;
+        while (sel < cnti) {
           let r = Math.floor((Math.random() * players.length));
-          selected.push_back(players[r])
-          respy += players[r] + "\n"
-          players.splice(r, 1)
+          selected.push(players[r]);
+          respy += players[r] + "\n";
+          players.splice(r, 1);
+          sel += 1;
         }
         await respond(msg, respy + "**")
       } catch (Exception) {
