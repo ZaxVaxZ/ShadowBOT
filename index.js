@@ -2071,7 +2071,7 @@ client.on('messageCreate',
 
         return null
       }
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
@@ -2092,7 +2092,7 @@ client.on('messageCreate',
       await respond(msg, "```Timer stopped```");
     }
     else if (msg.content.trim().toLowerCase() === "*quiet" || msg.content.trim().toLowerCase() === "*hl") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
@@ -2322,7 +2322,7 @@ client.on('messageCreate',
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
       if (msg.guild.id != "569683781800296501")
           return null;
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
         await respond(msg, "```Only Storytellers and Staff can use this command```")
         return null
       }
