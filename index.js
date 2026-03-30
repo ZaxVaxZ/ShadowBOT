@@ -1570,8 +1570,8 @@ client.on('messageCreate',
     //   await shadow(msg, target1, target2)
     // }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*spec ") {
-	await respond(msg, "" + msg.author.id + ", " + msg.guild.owner_id);
-      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.charAt(0) != '!' && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.author.id != "297585199519105024") {
+	await respond(msg, "" + msg.author.id + ", " + msg.guild.ownerId);
+      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.charAt(0) != '!' && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.author.id != "297585199519105024") {
         await respond(msg, "```Only Spectators, Storytellers and Co-Storytellers can shadow players.\nPlease add ! to your name or use the command *spectate```")
         return null
       }
