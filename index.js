@@ -1760,7 +1760,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
@@ -1913,7 +1913,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
@@ -1997,7 +1997,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
@@ -2109,7 +2109,7 @@ client.on('messageCreate',
 
         return null
       }
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+      if (msg.author.id != msg.guild.owner_id && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
