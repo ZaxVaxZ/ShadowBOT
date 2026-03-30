@@ -119,8 +119,8 @@ var timers = []
 
 var lieu_id = '549986826794827786'
 
-let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/characters.json"
-let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/non_player_characters.json"
+let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/roles.json"
+let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/roles.json"
 let jinxes_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/jinxes.json"
 let jinxes = "https://media.discordapp.net/attachments/904250103588597790/1395583215984578582/jinx_rules_1.png\nhttps://media.discordapp.net/attachments/904250103588597790/1395583217213374574/jinx_rules_2.png\n\n(To see in better quality, right click and open in browser, or download the image)"
 
@@ -1764,7 +1764,7 @@ client.on('messageCreate',
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
-      running_cycle = true;
+      // running_cycle = true;
       let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
@@ -1917,7 +1917,7 @@ client.on('messageCreate',
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
-      running_cycle = true;
+      // running_cycle = true;
       let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
@@ -2001,7 +2001,7 @@ client.on('messageCreate',
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
-      running_cycle = true;
+      // running_cycle = true;
       let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
@@ -3490,7 +3490,7 @@ client.on('messageCreate',
       //   await respond(msg, "```Grim link set to "+grim_link+"\nPlayers can get the link by using the command *grim```")
       // }
       x = msg.content.trim().substring(6)
-      if (x.trim().toLowerCase().substring(0, 27).trim() !== "https://clocktower.online/#" && x.trim().toLowerCase().substring(0, 25).trim() !== "https://clocktower.live/#" && x.trim().toLowerCase().substring(0, 28).trim() != "https://yoyosource.github.io") {
+      if (x.trim().toLowerCase().substring(0, 27).trim() !== "https://clocktower.online/#" && x.trim().toLowerCase().substring(0, 25).trim() !== "https://clocktower.live/#") {
         await respond(msg, "```Please provide a link to the grim in the command.```")
         // return null
       }
