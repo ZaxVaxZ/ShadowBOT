@@ -2891,9 +2891,11 @@ client.on('messageCreate',
             let json = JSON.parse(body);
             ////////////////////////
 
-			for (let key of Object.keys(json)) {
-				if (json[key]["team"] != "loric" && json[key]["team"] != "fabled")
-					delete json[key];
+			for (let i = 0; i < json.length; i++) {
+				if (json[i]["team"] != "loric" && json[i]["team"] != "fabled") {
+					json.splice(i, 1);
+					i--;
+				}
 			}
 
             let mr = await match_role(role_name, json);
@@ -3089,9 +3091,11 @@ client.on('messageCreate',
             let json = JSON.parse(body);
             ////////////////////////
 
-			for (let key of Object.keys(json)) {
-				if (json[key]["team"] == "loric" || json[key]["team"] == "fabled")
-					delete json[key];
+			for (let i = 0; i < json.length; i++) {
+				if (json[i]["team"] == "loric" || json[i]["team"] == "fabled") {
+					json.splice(i, 1);
+					i--;
+				}
 			}
 
             let mr = await match_role(role_name, json);
