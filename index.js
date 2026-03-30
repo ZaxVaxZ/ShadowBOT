@@ -2887,7 +2887,7 @@ client.on('messageCreate',
 
         res.on("end", async function() {
           try {
-            body = body.substring(0, body.length - 2) + new_fabled
+            //body = body.substring(0, body.length - 2) + new_fabled
             let json = JSON.parse(body);
             ////////////////////////
 
