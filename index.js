@@ -2891,22 +2891,27 @@ client.on('messageCreate',
             let json = JSON.parse(body);
             ////////////////////////
 
+			for (key in json) {
+				if (json[key]["team"] != "loric" && json[key]["team"] != "fabled")
+					delete json[key];
+			}
+
             let mr = await match_role(role_name, json);
             if (mr == -1) {
               await respond(msg, "```Role Not Found.```");
               return null;
             }
-            if (json[mr]["sn"] != null) {
-              let co = "#ffff00";
-              let rep = new MessageEmbed()
-                .setColor(co)
-              // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
-              rep.setDescription(json[mr]["ability"]+"\n\n**Type: **"+properCase(json[mr]["team"]))
-                .setTitle(json[mr]["name"])
-                .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
-              await msg.reply({ embeds: [rep] })
-              return null;
-            }
+            //if (json[mr]["sn"] != null) {
+            //  let co = "#ffff00";
+            //  let rep = new MessageEmbed()
+            //    .setColor(co)
+            //  // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
+            //  rep.setDescription(json[mr]["ability"]+"\n\n**Type: **"+properCase(json[mr]["team"]))
+            //    .setTitle(json[mr]["name"])
+            //    .setThumbnail("https://wiki.bloodontheclocktower.com/images/" + json[mr]["id"][0] + "/" + json[mr]["id"] + "/Icon_" + json[mr]["sn"] + ".png")
+            //  await msg.reply({ embeds: [rep] })
+            //  return null;
+            //}
             // await respond(msg, "**" + json[mr]["name"] + ":** " + json[mr]["ability"]);
 
             let co = "#ffff00";
@@ -3083,6 +3088,11 @@ client.on('messageCreate',
           try {
             let json = JSON.parse(body);
             ////////////////////////
+
+			for (key in json) {
+				if (json[key]["team"] == "loric" || json[key]["team"] == "fabled")
+					delete json[key];
+			}
 
             let mr = await match_role(role_name, json);
             if (mr == -1) {
