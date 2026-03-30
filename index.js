@@ -2891,7 +2891,7 @@ client.on('messageCreate',
             let json = JSON.parse(body);
             ////////////////////////
 
-			for (key in json) {
+			for (let key of Object.keys(json)) {
 				if (json[key]["team"] != "loric" && json[key]["team"] != "fabled")
 					delete json[key];
 			}
@@ -3089,7 +3089,7 @@ client.on('messageCreate',
             let json = JSON.parse(body);
             ////////////////////////
 
-			for (key in json) {
+			for (let key of Object.keys(json)) {
 				if (json[key]["team"] == "loric" || json[key]["team"] == "fabled")
 					delete json[key];
 			}
