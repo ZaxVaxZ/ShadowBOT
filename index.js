@@ -2979,6 +2979,8 @@ client.on('messageCreate',
 							json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
 						}
 					}
+					if (json[r]["id"] == "scarletwoman")
+						await respond(msg, "" + match + "\n" + curmur + "\n" + JSON.stringify(json[r]["jinx"]) + "\n" + JSON.stringify(json[mr]));
 				}
 				if (!match) {
 					await respond(msg, "```Role has no jinxes.```");
