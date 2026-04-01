@@ -2962,7 +2962,7 @@ client.on('messageCreate',
             if (mr == -1 && secondrole == null) {
 				let match = null;
 				let curmur;
-				for (let r = 0; i < json.length; i++) {
+				for (let r = 0; r < json.length; r++) {
 					if (!match) {
 						curmur = await match_role(role_name, json[r]["jinx"], true);
 						if (curmur != -1) {
@@ -2978,10 +2978,7 @@ client.on('messageCreate',
 							json[match]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
 						}
 					}
-					if (json[r]["id"] == "scarletwoman")
-						await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"]) + "\n" + curmur);
 				}
-				await respond(msg, "" + role_name + "\n" + match + "\n" + curmur);
 				if (match) {
 					mr = json.length - 1;
 				}
