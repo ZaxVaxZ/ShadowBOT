@@ -2967,22 +2967,20 @@ client.on('messageCreate',
 						curmur = await match_role(role_name, json[r]["jinx"], true);
 						if (curmur != -1) {
 							match = json[r]["jinx"][curmur]["id"];
+							mr = json.length - 1;
 							json.push({"id": match, "jinx": []});
-							json[match]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
+							json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
 							role_name = match;
 						}
 					}
 					else {
 						curmur = await match_role(match, json[r]["jinx"], true);
 						if (curmur != -1) {
-							json[match]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
+							json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
 						}
 					}
 				}
-				if (match) {
-					mr = json.length - 1;
-				}
-				else {
+				if (!match) {
 					await respond(msg, "```Role has no jinxes.```");
 					return null;
 				}
