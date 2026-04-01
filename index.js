@@ -2997,6 +2997,18 @@ client.on('messageCreate',
 			}
             let resp;
             if (secondrole == null) {
+				let curmur, mur2;
+				for (let r = 0; r < json.length; r++) {
+					if (r == mr)
+						continue;
+					curmur = await match_role(json[r]["id"], json[mr]["jinx"], true);
+					if (curmur != -1)
+						continue;
+					curmur = await match_role(role_name, json[r]["jinx"], true);
+					if (curmur != -1) {
+						json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
+					}
+				}
               resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
               for (let q = 0; q < json[mr]["jinx"].length; q++) {
                 resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
