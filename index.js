@@ -2960,8 +2960,32 @@ client.on('messageCreate',
 
             let mr = await match_role(role_name, json, true);
             if (mr == -1 && !secondrole) {
-				await respond(msg, "```Role has no jinxes.```");
-				return null;
+				let match = null;
+				let curmur;
+				for (let r = 0; i < json.length; i++) {
+					if (!match) {
+						curmur = await match_role(role_name, json[r]["jinx"], true);
+						if (curmur != -1) {
+							match = json[r]["jinx"][curmur]["id"];
+							json.push({"id": match, "jinx": []});
+							json[match]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
+							role_name = match;
+						}
+					}
+					else {
+						curmur = await match_role(match, json[r]["jinx"], true);
+						if (curmur != -1) {
+							json[match]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
+						}
+					}
+				}
+				if (match) {
+					mr = json.length - 1;
+				}
+				else {
+					await respond(msg, "```Role has no jinxes.```");
+					return null;
+				}
             }
 			else if (mr == -1 && secondrole) {
 				let tmp = role_name;
@@ -2986,7 +3010,7 @@ client.on('messageCreate',
 			  if (mr2 == -1)
               	resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
 			  else {
-				resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][q]["id"]) + ":\n";
+				resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][mr2]["id"]) + ":\n";
 				resp += "**" + properCase(json[mr]["jinx"][mr2]["id"]) + ":** " + json[mr]["jinx"][mr2]["reason"] + "\n";
 			  }
             }
