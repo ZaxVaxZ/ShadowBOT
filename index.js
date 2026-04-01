@@ -2982,7 +2982,7 @@ client.on('messageCreate',
             }
             else {
 			  mr2 = await match_role(secondrole, json[mr]["jinx"], true);
-			  await respond(msg, "" + role_name + "," + secondrole + "," + mr + "," + mr2 + "\n" + json[mr] + "\n" + json[mr]["jinx"]);
+			  await respond(msg, "" + role_name + "," + secondrole + "," + mr + "," + mr2 + "\n" + JSON.stringify(json[mr]) + "\n" + JSON.stringify(json[mr]["jinx"]));
 			  if (mr2 == -1)
               	resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
 			  else {
@@ -2990,7 +2990,7 @@ client.on('messageCreate',
 				resp += "**" + properCase(json[mr]["jinx"][mr2]["id"]) + ":** " + json[mr]["jinx"][mr2]["reason"] + "\n";
 			  }
             }
-            await msg.reply(resp);
+            await respond(msg, resp);
           } catch (error) {
             msg_user(lieu_id, error.message);
           };
