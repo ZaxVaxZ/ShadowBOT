@@ -2939,11 +2939,11 @@ client.on('messageCreate',
       let roles, role_name, secondrole;
 	  if (rest.includes(",")) {
 		roles = rest.split(',');
-		role_name = roles[0].replace(" ", "");
-		secondrole = roles[1].replace(" ", "");
+		role_name = roles[0].replaceAll(" ", "").replaceAll("-", "");
+		secondrole = roles[1].replaceAll(" ", "").replaceAll("-", "");
 	  }
 	  else {
-		role_name = rest.replace(" ", "");
+		role_name = rest.replaceAll(" ", "").replaceAll("-", "");
 		secondrole = null;
 	  }
       https.get(jinxes_url, async function(res) {
@@ -2959,10 +2959,20 @@ client.on('messageCreate',
             ////////////////////////
 
             let mr = await match_role(role_name, json, true);
-            if (mr == -1) {
-              await respond(msg, "```Role Not Found.```");
-              return null;
+            if (mr == -1 && !secondrole) {
+				await respond(msg, "```Role has no jinxes.```");
+				return null;
             }
+			else if (mr == -1 && secondrole) {
+				let tmp = role_name;
+				role_name = secondrole;
+				secondrole = tmp;
+				mr = await match_role(role_name, json, true);
+				if (mr == -1) {
+					await respond(msg, "```Roles have no jinxes.```");
+					return null;
+				}
+			}
             let resp;
             if (!secondrole) {
               resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
@@ -3311,9 +3321,6 @@ client.on('messageCreate',
         await respond(msg, "https://cdn.discordapp.com/attachments/1149152764438515823/1358631960439947314/catty.gif?ex=67f48c1d&is=67f33a9d&hm=4960826b8b49927e6d813e1eaad11c089fbe59bb6fbe03bf127b95f1b40a7d2c&")
       else
         await respond(msg, "https://cdn.discordapp.com/attachments/1149152764438515823/1358631960792141966/elephant.gif?ex=67f48c1d&is=67f33a9d&hm=029c6e1b9b67d3dd9c028018ef57725c21fb2bddbf523b4e16c4a4aca1729693&")
-    }
-    else if (msg.content.trim().toLowerCase() === "*wbr") {
-      await respond(msg, "**Rules for Whale Buffet by papermaniac**\n-------------------------------------------\n1- No Heretic, Atheist, Philosopher, Pit Hag, Engineer, Wraith, Cacklejack (traveler)\n2- Lord of Typhon makes an evil Marionette next to you\n3- Anyone can be the Drunk, the Lunatic, or the Marionette (don't pick those)\n4- Ignore the Magician and Legion jinx\n5- Only minions can pick Summoner (I will turn the demon into the Lunatic. Yes, this can break the Sentinel rule)\n6- If you pick Kazali, you learn which minion is which minion type\n7- If you pick Baron, it will add an additional drunk\n-------------------------------------------\n");
     }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
