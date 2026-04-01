@@ -2978,6 +2978,8 @@ client.on('messageCreate',
 							json[match]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
 						}
 					}
+					if (json[r]["id"] == "scarletwoman")
+						await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"] + "\n" + curmur));
 				}
 				if (match) {
 					mr = json.length - 1;
