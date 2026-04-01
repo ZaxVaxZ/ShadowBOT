@@ -2979,9 +2979,9 @@ client.on('messageCreate',
 						}
 					}
 					if (json[r]["id"] == "scarletwoman")
-						await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"] + "\n" + curmur));
+						await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"]) + "\n" + curmur);
 				}
-				await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"] + "\n" + curmur));
+				await respond(msg, "" + role_name + "\n" + match + "\n" + curmur);
 				if (match) {
 					mr = json.length - 1;
 				}
