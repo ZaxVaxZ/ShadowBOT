@@ -2935,9 +2935,17 @@ client.on('messageCreate',
       });
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx ") {
-      const roles = msg.content.trim().substring(6).toLowerCase().split(' ');
-      let role_name = roles[0];
-      let secondrole = roles.length > 1 ? roles[1] : null;
+	  const rest = msg.content.trim().substring(6).toLowerCase();
+      let roles, role_name, secondrole;
+	  if (rest.includes(",")) {
+		roles = rest.split(',');
+		role_name = roles[0].replace(" ", "");
+		secondrole = roles[1].replace(" ", "");
+	  }
+	  else {
+		role_name = rest.replace(" ", "");
+		secondrole = null;
+	  }
       https.get(jinxes_url, async function(res) {
         let body = "";
 
@@ -2963,14 +2971,13 @@ client.on('messageCreate',
               }
             }
             else {
-              resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
-              for (let q = 0; q < json[mr]["jinx"].length; q++) {
-                if (json[mr]["jinx"][q]["id"] == secondrole) {
-                  resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][q]["id"]) + ":\n";
-                  resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
-                  break ;
-                }
-              }
+			  mr2 = await match_role(secondrole, json, true);
+			  if (mr2 == -1)
+              	resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
+			  else {
+				resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][q]["id"]) + ":\n";
+				resp += "**" + properCase(json[mr]["jinx"][mr2]["id"]) + ":** " + json[mr]["jinx"][mr2]["reason"] + "\n";
+			  }
             }
             await msg.reply(resp);
           } catch (error) {
