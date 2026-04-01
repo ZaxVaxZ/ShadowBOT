@@ -2981,7 +2981,7 @@ client.on('messageCreate',
               }
             }
             else {
-			  mr2 = await match_role(secondrole, json, true);
+			  mr2 = await match_role(secondrole, json[mr]["jinx"], true);
 			  if (mr2 == -1)
               	resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
 			  else {
