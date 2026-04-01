@@ -2934,7 +2934,7 @@ client.on('messageCreate',
         msg_user(lieu_id, error.message);
       });
     }
-    else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx ") {
+    else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx " || msg.content.trim().substring(0, 8).toLowerCase() === "*jinxes ") {
 	  const rest = msg.content.trim().substring(6).toLowerCase();
       let roles, role_name, secondrole;
 	  if (rest.includes(",")) {
@@ -2959,7 +2959,7 @@ client.on('messageCreate',
             ////////////////////////
 
             let mr = await match_role(role_name, json, true);
-            if (mr == -1 && !secondrole) {
+            if (mr == -1 && secondrole == null) {
 				let match = null;
 				let curmur;
 				for (let r = 0; i < json.length; i++) {
@@ -2981,6 +2981,7 @@ client.on('messageCreate',
 					if (json[r]["id"] == "scarletwoman")
 						await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"] + "\n" + curmur));
 				}
+				await respond(msg, "" + match + "\n" + JSON.stringify(json[r]["jinx"] + "\n" + curmur));
 				if (match) {
 					mr = json.length - 1;
 				}
@@ -2989,7 +2990,7 @@ client.on('messageCreate',
 					return null;
 				}
             }
-			else if (mr == -1 && secondrole) {
+			else if (mr == -1 && secondrole != null) {
 				let tmp = role_name;
 				role_name = secondrole;
 				secondrole = tmp;
@@ -3000,7 +3001,7 @@ client.on('messageCreate',
 				}
 			}
             let resp;
-            if (!secondrole) {
+            if (secondrole == null) {
               resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
               for (let q = 0; q < json[mr]["jinx"].length; q++) {
                 resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
