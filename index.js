@@ -122,7 +122,8 @@ var lieu_id = '549986826794827786'
 let roles_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/roles.json"
 let fabled_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/roles.json"
 let jinxes_url = "https://raw.githubusercontent.com/nicholas-eden/townsquare/refs/heads/develop/src/jinxes.json"
-let jinxes = "https://media.discordapp.net/attachments/904250103588597790/1395583215984578582/jinx_rules_1.png\nhttps://media.discordapp.net/attachments/904250103588597790/1395583217213374574/jinx_rules_2.png\n\n(To see in better quality, right click and open in browser, or download the image)"
+let jinxes = "https://media.discordapp.net/attachments/904250103588597790/1427728667089436854/jinx_rules_1.png\nhttps://media.discordapp.net/attachments/904250103588597790/1427728668305915934/jinx_rules_2.png\
+	\n\n(To see in better quality, right click and open in browser, or download the image)"
 
 let new_roles = `[
   {
@@ -2222,7 +2223,7 @@ client.on('messageCreate',
               timers[my_timer_found][1].then(async () => {
                 mtime = 0;
                 intime = 0;
-                await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+                await send_message(msg, "# Whispers ended!\n### Please make your way back to town");
                 timers.splice(my_timer_found, 1);
               });
             });
