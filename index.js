@@ -2223,7 +2223,7 @@ client.on('messageCreate',
               timers[my_timer_found][1].then(async () => {
                 mtime = 0;
                 intime = 0;
-                await send_message(msg, "# Whispers ended!\n### Please make your way back to town");
+                await send_message(msg, "# Whisper time over!\n### Please make your way back to town");
                 timers.splice(my_timer_found, 1);
               });
             });
@@ -2245,7 +2245,7 @@ client.on('messageCreate',
             timers[my_timer_found][1].then(async () => {
               mtime = 0;
               intime = 0;
-              await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+              await send_message(msg, "# Whisper time over!\n### Please make your way back to town");
               timers.splice(my_timer_found, 1);
             });
           });
@@ -2261,7 +2261,7 @@ client.on('messageCreate',
           timers[my_timer_found][1].then(async () => {
             mtime = 0;
             intime = 0;
-            await send_message(msg, "# Nomination time!\n### Please make your way back to town");
+            await send_message(msg, "# Whisper time over!\n### Please make your way back to town");
             timers.splice(my_timer_found, 1);
           });
         });
@@ -3293,7 +3293,7 @@ client.on('messageCreate',
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
         return null
       }
-      await respond(msg, "# Nomination time!\n### Please make your way back to town");
+      await respond(msg, "# Whisper time over!\n### Please make your way back to town");
     }
     else if (msg.content.trim().toLowerCase() === "*noms") {
       if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
