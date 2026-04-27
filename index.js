@@ -1040,7 +1040,7 @@ client.on('messageCreate',
   async function(msg) {
 	const baseName = msg.member.displayName || msg.member.nickname;
 	if (msg.author.id == lieu_id) {
-		await respond(msg, "" + msg.member.displayName +", " + msg.member.nickname);
+		await respond(msg, "" + msg.member.displayName +", " + msg.member.nickname+", " + msg.member.globalName);
 	}
     if (msg.author.username === "ShadowBOT") {
       return null
