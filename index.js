@@ -921,7 +921,7 @@ async function secret_poll(msg, question, items) {
   })
 }
 
-function nicknameById(msg, id) {
+async function nicknameById(msg, id) {
 	const user = await client.users.fetch(id);
 	const memb = await msg.guild.members.cache.get(id);
 	return (memb.nickname ?? user.globalName ?? user.username);
@@ -1603,7 +1603,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_insult = rnd
-      await respond(msg, "*" + nicknameById(target.id) + compliments[rnd]);
+      await respond(msg, "*" + await nicknameById(target.id) + compliments[rnd]);
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*compliment ") {
       let target = msg.mentions.users.values().next().value
@@ -1630,7 +1630,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_compliment = rnd
-      await respond(msg, "*" + nicknameById(target.id) + compliments[rnd])
+      await respond(msg, "*" + await nicknameById(target.id) + compliments[rnd])
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*complinent ") {
       if (msg.author.username.toLowerCase() !== "zaba" && msg.author.username.toLowerCase() !== "greg") {
