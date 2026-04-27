@@ -916,6 +916,10 @@ async function secret_poll(msg, question, items) {
   })
 }
 
+function nicknameById(msg, id) {
+	return msg.guild.members.cache.get(id).displayName || msg.guild.members.cache.get(id).nickname
+}
+
 async function respond(msg, rep) {
   await msg.reply(rep).catch(err => {
     msg_user(lieu_id, "No permission to send messages in that text channel\n")
@@ -1031,81 +1035,13 @@ client.on('messageReactionAdd', async function(reaction, user) {
   // Remove user reaction
 });
 
-
-
-
 //Math.floor((Math.random() * 10) + 1);
 client.on('messageCreate',
   async function(msg) {
+	const baseName = msg.member.displayName || msg.member.nickname;
     if (msg.author.username === "ShadowBOT") {
-      if (msg.content.trim().toLowerCase().indexOf("list of commands") != -1) {
-        await new Promise(r => setTimeout(r, 3000));
-        await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
-      }
       return null
     }
-    // if(msg.content.trim().toLowerCase().substring(0, 27) == "https://clocktower.online/#" && msg.content.trim().toLowerCase().indexOf(" ") == -1) {
-    //     link = msg.content
-    //     msg.delete(1000);
-    //     rep = "-> "+msg.member.displayName+" sent the link:\n**"+link+"**```All players should access this link to open the grimoire. Find your name in there, click on it and choose: Claim seat.\nSpectators may join the link to watch but may NOT take a seat.```"
-    //     if(msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
-    //       await send_message(msg, rep)
-    //       return null
-    //     }
-    //     else {
-    //       // if(msg.content.trim() === grim_link) {
-    //       grim_link = -1
-    //       grim_setter = -1
-    //       // }
-    //       let fnd = -1
-    //       for(var i=0;i<grim_setters.length;i++)
-    //       {
-    //         if(grim_setters[i] === msg.author.username)
-    //         {
-    //           fnd = i
-    //         }
-    //       }
-    //       if(fnd != -1)
-    //       {
-    //         grim_links[fnd] = msg.content.trim()
-    //       }
-    //       else
-    //       {
-    //         grim_setters.push(msg.author.username)
-    //         grim_links.push(msg.content.trim())
-    //       }
-    //       for(var i=0;i<grim_links.length;i++)
-    //       {
-    //         for(var j=i+1;j<grim_links.length;j++)
-    //         {
-    //           if(grim_links[i] === grim_links[j])
-    //           {
-    //             grim_links.splice(i, 1)
-    //             grim_setters.splice(i, 1)
-    //             i--
-    //           }
-    //         }
-    //       }
-    //       // grim_link = msg.content.trim().substring(6)
-    //       // grim_setter = msg.author.username
-    //       rep += "\nPlayers can get the link by using the command *grim"
-    //       await send_message(msg, rep)
-    //       return null
-    //       // grim_link = msg.content.trim()
-    //       // if(!validURL(grim_link)) {
-    //       //   grim_link = -1
-    //       //   return null
-    //       // }
-    //       // grim_setter = msg.author.username
-    //       // await respond(msg, "```Grim link set to "+grim_link+"\nPlayers can get the link by using the command *grim```")
-    //     }
-    //   }
-    // return null
-    // }
-    ///if(msg.content.trim().lower().indexOf("https://clocktower.online/#", msg.content.trim().lower()) > -1) {
-    //  msg.suppressEmbeds(true)
-    //}
-    // msg_user(lieu_id,"GOES ON?");
     if (!responding) {
       return null
     }
@@ -1123,56 +1059,46 @@ client.on('messageCreate',
         await respond(msg, "```No one was shadowing you :(```")
         return null
       }
-      // if(medic[newState.member.user.username] !== undefined && medic[newState.member.user.username] != -1)//(Object.keys(medic).indexOf(newState.member.user.username) != -1)
-      // {
-      //   var specs = medic[msg.author.username]
-      //   for(var i=0;i<specs.length;i++)
-      //   {
-      //       if(stdic[specs[i].user.username] == msg.author.username) {
-      //         delete stdic[specs[i].user.username]
-      //       }
-      //   }
-      // }
       delete medic[msg.author.username]
       await respond(msg, "```Shined the light! Removed all of your shadows```")
       return null
     }
     else if (msg.content.trim().toLowerCase() === "*spectate" || msg.content.trim().toLowerCase() === "*!") {
-      if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
-        if (msg.member.displayName.trim().length > 6) {
-          // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName.trim().substring(6).trim()}`)
+      if (baseName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
+        if (baseName.trim().length > 6) {
+          // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `!${baseName.trim().substring(6).trim()}`)
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName}`)
+          await rename(msg, `!${baseName}`)
         }
       }
-      else if (msg.member.displayName.trim().charAt(0) != '!') {
-        if (msg.member.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName.trim().substring(4).trim()}`)
+      else if (baseName.trim().charAt(0) != '!') {
+        if (baseName.trim().substring(0, 4).toLowerCase() === "(st)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `!${baseName.trim().substring(4).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 3).toLowerCase() === "(t)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName.trim().substring(3).trim()}`)
+        else if (baseName.trim().substring(0, 3).toLowerCase() === "(t)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `!${baseName.trim().substring(3).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName.trim().substring(6).trim()}`)
+        else if (baseName.trim().substring(0, 6).toLowerCase() === "(cost)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `!${baseName.trim().substring(6).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName.trim().substring(7).trim()}`)
+        else if (baseName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `!${baseName.trim().substring(7).trim()}`)
         }
         else {
-          // msg.member.setNickname(`!${msg.member.displayName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `!${msg.member.displayName}`)
+          // msg.member.setNickname(`!${baseName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `!${baseName}`)
         }
       }
-      else if (msg.member.displayName.trim().length > 1) {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(1).trim()}`)
+      else if (baseName.trim().length > 1) {
+        // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(1).trim()}`)
       }
       else {
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
@@ -1182,41 +1108,41 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*lfg" || msg.content.trim().toLowerCase() === "*?") {
-      if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
-        if (msg.member.displayName.trim().length > 6) {
-          // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `${msg.member.displayName.trim().substring(6).trim()}`)
+      if (baseName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
+        if (baseName.trim().length > 6) {
+          // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `${baseName.trim().substring(6).trim()}`)
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
           await rename(msg, `${msg.author.username}`)
         }
       }
-      else if (msg.member.displayName.trim().charAt(0) != '!') {
-        if (msg.member.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `![LFG] ${msg.member.displayName.trim().substring(4).trim()}`)
+      else if (baseName.trim().charAt(0) != '!') {
+        if (baseName.trim().substring(0, 4).toLowerCase() === "(st)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `![LFG] ${baseName.trim().substring(4).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 3).toLowerCase() === "(t)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `![LFG] ${msg.member.displayName.trim().substring(3).trim()}`)
+        else if (baseName.trim().substring(0, 3).toLowerCase() === "(t)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `![LFG] ${baseName.trim().substring(3).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `![LFG] ${msg.member.displayName.trim().substring(6).trim()}`)
+        else if (baseName.trim().substring(0, 6).toLowerCase() === "(cost)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `![LFG] ${baseName.trim().substring(6).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
-          // msg.member.setNickname(`!${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `![LFG] ${msg.member.displayName.trim().substring(7).trim()}`)
+        else if (baseName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
+          // msg.member.setNickname(`!${baseName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `![LFG] ${baseName.trim().substring(7).trim()}`)
         }
         else {
-          // msg.member.setNickname(`!${msg.member.displayName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `![LFG] ${msg.member.displayName}`)
+          // msg.member.setNickname(`!${baseName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `![LFG] ${baseName}`)
         }
       }
-      else if (msg.member.displayName.trim().length > 1) {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `![LFG] ${msg.member.displayName.trim().substring(1).trim()}`)
+      else if (baseName.trim().length > 1) {
+        // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `![LFG] ${baseName.trim().substring(1).trim()}`)
       }
       else {
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
@@ -1226,41 +1152,41 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*storytell" || msg.content.trim().toLowerCase() === "*st") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
-        if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
-          if (msg.member.displayName.trim().length > 6) {
-            // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(ST) ${msg.member.displayName.trim().substring(6).trim()}`)
+      if (baseName.trim().substring(0, 4).toLowerCase() !== "(st)") {
+        if (baseName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
+          if (baseName.trim().length > 6) {
+            // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+            await rename(msg, `(ST) ${baseName.trim().substring(6).trim()}`)
           }
           else {
             // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(ST) ${msg.member.displayName}`)
+            await rename(msg, `(ST) ${baseName}`)
           }
         }
-        else if (msg.member.displayName.trim().charAt(0) == '!') {
-          // msg.member.setNickname(`(ST) ${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(ST) ${msg.member.displayName.trim().substring(1).trim()}`)
+        else if (baseName.trim().charAt(0) == '!') {
+          // msg.member.setNickname(`(ST) ${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(ST) ${baseName.trim().substring(1).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 3).toLowerCase() === "(t)") {
-          // msg.member.setNickname(`(ST) ${msg.member.displayName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(ST) ${msg.member.displayName.trim().substring(3).trim()}`)
+        else if (baseName.trim().substring(0, 3).toLowerCase() === "(t)") {
+          // msg.member.setNickname(`(ST) ${baseName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(ST) ${baseName.trim().substring(3).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)") {
-          // msg.member.setNickname(`(ST) ${msg.member.displayName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(ST) ${msg.member.displayName.trim().substring(6).trim()}`)
+        else if (baseName.trim().substring(0, 6).toLowerCase() === "(cost)") {
+          // msg.member.setNickname(`(ST) ${baseName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(ST) ${baseName.trim().substring(6).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
-          // msg.member.setNickname(`(ST) ${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(ST) ${msg.member.displayName.trim().substring(7).trim()}`)
+        else if (baseName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
+          // msg.member.setNickname(`(ST) ${baseName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(ST) ${baseName.trim().substring(7).trim()}`)
         }
         else {
-          // msg.member.setNickname(`(ST) ${msg.member.displayName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(ST) ${msg.member.displayName}`)
+          // msg.member.setNickname(`(ST) ${baseName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(ST) ${baseName}`)
         }
       }
-      else if (msg.member.displayName.trim().length > 4) {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(4).trim()}`)
+      else if (baseName.trim().length > 4) {
+        // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(4).trim()}`)
       }
       else {
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
@@ -1270,41 +1196,41 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*costorytell" || msg.content.trim().toLowerCase() === "*cost" || msg.content.trim().toLowerCase() === "*co-storytell" || msg.content.trim().toLowerCase() === "*co-st") {
-      if (msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
-        if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
-          if (msg.member.displayName.trim().length > 6) {
-            // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(Co-ST) ${msg.member.displayName.trim().substring(6).trim()}`)
+      if (baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
+        if (baseName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
+          if (baseName.trim().length > 6) {
+            // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+            await rename(msg, `(Co-ST) ${baseName.trim().substring(6).trim()}`)
           }
           else {
             // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(Co-ST) ${msg.member.displayName}`)
+            await rename(msg, `(Co-ST) ${baseName}`)
           }
         }
-        else if (msg.member.displayName.trim().charAt(0) == '!') {
-          // msg.member.setNickname(`(Co-ST) ${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(Co-ST) ${msg.member.displayName.trim().substring(1).trim()}`)
+        else if (baseName.trim().charAt(0) == '!') {
+          // msg.member.setNickname(`(Co-ST) ${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(Co-ST) ${baseName.trim().substring(1).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 3).toLowerCase() === "(t)") {
-          // msg.member.setNickname(`(Co-ST) ${msg.member.displayName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(Co-ST) ${msg.member.displayName.trim().substring(3).trim()}`)
+        else if (baseName.trim().substring(0, 3).toLowerCase() === "(t)") {
+          // msg.member.setNickname(`(Co-ST) ${baseName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(Co-ST) ${baseName.trim().substring(3).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
-          // msg.member.setNickname(`(Co-ST) ${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(Co-ST) ${msg.member.displayName.trim().substring(4).trim()}`)
+        else if (baseName.trim().substring(0, 4).toLowerCase() === "(st)") {
+          // msg.member.setNickname(`(Co-ST) ${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(Co-ST) ${baseName.trim().substring(4).trim()}`)
         }
         else {
-          // msg.member.setNickname(`(Co-ST) ${msg.member.displayName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(Co-ST) ${msg.member.displayName}`)
+          // msg.member.setNickname(`(Co-ST) ${baseName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(Co-ST) ${baseName}`)
         }
       }
-      else if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)" && msg.member.displayName.trim().length > 6) {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(6).trim()}`)
+      else if (baseName.trim().substring(0, 6).toLowerCase() === "(cost)" && baseName.trim().length > 6) {
+        // msg.member.setNickname(`${baseName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(6).trim()}`)
       }
-      else if (msg.member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)" && msg.member.displayName.trim().length > 7) {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(7).trim()}`)
+      else if (baseName.trim().substring(0, 7).toLowerCase() === "(co-st)" && baseName.trim().length > 7) {
+        // msg.member.setNickname(`${baseName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(7).trim()}`)
       }
       else {
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
@@ -1314,41 +1240,41 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*travel" || msg.content.trim().toLowerCase() === "*t") {
-      if (msg.member.displayName.trim().substring(0, 3).toLowerCase() !== "(t)") {
-        if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
-          if (msg.member.displayName.trim().length > 6) {
-            // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(T) ${msg.member.displayName.trim().substring(6).trim()}`)
+      if (baseName.trim().substring(0, 3).toLowerCase() !== "(t)") {
+        if (baseName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
+          if (baseName.trim().length > 6) {
+            // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+            await rename(msg, `(T) ${baseName.trim().substring(6).trim()}`)
           }
           else {
             // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-            await rename(msg, `(T) ${msg.member.displayName}`)
+            await rename(msg, `(T) ${baseName}`)
           }
         }
-        else if (msg.member.displayName.trim().charAt(0) == '!') {
-          // msg.member.setNickname(`(T) ${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(T) ${msg.member.displayName.trim().substring(1).trim()}`)
+        else if (baseName.trim().charAt(0) == '!') {
+          // msg.member.setNickname(`(T) ${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(T) ${baseName.trim().substring(1).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
-          // msg.member.setNickname(`(T) ${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(T) ${msg.member.displayName.trim().substring(4).trim()}`)
+        else if (baseName.trim().substring(0, 4).toLowerCase() === "(st)") {
+          // msg.member.setNickname(`(T) ${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(T) ${baseName.trim().substring(4).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)") {
-          // msg.member.setNickname(`(T) ${msg.member.displayName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(T) ${msg.member.displayName.trim().substring(6).trim()}`)
+        else if (baseName.trim().substring(0, 6).toLowerCase() === "(cost)") {
+          // msg.member.setNickname(`(T) ${baseName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(T) ${baseName.trim().substring(6).trim()}`)
         }
-        else if (msg.member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
-          // msg.member.setNickname(`(T) ${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(T) ${msg.member.displayName.trim().substring(7).trim()}`)
+        else if (baseName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
+          // msg.member.setNickname(`(T) ${baseName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(T) ${baseName.trim().substring(7).trim()}`)
         }
         else {
-          // msg.member.setNickname(`(T) ${msg.member.displayName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `(T) ${msg.member.displayName}`)
+          // msg.member.setNickname(`(T) ${baseName}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `(T) ${baseName}`)
         }
       }
-      else if (msg.member.displayName.trim().length > 3) {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(3).trim()}`)
+      else if (baseName.trim().length > 3) {
+        // msg.member.setNickname(`${baseName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(3).trim()}`)
       }
       else {
         // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
@@ -1358,53 +1284,53 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*play" || msg.content.trim().toLowerCase() === "*p") {
-      if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
-        if (msg.member.displayName.trim().length > 6) {
-          // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `${msg.member.displayName.trim().substring(6).trim()}`)
+      if (baseName.trim().substring(0, 6).toLowerCase() === "![lfg]") {
+        if (baseName.trim().length > 6) {
+          // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `${baseName.trim().substring(6).trim()}`)
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
           await rename(msg, `${msg.author.username}`)
         }
       }
-      else if (msg.member.displayName.trim().charAt(0) == '!') {
-        if (msg.member.displayName.trim().length > 1) {
-          // msg.member.setNickname(`${msg.member.displayName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `${msg.member.displayName.trim().substring(1).trim()}`)
+      else if (baseName.trim().charAt(0) == '!') {
+        if (baseName.trim().length > 1) {
+          // msg.member.setNickname(`${baseName.trim().substring(1).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `${baseName.trim().substring(1).trim()}`)
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
           await rename(msg, `${msg.author.username}`)
         }
       }
-      else if (msg.member.displayName.trim().substring(0, 3).toLowerCase() === "(t)") {
-        if (msg.member.displayName.trim().length > 3) {
-          // msg.member.setNickname(`${msg.member.displayName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `${msg.member.displayName.trim().substring(3).trim()}`)
+      else if (baseName.trim().substring(0, 3).toLowerCase() === "(t)") {
+        if (baseName.trim().length > 3) {
+          // msg.member.setNickname(`${baseName.trim().substring(3).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `${baseName.trim().substring(3).trim()}`)
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
           await rename(msg, `${msg.author.username}`)
         }
       }
-      else if (msg.member.displayName.trim().substring(0, 4).toLowerCase() === "(st)") {
-        if (msg.member.displayName.trim().length > 4) {
-          // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-          await rename(msg, `${msg.member.displayName.trim().substring(4).trim()}`)
+      else if (baseName.trim().substring(0, 4).toLowerCase() === "(st)") {
+        if (baseName.trim().length > 4) {
+          // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+          await rename(msg, `${baseName.trim().substring(4).trim()}`)
         }
         else {
           // msg.member.setNickname(`${msg.author.username}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
           await rename(msg, `${msg.author.username}`)
         }
       }
-      else if (msg.member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(6).trim()}`)
+      else if (baseName.trim().substring(0, 6).toLowerCase() === "(cost)") {
+        // msg.member.setNickname(`${baseName.trim().substring(6).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(6).trim()}`)
       }
-      else if (msg.member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(7).trim()}`)
+      else if (baseName.trim().substring(0, 7).toLowerCase() === "(co-st)") {
+        // msg.member.setNickname(`${baseName.trim().substring(7).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(7).trim()}`)
       }
       await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
@@ -1413,10 +1339,10 @@ client.on('messageCreate',
       if (msg.guild.id !== "569683781800296501") {
         return null
       }
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
+      if (baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         return null
       }
-      await ping_players(msg.member.displayName, msg.member.voice.channel)
+      await ping_players(baseName, msg.member.voice.channel)
     }
     else if (msg.content.trim().toLowerCase() === "*waitlist" || msg.content.trim().toLowerCase() === "*wl" || msg.content.trim().toLowerCase() === "*list" || msg.content.trim().toLowerCase() === "*queue") {
       if (msg.guild.id !== "569683781800296501" && msg.author.id != lieu_id) {
@@ -1469,92 +1395,92 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*back" || msg.content.trim().toLowerCase() === "*here") {
-      if (msg.member.displayName.trim().length <= 2) {
+      if (baseName.trim().length <= 2) {
         return null
       }
-      if (msg.member.displayName.trim().length <= 4) {
-        if (msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "afk" || msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "brb") {
+      if (baseName.trim().length <= 4) {
+        if (baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "afk" || baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "brb") {
           await rename(msg, `${msg.user.username}`)
         }
         return null
-      } if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[brb]" || msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]") {
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()}`)
+      } if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[brb]" || baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[afk]") {
+        await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 5).trim()}`)
       }
     }
     else if (msg.content.trim().toLowerCase() === "*text" || msg.content.trim().toLowerCase() === "*txt") {
-      if (msg.member.displayName.includes("[TEXT]")) {
-        await rename(msg, `${msg.member.displayName.trim().replace("[TEXT]", "")}`)
+      if (baseName.includes("[TEXT]")) {
+        await rename(msg, `${baseName.trim().replace("[TEXT]", "")}`)
         return null
       }
-      if (msg.member.displayName.trim().length <= 5) {
-        await rename(msg, `${msg.member.displayName.trim()} [TEXT]`)
+      if (baseName.trim().length <= 5) {
+        await rename(msg, `${baseName.trim()} [TEXT]`)
         return null
       }
-      if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[brb]" && msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[afk]" && msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 6).toLowerCase() !== "[text]") {
-        await rename(msg, `${msg.member.displayName.trim()} [TEXT]`)
+      if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() !== "[brb]" && baseName.trim().substring(baseName.trim().length - 5).toLowerCase() !== "[afk]" && baseName.trim().substring(baseName.trim().length - 6).toLowerCase() !== "[text]") {
+        await rename(msg, `${baseName.trim()} [TEXT]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]" || msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[brb]") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()} [TEXT]`)
+      else if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[afk]" || baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[brb]") {
+        // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 5).trim()} [TEXT]`)
       }
-      // else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 6).toLowerCase() === "[text]") {
-      //   // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-      //   await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 6).trim()}`)
+      // else if (baseName.trim().substring(baseName.trim().length - 6).toLowerCase() === "[text]") {
+      //   // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+      //   await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 6).trim()}`)
       // }
     }
     else if (msg.content.trim().toLowerCase() === "*brb") {
-      if (msg.member.displayName.trim().length <= 4) {
-        if (msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "afk") {
+      if (baseName.trim().length <= 4) {
+        if (baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "afk") {
           await rename(msg, `[BRB]`)
         }
-        else if (msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "brb") {
+        else if (baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "brb") {
           await rename(msg, `${msg.user.username}`)
         }
         else {
-          await rename(msg, `${msg.member.displayName.trim()} [BRB]`)
+          await rename(msg, `${baseName.trim()} [BRB]`)
         }
         return null
       }
-      if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[brb]" && msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[afk]") {
-        await rename(msg, `${msg.member.displayName.trim()} [BRB]`)
+      if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() !== "[brb]" && baseName.trim().substring(baseName.trim().length - 5).toLowerCase() !== "[afk]") {
+        await rename(msg, `${baseName.trim()} [BRB]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()} [BRB]`)
+      else if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[afk]") {
+        // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 5).trim()} [BRB]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[brb]") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()}`)
+      else if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[brb]") {
+        // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 5).trim()}`)
       }
     }
     else if (msg.content.trim().toLowerCase() === "*afk") {
-      if (msg.member.displayName.trim().length <= 4) {
-        if (msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "brb") {
+      if (baseName.trim().length <= 4) {
+        if (baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "brb") {
           await rename(msg, `[AFK]`)
         }
-        else if (msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "afk") {
+        else if (baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "afk") {
           await rename(msg, `${msg.user.username}`)
         }
         else {
-          await rename(msg, `${msg.member.displayName.trim()} [AFK]`)
+          await rename(msg, `${baseName.trim()} [AFK]`)
         }
         return null
       }
-      if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[brb]" && msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() !== "[afk]") {
-        await rename(msg, `${msg.member.displayName.trim()} [AFK]`)
+      if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() !== "[brb]" && baseName.trim().substring(baseName.trim().length - 5).toLowerCase() !== "[afk]") {
+        await rename(msg, `${baseName.trim()} [AFK]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[brb]") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()} [AFK]`)
+      else if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[brb]") {
+        // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 5).trim()} [AFK]`)
       }
-      else if (msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 5).toLowerCase() === "[afk]") {
-        // msg.member.setNickname(`${msg.member.displayName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
-        await rename(msg, `${msg.member.displayName.trim().substring(0, msg.member.displayName.trim().length - 5).trim()}`)
+      else if (baseName.trim().substring(baseName.trim().length - 5).toLowerCase() === "[afk]") {
+        // msg.member.setNickname(`${baseName.trim().substring(4).trim()}`).catch(err => {await respond(msg, "```Bot has no permission to edit your Nickname```"); return null;}) //{msg.reply("```Bot has no permission to edit your Nickname```"); return null;})
+        await rename(msg, `${baseName.trim().substring(0, baseName.trim().length - 5).trim()}`)
       }
     }
     // else if (msg.content.trim().substring(0, 6).toLowerCase() === "*follow ") {
     //   if (msg.guild.id != "569683781800296501") { return null }
-    //   if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
+    //   if (baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
     //     await respond(msg, "```Only Storytellers and Co-Storytellers can apply a follow between players.```")
     //     return null
     //   }
@@ -1571,7 +1497,7 @@ client.on('messageCreate',
     //   await shadow(msg, target1, target2)
     // }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*spec ") {
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.charAt(0) != '!' && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.author.id != "297585199519105024") {
+      if (msg.author.id != msg.guild.ownerId && baseName.charAt(0) != '!' && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.author.id != "297585199519105024") {
         await respond(msg, "```Only Spectators, Storytellers and Co-Storytellers can shadow players.\nPlease add ! to your name or use the command *spectate```")
         return null
       }
@@ -1667,7 +1593,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_insult = rnd
-      await respond(msg, "*" + msg.guild.members.cache.get(target.id).displayName + compliments[rnd]);
+      await respond(msg, "*" + nicknameById(target.id) + compliments[rnd]);
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*compliment ") {
       let target = msg.mentions.users.values().next().value
@@ -1694,7 +1620,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_compliment = rnd
-      await respond(msg, "*" + msg.guild.members.cache.get(target.id).displayName + compliments[rnd])
+      await respond(msg, "*" + nicknameById(target.id) + compliments[rnd])
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*complinent ") {
       if (msg.author.username.toLowerCase() !== "zaba" && msg.author.username.toLowerCase() !== "greg") {
@@ -1722,7 +1648,7 @@ client.on('messageCreate',
         }
       }
       if (fnd == -1) {
-        nicks.push([msg.author.username, msg.member.displayName])
+        nicks.push([msg.author.username, baseName])
       }
       await rename(msg, name);
       await new Promise(r => setTimeout(r, 1000));
@@ -1761,7 +1687,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
@@ -1790,27 +1716,21 @@ client.on('messageCreate',
       let sts = [];
       for (const [channelID, channel] of channels) {
         for (const [memberID, member] of channel.members) {
-          if (member.displayName.trim().charAt(0) == '!') {
+			let display = member.displayName || member.nickname;
+          if (display.trim().charAt(0) == '!') {
             spects.push(member)
           }
-          else if ((member.displayName.trim().substring(0, 4).toLowerCase() === "(st)")
-            || (member.displayName.trim().substring(0, 4).toLowerCase() === "[st]")
-            || (member.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)")
-            || (member.displayName.trim().substring(0, 7).toLowerCase() === "[co-st]")
-            || (member.displayName.trim().substring(0, 6).toLowerCase() === "(cost)")
-            || (member.displayName.trim().substring(0, 6).toLowerCase() === "[cost]")) {
+          else if ((display.trim().substring(0, 4).toLowerCase() === "(st)")
+            || (display.trim().substring(0, 4).toLowerCase() === "[st]")
+            || (display.trim().substring(0, 7).toLowerCase() === "(co-st)")
+            || (display.trim().substring(0, 7).toLowerCase() === "[co-st]")
+            || (display.trim().substring(0, 6).toLowerCase() === "(cost)")
+            || (display.trim().substring(0, 6).toLowerCase() === "[cost]")) {
             sts.push(member)
           }
           else {
             players.push(member)
           }
-          // else if ((member.displayName.trim().substring(0, 3).toLowerCase() === "(t)")
-          //   || (member.displayName.trim().substring(0, 3).toLowerCase() === "[t]")
-          //   || (member.displayName.trim().substring(0, 3).toLowerCase() === "(n)")
-          //   || (member.displayName.trim().substring(0, 3).toLowerCase() === "[n]")
-          //   || (member.displayName.trim().charAt(0) !== '(' && member.displayName.trim().charAt(0) !== '[')) {
-          //   players.push(member)
-          // }
         }
       }
       // let txt = "Storytellers: ";
@@ -1914,7 +1834,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
@@ -1998,7 +1918,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
         return null
       }
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
         await respond(msg, "```Only Storytellers can use this command```")
         return null
       }
@@ -2072,7 +1992,7 @@ client.on('messageCreate',
 
         return null
       }
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && baseName.trim().substring(0, 6).toLowerCase() !== "[cost]" && baseName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && baseName.trim().substring(0, 4).toLowerCase() !== "[co]" && baseName.trim().substring(0, 4).toLowerCase() !== "(co)") {
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
@@ -2093,7 +2013,7 @@ client.on('messageCreate',
       await respond(msg, "```Timer stopped```");
     }
     else if (msg.content.trim().toLowerCase() === "*quiet" || msg.content.trim().toLowerCase() === "*hl") {
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && baseName.trim().substring(0, 6).toLowerCase() !== "[cost]" && baseName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && baseName.trim().substring(0, 4).toLowerCase() !== "[co]" && baseName.trim().substring(0, 4).toLowerCase() !== "(co)") {
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
@@ -2110,7 +2030,7 @@ client.on('messageCreate',
 
         return null
       }
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[st]" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "[cost]" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "[co]" && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(co)") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && baseName.trim().substring(0, 6).toLowerCase() !== "[cost]" && baseName.trim().substring(0, 7).toLowerCase() !== "[co-st]" && baseName.trim().substring(0, 4).toLowerCase() !== "[co]" && baseName.trim().substring(0, 4).toLowerCase() !== "(co)") {
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
@@ -2323,7 +2243,7 @@ client.on('messageCreate',
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
       if (msg.guild.id != "569683781800296501")
           return null;
-      if (msg.author.id != msg.guild.ownerId && msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
+      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
         await respond(msg, "```Only Storytellers and Staff can use this command```")
         return null
       }
@@ -2355,7 +2275,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946") {
         return null;
       }
-      if (msg.member.displayName.toLowerCase().trim().charAt(0) === "!" || msg.member.displayName.toLowerCase().trim().substring(0, 4) === "(st)" || msg.member.displayName.toLowerCase().trim().substring(0, 6) === "(cost)" || msg.member.displayName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
+      if (baseName.toLowerCase().trim().charAt(0) === "!" || baseName.toLowerCase().trim().substring(0, 4) === "(st)" || baseName.toLowerCase().trim().substring(0, 6) === "(cost)" || baseName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
         await new Promise(r => setTimeout(r, 1000));
         await msg.delete();
         return null;
@@ -2387,7 +2307,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946") {
         return null;
       }
-      if (msg.member.displayName.toLowerCase().trim().charAt(0) === "!" || msg.member.displayName.toLowerCase().trim().substring(0, 4) === "(st)" || msg.member.displayName.toLowerCase().trim().substring(0, 6) === "(cost)" || msg.member.displayName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
+      if (baseName.toLowerCase().trim().charAt(0) === "!" || baseName.toLowerCase().trim().substring(0, 4) === "(st)" || baseName.toLowerCase().trim().substring(0, 6) === "(cost)" || baseName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
         await new Promise(r => setTimeout(r, 1000));
         await msg.delete();
         return null;
@@ -2406,7 +2326,7 @@ client.on('messageCreate',
       if (msg.guild.id != "840323781066489946") {
         return null;
       }
-      if (msg.member.displayName.toLowerCase().trim().charAt(0) === "!" || msg.member.displayName.toLowerCase().trim().substring(0, 4) === "(st)" || msg.member.displayName.toLowerCase().trim().substring(0, 6) === "(cost)" || msg.member.displayName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
+      if (baseName.toLowerCase().trim().charAt(0) === "!" || baseName.toLowerCase().trim().substring(0, 4) === "(st)" || baseName.toLowerCase().trim().substring(0, 6) === "(cost)" || baseName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
         await new Promise(r => setTimeout(r, 1000));
         await msg.delete();
         return null;
@@ -2567,7 +2487,7 @@ client.on('messageCreate',
         }
       }
       if (fnd == -1) {
-        nicks.push([msg.author.username, msg.member.displayName])
+        nicks.push([msg.author.username, baseName])
       }
       await rename(msg, "Goat");
       await new Promise(r => setTimeout(r, 200));
@@ -2588,9 +2508,9 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
-      if (msg.member.displayName.trim().toLowerCase().indexOf("[n]") > -1 ||
-        msg.member.displayName.trim().toLowerCase().indexOf("(n)") > -1) {
-        let nick = msg.member.displayName;
+      if (baseName.trim().toLowerCase().indexOf("[n]") > -1 ||
+        baseName.trim().toLowerCase().indexOf("(n)") > -1) {
+        let nick = baseName;
         let q = 0;
         for (var i = 0; i < nick.length; i++) {
           if (nick[i] == "[" || nick[i] == "(") {
@@ -2607,26 +2527,26 @@ client.on('messageCreate',
         }
       }
       else {
-        await rename(msg, `${msg.member.displayName.trim()} [N]`);
+        await rename(msg, `${baseName.trim()} [N]`);
       }
       await new Promise(r => setTimeout(r, 1000));
       await msg.delete().catch(e => { msg_user(lieu_id, "ERROR"); });
     }
     // else if (msg.content.trim().toLowerCase() === "*new" || msg.content.trim().toLowerCase() === "*n") {
-    //   if(msg.member.displayName.trim().toLowerCase().substring(0, 3) == "[n]" || msg.member.displayName.trim().toLowerCase().substring(0, 3) == "(n)") {
-    //     if(msg.member.displayName.length > 3) {
-    //       await rename(msg, `${msg.member.displayName.trim().substring(3).trim()}`);
+    //   if(baseName.trim().toLowerCase().substring(0, 3) == "[n]" || baseName.trim().toLowerCase().substring(0, 3) == "(n)") {
+    //     if(baseName.length > 3) {
+    //       await rename(msg, `${baseName.trim().substring(3).trim()}`);
     //     }
     //     else {
     //       await rename(msg, `${msg.author.username}`);
     //     }
     //   }
-    //   else if(msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "[n]" || msg.member.displayName.trim().toLowerCase().substring(msg.member.displayName.trim().length - 3, 3) == "(n)") {
-    //     await rename(msg, `${msg.member.displayName.trim().substring(msg.member.displayName.trim().length - 3, 3).trim()}`);
+    //   else if(baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "[n]" || baseName.trim().toLowerCase().substring(baseName.trim().length - 3, 3) == "(n)") {
+    //     await rename(msg, `${baseName.trim().substring(baseName.trim().length - 3, 3).trim()}`);
     //   }
-    //   else if(msg.member.displayName.trim().toLowerCase().indexOf("[n]") > -1 ||
-    //          msg.member.displayName.trim().toLowerCase().indexOf("(n)") > -1) {
-    //     let nick = msg.member.displayName;
+    //   else if(baseName.trim().toLowerCase().indexOf("[n]") > -1 ||
+    //          baseName.trim().toLowerCase().indexOf("(n)") > -1) {
+    //     let nick = baseName;
     //     let q = 0;
     //     for(var i=0;i<nick.length;i++) {
     //       if(nick[i] == "[" || nick[i] == "(") {
@@ -2642,10 +2562,10 @@ client.on('messageCreate',
     //       }
     //     }
     //   }
-    //   // else if(msg.member.displayName.trim().toLowerCase().substring(0, 3) == "[t]" || msg.member.displayName.trim().toLowerCase().substring(0, 3) == "(t)") {
-    //   //   let tn = msg.member.displayName.trim().toLowerCase().substring(3).trim();
-    //   //   if(msg.member.displayName.trim().toLowerCase().substring(0, 3) == "[n]" || msg.member.displayName.trim().toLowerCase().substring(0, 3) == "(n)") {
-    //   //     if(msg.member.displayName.length > 3) {
+    //   // else if(baseName.trim().toLowerCase().substring(0, 3) == "[t]" || baseName.trim().toLowerCase().substring(0, 3) == "(t)") {
+    //   //   let tn = baseName.trim().toLowerCase().substring(3).trim();
+    //   //   if(baseName.trim().toLowerCase().substring(0, 3) == "[n]" || baseName.trim().toLowerCase().substring(0, 3) == "(n)") {
+    //   //     if(baseName.length > 3) {
     //   //       await rename(msg, `(T) ${tn.substring(3).trim()}`);
     //   //     }
     //   //     else {
@@ -2654,7 +2574,7 @@ client.on('messageCreate',
     //   //   }
     //   // }
     //   else {
-    //     await rename(msg, `[N] ${msg.member.displayName.trim()}`);
+    //     await rename(msg, `[N] ${baseName.trim()}`);
     //   }
     // }
     else if (msg.content.trim().toLowerCase().substring(0, 7) === "*get t ") {
@@ -2812,10 +2732,11 @@ client.on('messageCreate',
         const channels = msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
-            if (member.displayName.trim().substring(0, 3).toLowerCase() === "(t)" || member.displayName.trim().substring(0, 3).toLowerCase() === "[t]") {
+			let display = member.displayName || member.nickname;
+            if (display.trim().substring(0, 3).toLowerCase() === "(t)" || display.trim().substring(0, 3).toLowerCase() === "[t]") {
               tc += 1;
             }
-            else if (member.displayName.trim().charAt(0) !== '!' && member.displayName.trim().charAt(0) !== '(' && member.displayName.trim().charAt(0) !== '[') {
+            else if (display.trim().charAt(0) !== '!' && display.trim().charAt(0) !== '(' && display.trim().charAt(0) !== '[') {
               pc += 1;
             }
           }
@@ -2854,7 +2775,7 @@ client.on('messageCreate',
       let rep = new MessageEmbed()
     .setColor('#ffffff')
     .setURL('https://discord.js.org/')
-    .setAuthor({ name: msg.member.displayName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
+    .setAuthor({ name: baseName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
     rep.setDescription(desc)
   // .addField('Vote for the script you want to play:', ' ', false)
   // .addField('1', '1- Trouble Brewing', false)
@@ -3012,7 +2933,7 @@ client.on('messageCreate',
 				}
               resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
               for (let q = 0; q < json[mr]["jinx"].length; q++) {
-                resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** " + json[mr]["jinx"][q]["reason"] + "\n";
+                resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** `" + json[mr]["jinx"][q]["reason"] + "`\n";
               }
             }
             else {
@@ -3021,7 +2942,7 @@ client.on('messageCreate',
               	resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
 			  else {
 				resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][mr2]["id"]) + ":\n";
-				resp += "**" + properCase(json[mr]["jinx"][mr2]["id"]) + ":** " + json[mr]["jinx"][mr2]["reason"] + "\n";
+				resp += "**" + properCase(json[mr]["jinx"][mr2]["id"]) + ":** `" + json[mr]["jinx"][mr2]["reason"] + "`\n";
 			  }
             }
             await respond(msg, resp);
@@ -3040,7 +2961,7 @@ client.on('messageCreate',
       let rep = new MessageEmbed()
     .setColor('#ffffff')
     .setURL('https://discord.js.org/')
-    .setAuthor({ name: msg.member.displayName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
+    .setAuthor({ name: baseName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
     rep.setDescription(desc)
   // .addField('Vote for the script you want to play:', ' ', false)
   // .addField('1', '1- Trouble Brewing', false)
@@ -3290,19 +3211,19 @@ client.on('messageCreate',
       await respond(msg, "Hi LieutenantDV20 <3")
     }
     else if (msg.content.trim().toLowerCase() === "*gather") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
+      if (baseName.trim().substring(0, 4).toLowerCase() != "(st)") {
         return null
       }
       await respond(msg, "# Whisper time over!\n### Please make your way back to town");
     }
     else if (msg.content.trim().toLowerCase() === "*noms") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
+      if (baseName.trim().substring(0, 4).toLowerCase() != "(st)") {
         return null
       }
       await respond(msg, "# Nominations are now open!");
     }
     else if (msg.content.trim().toLowerCase() === "*noms2" || msg.content.trim().toLowerCase() === "*second") {
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() != "(st)") {
+      if (baseName.trim().substring(0, 4).toLowerCase() != "(st)") {
         return null
       }
       await respond(msg, "# Second call for nominations");
@@ -3544,7 +3465,7 @@ client.on('messageCreate',
       await respond(msg, jokes[rnd])
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*grim " || msg.content.trim().substring(0, 6).toLowerCase() === "*link ") {
-      // if(msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
+      // if(baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
       //   await respond(msg, "```Only Storytellers and Co-Storytellers can set the grim link.```")
       //   return null
       // }
@@ -3563,7 +3484,7 @@ client.on('messageCreate',
         await respond(msg, "```Please provide a link to the grim in the command.```")
         // return null
       }
-      else if (msg.member.displayName.trim().substring(0, 4).toLowerCase() == "(st)" || msg.member.displayName.trim().substring(0, 6).toLowerCase() == "(cost)" || msg.member.displayName.trim().substring(0, 7).toLowerCase() == "(co-st)") {
+      else if (baseName.trim().substring(0, 4).toLowerCase() == "(st)" || baseName.trim().substring(0, 6).toLowerCase() == "(cost)" || baseName.trim().substring(0, 7).toLowerCase() == "(co-st)") {
         grim_link = -1
         grim_setter = -1
         grim_serv = -1
@@ -3598,7 +3519,7 @@ client.on('messageCreate',
             }
           }
         }
-        await respond(msg, "```Grim link " + msg.content.trim().substring(6) + " added by " + msg.member.displayName + "\nPlayers can get the link by using the command *grim```")
+        await respond(msg, "```Grim link " + msg.content.trim().substring(6) + " added by " + baseName + "\nPlayers can get the link by using the command *grim```")
         // grim_link = msg.content.trim().substring(6)
         // grim_setter = msg.author.username
         // return null
@@ -3618,7 +3539,7 @@ client.on('messageCreate',
         // }
         grim_setter = msg.author.username
         grim_serv = msg.guild.id
-        await respond(msg, "```Grim link " + msg.content.trim().substring(6) + " added by " + msg.member.displayName + "\nPlayers can get the link by using the command *grim```")
+        await respond(msg, "```Grim link " + msg.content.trim().substring(6) + " added by " + baseName + "\nPlayers can get the link by using the command *grim```")
       }
 
     }
@@ -3713,7 +3634,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://yoyosource.github.io/") > -1) {
 
-      if (msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
+      if (baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         // return null
       }
       else {
@@ -3763,7 +3684,7 @@ client.on('messageCreate',
         }
         // grim_link = msg.content.trim().substring(6)
         // grim_setter = msg.author.username
-        await respond(msg, "```Grim link " + thelink + " added by " + msg.member.displayName + "\nPlayers can get the link by using the command *grim```")
+        await respond(msg, "```Grim link " + thelink + " added by " + baseName + "\nPlayers can get the link by using the command *grim```")
         // return null
         // grim_link = msg.content.trim()
         // if(!validURL(grim_link)) {
@@ -3796,9 +3717,10 @@ client.on('messageCreate',
         let players = []
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
-            if ((member.displayName.trim().substring(0, 3).toLowerCase() === "(t)" || member.displayName.trim().substring(0, 3).toLowerCase() === "[t]")
-              || (member.displayName.trim().charAt(0) !== '!' && member.displayName.trim().charAt(0) !== '(' && member.displayName.trim().charAt(0) !== '[')) {
-              players.push(member.displayName)
+			let display = member.displayName || member.nickname;
+            if ((display.trim().substring(0, 3).toLowerCase() === "(t)" || display.trim().substring(0, 3).toLowerCase() === "[t]")
+              || (display.trim().charAt(0) !== '!' && display.trim().charAt(0) !== '(' && display.trim().charAt(0) !== '[')) {
+              players.push(display)
             }
           }
         }
@@ -3831,9 +3753,10 @@ client.on('messageCreate',
         let players = []
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
-            if ((member.displayName.trim().substring(0, 3).toLowerCase() === "(t)" || member.displayName.trim().substring(0, 3).toLowerCase() === "[t]")
-              || (member.displayName.trim().charAt(0) !== '!' && member.displayName.trim().charAt(0) !== '(' && member.displayName.trim().charAt(0) !== '[')) {
-              players.push(member.displayName)
+			let display = member.displayName || member.nickname;
+            if ((display.trim().substring(0, 3).toLowerCase() === "(t)" || display.trim().substring(0, 3).toLowerCase() === "[t]")
+              || (display.trim().charAt(0) !== '!' && display.trim().charAt(0) !== '(' && display.trim().charAt(0) !== '[')) {
+              players.push(display)
             }
           }
         }
@@ -3856,8 +3779,8 @@ client.on('messageCreate',
         if (msg.guild.id != "840323781066489946") {
           return null
         }
-        else if (msg.member.displayName.trim().length >= 4 &&
-          msg.member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" &&
+        else if (baseName.trim().length >= 4 &&
+          baseName.trim().substring(0, 4).toLowerCase() !== "(st)" &&
           !(msg.member.roles.cache.some(role => role.name === 'ECG Admins')) &&
           !(msg.member.roles.cache.some(role => role.name === 'BOTC Mentor'))) {
           return null
@@ -3868,7 +3791,8 @@ client.on('messageCreate',
           return null
         }
         for (const [memberID, member] of cid.members) {
-          if (member.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" &&
+			let display = member.displayName || member.nickname;
+          if (display.trim().substring(0, 4).toLowerCase() !== "(st)" &&
             !(msg.member.roles.cache.some(role => role.name === 'ECG Admins')) &&
             !(msg.member.roles.cache.some(role => role.name === 'BOTC Mentor'))) {
             member.voice.setMute(true);
@@ -3950,7 +3874,7 @@ client.on('messageCreate',
     // msg_user(lieu_id,msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#"));
     if ((msg.content.trim().toLowerCase().indexOf("https://clocktower.online/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://clocktower.live/#") > -1 || msg.content.trim().toLowerCase().indexOf("https://yoyosource.github.io/") > -1) && !msg.author.bot) {
       // msg_user(lieu_id,"TEST1");
-      if (msg.content.trim().toLowerCase().indexOf("*grim") == -1 && msg.content.trim().toLowerCase().indexOf("*link") == -1 && msg.member.displayName.trim().substring(0, 4) != "(ST)" && msg.member.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && msg.member.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
+      if (msg.content.trim().toLowerCase().indexOf("*grim") == -1 && msg.content.trim().toLowerCase().indexOf("*link") == -1 && baseName.trim().substring(0, 4) != "(ST)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
         await new Promise((resolve, fail) => { setTimeout(async function(resolve) { await msg.suppressEmbeds(true).catch(e => { msg_user(lieu_id, "" + e); }); respond(msg, "```If you are playing: Follow the link provided above, find your name, and click on \"Claim Seat\"```"); }, 400) });
       }
       else {
