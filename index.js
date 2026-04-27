@@ -1,6 +1,11 @@
 require('dotenv').config()
 const { exec } = require("child_process");
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const { 
+	Client, 
+	GatewayIntentBits, 
+	EmbedBuilder,
+	Partials
+  } = require('discord.js');
 const https = require("https");
 // const Database = require("@replit/database");
 // const db = new Database();
@@ -17,17 +22,17 @@ const https = require("https");
 //     });
 //   });
 // });
-const client = new Client(
-  {
-    intents: [Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS]
-  }
-);
+const client = new Client({
+	intents: [
+	  GatewayIntentBits.Guilds,
+	  GatewayIntentBits.GuildVoiceStates,
+	  GatewayIntentBits.GuildMessages,
+	  GatewayIntentBits.GuildMembers,
+	  GatewayIntentBits.GuildMessageReactions,
+	  GatewayIntentBits.MessageContent
+	]
+  });
 
-client.options.http.api = "https://discordapp.com/api"
 
 var stdic = {};
 var medic = {};
@@ -432,7 +437,7 @@ function createTimer(time) {
 }
 
 async function find_consult(msg, categoryid) {
-  let channels = msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === 'GUILD_VOICE');
+  let channels = await msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === 'GUILD_VOICE');
   for (const [channelID, channel] of channels) {
     // msg_user(lieu_id,channelID+"- "+channel.name.toLowerCase())
     if (channel.name.toLowerCase().indexOf("consult") != -1) {
@@ -584,7 +589,7 @@ async function match_role(name, json, id_match = false) {
 
 async function find_target(msg, name) {
   let p = null
-  const channels = msg.guild.channels.cache.filter(c => c.type === 'GUILD_VOICE');
+  const channels = await msg.guild.channels.cache.filter(c => c.type === 'GUILD_VOICE');
 
   for (const [channelID, channel] of channels) {
     for (const [memberID, member] of channel.members) {/*console
@@ -613,7 +618,7 @@ async function first_word(text) {
 }
 
 async function decide_night(msg, fw, cid) {
-  let cs = msg.guild.channels.cache.filter(c => c.id != cid && c.type === "GUILD_CATEGORY");
+  let cs = await msg.guild.channels.cache.filter(c => c.id != cid && c.type === "GUILD_CATEGORY");
   let cfw = "";
   if (fw.toLowerCase() == "ravenswood" && msg.guild.id == "840323781066489946") {
     for (const [channelID, channel] of cs) {
@@ -658,8 +663,8 @@ async function shadow(msg, target) {
     await respond(msg, "```You can't shadow your own shadow!```")
     return null
   }
-  let tid = msg.guild.members.cache.get(target.id).voice.channelId
-  let tvc = msg.guild.channels.cache.get(tid)
+  let tid = await msg.guild.members.cache.get(target.id).voice.channelId
+  let tvc = await msg.guild.channels.cache.get(tid)
 
   if (!tvc) {
     await respond(msg, "```" + target.username + " is not currently in a voice channel```")
@@ -683,7 +688,7 @@ async function shadow(msg, target) {
   medic[target.username].push(msg.member)
 
   if (msg.author.id == "297585199519105024") {
-    await new promise(r => setTimeout(r, 1000))
+    await new Promise(r => setTimeout(r, 1000))
     msg.delete()
   }
 }
@@ -711,7 +716,7 @@ async function respolld(msg, custom = false, homebrew = false, selection = []) {
     await respond(msg, "```You need at least 2 options to create a poll```")
     return null
   }
-  let rep = new MessageEmbed()
+  let rep = new EmbedBuilder()
     .setColor('#ffffff')
     .setURL('https://discord.js.org/')
     .setAuthor({ name: msg.member.displayName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
@@ -796,7 +801,7 @@ async function respolld(msg, custom = false, homebrew = false, selection = []) {
 
 async function secret_poll(msg, question, items) {
   let hp = (question.length == 0)
-  let rep = new MessageEmbed()
+  let rep = new EmbedBuilder()
     .setColor('#ffffff')
     .setURL('https://discord.js.org/')
     .setAuthor({ name: msg.member.displayName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
@@ -917,7 +922,9 @@ async function secret_poll(msg, question, items) {
 }
 
 function nicknameById(msg, id) {
-	return msg.guild.members.cache.get(id).displayName || msg.guild.members.cache.get(id).nickname
+	const user = await client.users.fetch(id);
+	const memb = await msg.guild.members.cache.get(id);
+	return (memb.nickname ?? user.globalName ?? user.username);
 }
 
 async function respond(msg, rep) {
@@ -977,6 +984,8 @@ async function rename(msg, name) {
 
 
 client.on('messageReactionAdd', async function(reaction, user) {
+  if (reaction.partial) await reaction.fetch();
+  if (reaction.message.partial) await reaction.message.fetch();
   if (reaction.emoji.name == '🆗') {
     // if (reaction.message.guild.id != "840323781066489946" && reaction.message.guild.id != "996462531038171136" && reaction.message.guild.id != "569683781800296501") {
     //   return null
@@ -984,7 +993,7 @@ client.on('messageReactionAdd', async function(reaction, user) {
     if (reaction.message.content.toLowerCase().trim().substring(0, 8) != "*consult" && reaction.message.content.toLowerCase().trim().substring(0, 13) != "*consultation") {
       return null
     }
-    let mem = reaction.message.guild.members.cache.get(user.id);
+    let mem = await reaction.message.guild.members.cache.get(user.id);
     if (mem.displayName.trim().toLowerCase().substring(0, 4) != "(st)" && mem.displayName.trim().toLowerCase().substring(0, 4) != "[st]" && mem.displayName.trim().toLowerCase().substring(0, 6) != "(cost)" && mem.displayName.trim().toLowerCase().substring(0, 6) != "[cost]" && mem.displayName.trim().toLowerCase().substring(0, 7) != "(co-st)" && mem.displayName.trim().toLowerCase().substring(0, 7) != "[co-st]") {
       return null
     }
@@ -1038,7 +1047,8 @@ client.on('messageReactionAdd', async function(reaction, user) {
 //Math.floor((Math.random() * 10) + 1);
 client.on('messageCreate',
   async function(msg) {
-	const baseName = msg.member.displayName || msg.member.nickname;
+	if (msg.member?.partial) await msg.member.fetch();
+	const baseName = msg.member.nickname ?? msg.member.user.globalName ?? msg.member.user.username;
     if (msg.author.username === "ShadowBOT") {
       return null
     }
@@ -1692,7 +1702,7 @@ client.on('messageCreate',
         return null
       }
       // running_cycle = true;
-      let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
+      let channels = await msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
         await respond(msg, "```Text channel must be in a channel group!```")
@@ -1710,7 +1720,7 @@ client.on('messageCreate',
         running_cycle = false;
         return null
       }
-      channels = msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
       let spects = [];
       let players = [];
       let sts = [];
@@ -1747,7 +1757,7 @@ client.on('messageCreate',
       // }
       // txt += "\n"
       // await respond(msg, txt);
-      channels = msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
       let tmp = Array.from(channels.keys());
       if (tmp.length <= players.length) {
         await respond(msg, "```Process Failed: There are more players than there are cottages.```");
@@ -1839,7 +1849,7 @@ client.on('messageCreate',
         return null
       }
       // running_cycle = true;
-      let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
+      let channels = await msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
         await respond(msg, "```Text channel must be in a channel group!```")
@@ -1854,7 +1864,7 @@ client.on('messageCreate',
         running_cycle = false;
         return null
       }
-      channels = msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
       channelsarr = Array.from(channels.keys());
       let mc = channelsarr[0];
       let mic = channels.get(mc).position;
@@ -1867,7 +1877,7 @@ client.on('messageCreate',
       town = channels.get(mc);
       // msg_user(lieu_id,town);
       // await respond(msg, town.id+", "+town.name);
-      channels = msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
       let tmp = Array.from(channels.keys());
       channelsarr.length = 0;
       for (var j = 0; j < tmp.length; i++) {
@@ -1923,7 +1933,7 @@ client.on('messageCreate',
         return null
       }
       // running_cycle = true;
-      let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
+      let channels = await msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
         await respond(msg, "```Text channel must be in a channel group!```")
@@ -1931,7 +1941,7 @@ client.on('messageCreate',
         return null
       }
       let town = channels.get(channelsarr[0]);
-      channels = msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
       channelsarr = Array.from(channels.keys());
       let mc = channelsarr[0];
       let mic = channels.get(mc).position;
@@ -2034,7 +2044,7 @@ client.on('messageCreate',
         await respond(msg, "```Only Storytellers and Co-Storytellers can use this command```")
         return null
       }
-      let channels = msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
+      let channels = await msg.guild.channels.cache.filter(c => c.id === msg.channel.parentId);
       let channelsarr = Array.from(channels.keys());
       if (channelsarr.length == 0) {
         await respond(msg, "```Text channel must be in a channel group!```")
@@ -2256,7 +2266,7 @@ client.on('messageCreate',
       }
       const uname = target.username;
       delete stdic[uname];
-      target = msg.guild.members.cache.get(target.id)
+      target = await msg.guild.members.cache.get(target.id)
       if (!target) {
         return null
       }
@@ -2264,7 +2274,7 @@ client.on('messageCreate',
       if (!tid) {
         return null
       }
-      let tvc = msg.guild.channels.cache.get(tid)
+      let tvc = await msg.guild.channels.cache.get(tid)
       if (!tvc) {
         return null
       }
@@ -2678,8 +2688,8 @@ client.on('messageCreate',
         return null
       }
       else {
-        let tid = msg.guild.members.cache.get(target.id).voice.channelId
-        let tvc = msg.guild.channels.cache.get(tid)
+        let tid = await msg.guild.members.cache.get(target.id).voice.channelId
+        let tvc = await msg.guild.channels.cache.get(tid)
 
         if (!tvc) {
           await respond(msg, "```" + target.username + " is not currently in a voice channel```")
@@ -2696,7 +2706,7 @@ client.on('messageCreate',
         {
           medic[msg.author.username] = []
         }
-        medic[msg.author.username].push(msg.guild.members.cache.get(target.id))
+        medic[msg.author.username].push(await msg.guild.members.cache.get(target.id))
       }
     }
     else if (msg.content.trim().toLowerCase() === "*fafa") {
@@ -2729,7 +2739,7 @@ client.on('messageCreate',
       var tc = 0;
       var res = "";
       try {
-        const channels = msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
 			let display = member.displayName || member.nickname;
@@ -2772,7 +2782,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().substring(0, 8).toLowerCase() === "*fabled " || msg.content.trim().substring(0, 8).toLowerCase() === "*fables " || msg.content.trim().substring(0, 7).toLowerCase() === "*fable " || msg.content.trim().substring(0, 7).toLowerCase() === "*loric ") {
       /*
-      let rep = new MessageEmbed()
+      let rep = new EmbedBuilder()
     .setColor('#ffffff')
     .setURL('https://discord.js.org/')
     .setAuthor({ name: baseName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
@@ -2827,7 +2837,7 @@ client.on('messageCreate',
             }
             //if (json[mr]["sn"] != null) {
             //  let co = "#ffff00";
-            //  let rep = new MessageEmbed()
+            //  let rep = new EmbedBuilder()
             //    .setColor(co)
             //  // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
             //  rep.setDescription(json[mr]["ability"]+"\n\n**Type: **"+properCase(json[mr]["team"]))
@@ -2839,7 +2849,7 @@ client.on('messageCreate',
             // await respond(msg, "**" + json[mr]["name"] + ":** " + json[mr]["ability"]);
 
             let co = "#ffff00";
-            let rep = new MessageEmbed()
+            let rep = new EmbedBuilder()
               .setColor(co)
             // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
             rep.setDescription(json[mr]["ability"]+"\n\n**Type: **"+properCase(json[mr]["team"]))
@@ -2958,7 +2968,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*role ") {
       /*
-      let rep = new MessageEmbed()
+      let rep = new EmbedBuilder()
     .setColor('#ffffff')
     .setURL('https://discord.js.org/')
     .setAuthor({ name: baseName, iconURL: msg.author.displayAvatarURL(), url: 'https://discord.js.org' })
@@ -2984,7 +2994,7 @@ client.on('messageCreate',
       let role_name = msg.content.trim().substring(6).toLowerCase();
       if (role_name == "big_barnacle" || role_name == "bigbarnacle" || role_name == "barn" || role_name == "barnacle") // for bra1n
       {
-        let rep = new MessageEmbed()
+        let rep = new EmbedBuilder()
               .setColor("#ff0000");
         rep.setDescription("Each night*, pick a player. Then pick another player you've not picked before. They both become a Crab. Only crab nominations on you can kill you. If you pick a crab at night for a second time they become a super crab. Only 1 minion can be a super crab. If a super crab nominates a regular crab, that player instantly dies and loses their ghost vote. If a super crab nominates another super crab, both super crabs must engage in roshambo until one player wins. The winning player remains a super crab while the loser reverts back to a regular crab and is ashamed. Each night a crab player may swap seats with an alive neighbour. Each night also pick another player. They receive the grimoire except only 1 role is correct. You are \"Mad\" that crabs are awesome or you may die. If a player is \"Mad\" that crabs suck and they neighbour a crab, they may instantly die and lose their dead vote and be asked to leave the room. Each night, pick a player, they die but register as alive. Start knowing any players who received a number 1. Also start by choosing 2 players, they start off as crabs. Crab players lose their previous character ability but are super cool. If a player is executed then during the night they receive an \"L\". During each day, a good player must be \"Mad\" that they worship the crab overlord otherwise may evil win the game. If a player is \"Mad\" that they do not understand how the Big Barnacle's ability works, they may die but cannot leave the game [-Other demons on the script.]\n\n**Affects Setup: **True")
               .setTitle("The Big Barnacle (Demon) - Experimental")
@@ -3014,7 +3024,7 @@ client.on('messageCreate',
       //       co = "#ff00ff";
       //       team = "Traveler";
       //     }
-      //     let rep = new MessageEmbed()
+      //     let rep = new EmbedBuilder()
       //       .setColor(co)
       //     // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
       //     let scr = "Experimental";
@@ -3095,7 +3105,7 @@ client.on('messageCreate',
               co = "#ff00ff";
               team = "Traveler";
             }
-            let rep = new MessageEmbed()
+            let rep = new EmbedBuilder()
               .setColor(co)
             // .setAuthor({ name: json[mr]["name"], iconURL: "https://raw.githubusercontent.com/bra1n/townsquare/develop/src/assets/icons/" + json[mr]["id"] + ".png" })
             let scr = "Experimental";
@@ -3713,7 +3723,7 @@ client.on('messageCreate',
           await respond(msg, "```The command must be followed by a number between 1 and 15```")
           return null
         }
-        const channels = msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
         let players = []
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
@@ -3749,7 +3759,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*rp" || msg.content.trim().toLowerCase() === "*randomplayer") {
       try {
-        const channels = msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
         let players = []
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
@@ -3857,7 +3867,7 @@ client.on('messageCreate',
       if (msg.guild.id != "886493912506716190") {
         return null;
       }
-      const strole = msg.guild.roles.cache.get("1005037278751621131");
+      const strole = await msg.guild.roles.cache.get("1005037278751621131");
       msg.member.roles.remove(strole).catch(err => { msg_user(lieu_id, "" + err); });
     }
     else if (msg.content.trim().toLowerCase() === "*pause") {
