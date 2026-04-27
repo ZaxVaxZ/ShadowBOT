@@ -1,7 +1,8 @@
 require('dotenv').config()
 const { exec } = require("child_process");
 const { 
-	Client, 
+	Client,
+	ChannelType,
 	GatewayIntentBits, 
 	EmbedBuilder,
 	Partials
@@ -437,7 +438,7 @@ function createTimer(time) {
 }
 
 async function find_consult(msg, categoryid) {
-  let channels = await msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === 'GUILD_VOICE');
+  let channels = await msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === ChannelType.GuildVoice);
   for (const [channelID, channel] of channels) {
     // msg_user(lieu_id,channelID+"- "+channel.name.toLowerCase())
     if (channel.name.toLowerCase().indexOf("consult") != -1) {
@@ -589,7 +590,7 @@ async function match_role(name, json, id_match = false) {
 
 async function find_target(msg, name) {
   let p = null
-  const channels = await msg.guild.channels.cache.filter(c => c.type === 'GUILD_VOICE');
+  const channels = await msg.guild.channels.cache.filter(c => c.type === ChannelType.GuildVoice);
 
   for (const [channelID, channel] of channels) {
     for (const [memberID, member] of channel.members) {/*console
@@ -618,7 +619,7 @@ async function first_word(text) {
 }
 
 async function decide_night(msg, fw, cid) {
-  let cs = await msg.guild.channels.cache.filter(c => c.id != cid && c.type === "GUILD_CATEGORY");
+  let cs = await msg.guild.channels.cache.filter(c => c.id != cid && c.type === ChannelType.GuildCategory);
   let cfw = "";
   if (fw.toLowerCase() == "ravenswood" && msg.guild.id == "840323781066489946") {
     for (const [channelID, channel] of cs) {
@@ -1720,7 +1721,7 @@ client.on('messageCreate',
         running_cycle = false;
         return null
       }
-      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === ChannelType.GuildVoice);
       let spects = [];
       let players = [];
       let sts = [];
@@ -1757,7 +1758,7 @@ client.on('messageCreate',
       // }
       // txt += "\n"
       // await respond(msg, txt);
-      channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === ChannelType.GuildVoice);
       let tmp = Array.from(channels.keys());
       if (tmp.length <= players.length) {
         await respond(msg, "```Process Failed: There are more players than there are cottages.```");
@@ -1864,7 +1865,7 @@ client.on('messageCreate',
         running_cycle = false;
         return null
       }
-      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === ChannelType.GuildVoice);
       channelsarr = Array.from(channels.keys());
       let mc = channelsarr[0];
       let mic = channels.get(mc).position;
@@ -1877,7 +1878,7 @@ client.on('messageCreate',
       town = channels.get(mc);
       // msg_user(lieu_id,town);
       // await respond(msg, town.id+", "+town.name);
-      channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === ChannelType.GuildVoice);
       let tmp = Array.from(channels.keys());
       channelsarr.length = 0;
       for (var j = 0; j < tmp.length; i++) {
@@ -1941,7 +1942,7 @@ client.on('messageCreate',
         return null
       }
       let town = channels.get(channelsarr[0]);
-      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === 'GUILD_VOICE');
+      channels = await msg.guild.channels.cache.filter(c => c.parentId === town.id && c.type === ChannelType.GuildVoice);
       channelsarr = Array.from(channels.keys());
       let mc = channelsarr[0];
       let mic = channels.get(mc).position;
@@ -2739,7 +2740,7 @@ client.on('messageCreate',
       var tc = 0;
       var res = "";
       try {
-        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === ChannelType.GuildVoice);
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
 			let display = member.displayName || member.nickname;
@@ -3186,14 +3187,14 @@ client.on('messageCreate',
       let tn = msg.content.substring(9);
       await msg.guild.channels.create(tn, { type: "GUILD_CATEGORY" }).then(async function(CategoryChannel) {
         await new Promise(r => setTimeout(r, 250));
-        await msg.guild.channels.create('Town Square', { type: 'GUILD_VOICE', parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating town square```") });
+        await msg.guild.channels.create('Town Square', { type: ChannelType.GuildVoice, parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating town square```") });
         await new Promise(r => setTimeout(r, 250));
-        await msg.guild.channels.create('Storyteller Consultation', { type: 'GUILD_VOICE', parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating st consult```") })
+        await msg.guild.channels.create('Storyteller Consultation', { type: ChannelType.GuildVoice, parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating st consult```") })
       }).catch(async function(err) { await respond(msg, "```Error while creating town```") })
       await new Promise(r => setTimeout(r, 250));
       await msg.guild.channels.create(tn + " Cottages", { type: "GUILD_CATEGORY" }).then(async function(CategoryChannel) {
         for (var i = 0; i < 20; i++) {
-          await msg.guild.channels.create('Cottage ' + (i + 1), { type: 'GUILD_VOICE', parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating cottage " + (i + 1) + "```") })
+          await msg.guild.channels.create('Cottage ' + (i + 1), { type: ChannelType.GuildVoice, parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating cottage " + (i + 1) + "```") })
           await new Promise(r => setTimeout(r, 500));
         }
       }).catch(async function(err) { await respond(msg, "```Error while creating cottage town```") })
@@ -3723,7 +3724,7 @@ client.on('messageCreate',
           await respond(msg, "```The command must be followed by a number between 1 and 15```")
           return null
         }
-        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === ChannelType.GuildVoice);
         let players = []
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
@@ -3759,7 +3760,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*rp" || msg.content.trim().toLowerCase() === "*randomplayer") {
       try {
-        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === 'GUILD_VOICE');
+        const channels = await msg.guild.channels.cache.filter(c => c.parentId === msg.channel.parentId && c.type === ChannelType.GuildVoice);
         let players = []
         for (const [channelID, channel] of channels) {
           for (const [memberID, member] of channel.members) {
