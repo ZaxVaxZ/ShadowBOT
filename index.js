@@ -621,7 +621,7 @@ async function first_word(text) {
 async function decide_night(msg, fw, cid) {
   let cs = await msg.guild.channels.cache.filter(c => c.id != cid && c.type === ChannelType.GuildCategory);
   let cfw = "";
-  if (fw.toLowerCase() == "ravenswood" && msg.guild.id == "840323781066489946") {
+  if (fw.toLowerCase() == "ravenswood" && msg.guildId == "840323781066489946") {
     for (const [channelID, channel] of cs) {
       cfw = await first_word(channel.name);
       // msg_user(lieu_id,cfw.toLowerCase()+" - "+channel.name);
@@ -1347,7 +1347,7 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*ping") {
-      if (msg.guild.id !== "569683781800296501") {
+      if (msg.guildId !== "569683781800296501") {
         return null
       }
       if (baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
@@ -1356,7 +1356,7 @@ client.on('messageCreate',
       await ping_players(baseName, msg.member.voice.channel)
     }
     else if (msg.content.trim().toLowerCase() === "*waitlist" || msg.content.trim().toLowerCase() === "*wl" || msg.content.trim().toLowerCase() === "*list" || msg.content.trim().toLowerCase() === "*queue") {
-      if (msg.guild.id !== "569683781800296501" && msg.author.id != lieu_id) {
+      if (msg.guildId !== "569683781800296501" && msg.author.id != lieu_id) {
         return null
       }
       let txt = "Players currently waiting for next game:\n"
@@ -1371,7 +1371,7 @@ client.on('messageCreate',
       await respond(msg, txt)
     }
     else if (msg.content.trim().toLowerCase() === "*wait" || msg.content.trim().toLowerCase() === "*ng" || msg.content.trim().toLowerCase() === "*nextgame") {
-      if (msg.guild.id !== "569683781800296501") {
+      if (msg.guildId !== "569683781800296501") {
         return null
       }
       for (var i = 0; i < next_game.length; i++) {
@@ -1388,7 +1388,7 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*leave" || msg.content.trim().toLowerCase() === "*quit") {
-      if (msg.guild.id !== "569683781800296501") {
+      if (msg.guildId !== "569683781800296501") {
         return null
       }
       for (var i = 0; i < next_game.length; i++) {
@@ -1490,7 +1490,7 @@ client.on('messageCreate',
       }
     }
     // else if (msg.content.trim().substring(0, 6).toLowerCase() === "*follow ") {
-    //   if (msg.guild.id != "569683781800296501") { return null }
+    //   if (msg.guildId != "569683781800296501") { return null }
     //   if (baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 6).toLowerCase() !== "(cost)" && baseName.trim().substring(0, 7).toLowerCase() !== "(co-st)") {
     //     await respond(msg, "```Only Storytellers and Co-Storytellers can apply a follow between players.```")
     //     return null
@@ -1695,7 +1695,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258") {
         return null
       }
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
@@ -1766,7 +1766,7 @@ client.on('messageCreate',
         return null;
       }
       channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; i++) {
+      for (var j = 0; j < tmp.length; j++) {
         let minc = 0;
         let mini = channels.get(tmp[0]).position;
         for (var i = 1; i < tmp.length; i++) {
@@ -1842,7 +1842,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258") {
         return null
       }
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
@@ -1881,7 +1881,7 @@ client.on('messageCreate',
       channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === ChannelType.GuildVoice);
       let tmp = Array.from(channels.keys());
       channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; i++) {
+      for (var j = 0; j < tmp.length; j++) {
         let minc = 0;
         let mini = channels.get(tmp[0]).position;
         for (var i = 1; i < tmp.length; i++) {
@@ -1926,7 +1926,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258") {
         return null
       }
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
@@ -1955,7 +1955,7 @@ client.on('messageCreate',
       town = channels.get(mc);
       let tmp = Array.from(channels.keys());
       channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; i++) {
+      for (var j = 0; j < tmp.length; j++) {
         let minc = 0;
         let mini = channels.get(tmp[0]).position;
         for (var i = 1; i < tmp.length; i++) {
@@ -1999,7 +1999,7 @@ client.on('messageCreate',
         await respond(msg, "```Already in the process of moving, please wait :D```")
         return null
       }
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "569683781800296501" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939") {
 
         return null
       }
@@ -2037,7 +2037,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "569683781800296501" && msg.guild.id != "996462531038171136" && msg.guild.id != "1102746173120462939" && msg.guild.id != "1462191765263224957" && msg.guild.id != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1462191765263224957" && msg.guildId != "1395748840228917258") {
 
         return null
       }
@@ -2252,7 +2252,7 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
-      if (msg.guild.id != "569683781800296501")
+      if (msg.guildId != "569683781800296501")
           return null;
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
         await respond(msg, "```Only Storytellers and Staff can use this command```")
@@ -2283,7 +2283,7 @@ client.on('messageCreate',
       await respond(msg, "```Player moved to AFK channel```")
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*setrole ") {
-      if (msg.guild.id != "840323781066489946") {
+      if (msg.guildId != "840323781066489946") {
         return null;
       }
       if (baseName.toLowerCase().trim().charAt(0) === "!" || baseName.toLowerCase().trim().substring(0, 4) === "(st)" || baseName.toLowerCase().trim().substring(0, 6) === "(cost)" || baseName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
@@ -2293,21 +2293,21 @@ client.on('messageCreate',
       }
       let rol = msg.content.trim().substring(9);
       for (var i = 0; i < pinfo.length; i++) {
-        if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guild.id) {
+        if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guildId) {
           pinfo[i][2] = rol;
           return null;
         }
       }
-      pinfo.push([msg.author.username, msg.guild.id, rol, "undefined"]);
+      pinfo.push([msg.author.username, msg.guildId, rol, "undefined"]);
       await respond(msg, "```Role set```");
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*getrole ") {
-      if (msg.guild.id != "840323781066489946") {
+      if (msg.guildId != "840323781066489946") {
         return null;
       }
       let rol = msg.mentions.users.values().next().value;
       for (var i = 0; i < pinfo.length; i++) {
-        if (pinfo[i][0] == rol.username && pinfo[i][1] == msg.guild.id) {
+        if (pinfo[i][0] == rol.username && pinfo[i][1] == msg.guildId) {
           await respond(msg, "**" + rol.username + "**\n**- Role: **" + pinfo[i][2]);
           return null;
         }
@@ -2315,7 +2315,7 @@ client.on('messageCreate',
       await respond(msg, "**" + rol.username + "**\n**- Role: **undefined.");
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*setinfo ") {
-      if (msg.guild.id != "840323781066489946") {
+      if (msg.guildId != "840323781066489946") {
         return null;
       }
       if (baseName.toLowerCase().trim().charAt(0) === "!" || baseName.toLowerCase().trim().substring(0, 4) === "(st)" || baseName.toLowerCase().trim().substring(0, 6) === "(cost)" || baseName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
@@ -2325,16 +2325,16 @@ client.on('messageCreate',
       }
       let rol = msg.content.trim().substring(9);
       for (var i = 0; i < pinfo.length; i++) {
-        if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guild.id) {
+        if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guildId) {
           pinfo[i][3] = rol;
           return null;
         }
       }
-      pinfo.push([msg.author.username, msg.guild.id, "undefined", rol]);
+      pinfo.push([msg.author.username, msg.guildId, "undefined", rol]);
       await respond(msg, "```Information set```");
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*addinfo ") {
-      if (msg.guild.id != "840323781066489946") {
+      if (msg.guildId != "840323781066489946") {
         return null;
       }
       if (baseName.toLowerCase().trim().charAt(0) === "!" || baseName.toLowerCase().trim().substring(0, 4) === "(st)" || baseName.toLowerCase().trim().substring(0, 6) === "(cost)" || baseName.toLowerCase().trim().substring(0, 7) === "(co-st)") {
@@ -2344,7 +2344,7 @@ client.on('messageCreate',
       }
       let rol = msg.content.trim().substring(9);
       for (var i = 0; i < pinfo.length; i++) {
-        if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guild.id) {
+        if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guildId) {
           if (pinfo[i][3] != "undefined") {
             pinfo[i][3] += rol;
           }
@@ -2354,16 +2354,16 @@ client.on('messageCreate',
           return null;
         }
       }
-      pinfo.push([msg.author.username, msg.guild.id, "undefined", rol]);
+      pinfo.push([msg.author.username, msg.guildId, "undefined", rol]);
       await respond(msg, "```Information added```");
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*getinfo ") {
-      if (msg.guild.id != "840323781066489946") {
+      if (msg.guildId != "840323781066489946") {
         return null;
       }
       let rol = msg.mentions.users.values().next().value;
       for (var i = 0; i < pinfo.length; i++) {
-        if (pinfo[i][0] == rol.username && pinfo[i][1] == msg.guild.id) {
+        if (pinfo[i][0] == rol.username && pinfo[i][1] == msg.guildId) {
           await respond(msg, "**" + rol.username + "**\n**- Role: **" + pinfo[i][2] + "\n**- Info: **" + pinfo[i][3]);
           return null;
         }
@@ -2371,13 +2371,13 @@ client.on('messageCreate',
       await respond(msg, "**" + rol.username + "**\n**- Role: **undefined.\n**- Info: **undefined.");
     }
     else if (msg.content.trim().toLowerCase() === "*roundrobin" || msg.content.trim().toLowerCase() === "*rr") {
-      if (msg.guild.id != "840323781066489946") {
+      if (msg.guildId != "840323781066489946") {
         return null;
       }
       let txt = "**Round Robin:**\n";
       let c = 0;
       for (var i = 0; i < pinfo.length; i++) {
-        if (pinfo[i][1] == msg.guild.id && pinfo[i][2] != "undefined") {
+        if (pinfo[i][1] == msg.guildId && pinfo[i][2] != "undefined") {
           txt += "**" + pinfo[i][0] + ":** " + pinfo[i][2] + "\n";
           c += 1;
         }
@@ -3243,7 +3243,7 @@ client.on('messageCreate',
       await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1375077292270813305/image.png?ex=68437dc6&is=68422c46&hm=bc94292358a827db3eb56973ca72a2a97245f0b764b9e31b15e776ef00ad2536&");
     }
     else if (msg.content.trim().toLowerCase() === "*stguide" || msg.content.trim().toLowerCase() === "*st-guide") {
-      if (msg.guild.id != "569683781800296501") {
+      if (msg.guildId != "569683781800296501") {
         return null
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/851568034182725673/1375230629263835278/Overtalking_Final.jpg?ex=684363d4&is=68421254&hm=9697df98f628916037519385d06b81a7d19692fb78f55925222f2011f987e341&");
@@ -3347,7 +3347,7 @@ client.on('messageCreate',
       await respond(msg, "```arm\nNine my beloved 😈\n```")
     }
     else if (msg.content.trim().toLowerCase().substring(0, 4) === "*sp " || msg.content.trim().toLowerCase().substring(0, 12) === "*secretpoll ") {
-      if (msg.guild.id != "840323781066489946" && msg.guild.id != "569683781800296501" && msg.guild.id != "930132389592715274" && msg.guild.id != "996462531038171136") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "930132389592715274" && msg.guildId != "996462531038171136") {
         return null
       }
       ops = msg.content.trim().split(" ")
@@ -3362,7 +3362,7 @@ client.on('messageCreate',
         return null
       }
       if (ops.length == 1) {
-        if (msg.guild.id == "569683781800296501") {
+        if (msg.guildId == "569683781800296501") {
           await respond(msg, "```Not enough options```")
           return null
         }
@@ -3513,12 +3513,12 @@ client.on('messageCreate',
         }
         if (fnd != -1) {
           grim_links[fnd] = msg.content.trim().substring(6)
-          grim_servs[fnd] = msg.guild.id
+          grim_servs[fnd] = msg.guildId
         }
         else {
           grim_setters.push(msg.member)
           grim_links.push(msg.content.trim().substring(6))
-          grim_servs.push(msg.guild.id)
+          grim_servs.push(msg.guildId)
         }
         for (var i = 0; i < grim_links.length; i++) {
           for (var j = i + 1; j < grim_links.length; j++) {
@@ -3549,7 +3549,7 @@ client.on('messageCreate',
         //   return null
         // }
         grim_setter = msg.author.username
-        grim_serv = msg.guild.id
+        grim_serv = msg.guildId
         await respond(msg, "```Grim link " + msg.content.trim().substring(6) + " added by " + baseName + "\nPlayers can get the link by using the command *grim```")
       }
 
@@ -3564,12 +3564,12 @@ client.on('messageCreate',
       else {
         let rep = ""
         for (var i = 0; i < grim_links.length; i++) {
-          // if (grim_servs[i] == msg.guild.id) {
+          // if (grim_servs[i] == msg.guildId) {
           rep += "-> Grim link provided by " + grim_setters[i].displayName + ":\n"
           rep += "<" + grim_links[i] + ">\n"
           // }
         }
-        // if (grim_serv == msg.guild.id) {
+        // if (grim_serv == msg.guildId) {
         rep += "-> Grim link provided by " + grim_setter + ":\n"
         rep += "<" + grim_link + ">\n"
         // }
@@ -3588,12 +3588,12 @@ client.on('messageCreate',
       else {
         let rep = ""
         for (var i = 0; i < grim_links.length; i++) {
-          if (grim_servs[i] == msg.guild.id) {
+          if (grim_servs[i] == msg.guildId) {
             rep += "-> Grim link provided by " + grim_setters[i].displayName + ":\n"
             rep += "<" + grim_links[i] + ">\n"
           }
         }
-        if (grim_serv == msg.guild.id) {
+        if (grim_serv == msg.guildId) {
           rep += "-> Grim link provided by " + grim_setter + ":\n"
           rep += "<" + grim_link + ">\n"
         }
@@ -3625,12 +3625,12 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*help") {
       await respond(msg, "```The list of commands has been sent to you in a direct message.```")
-      if (msg.guild.id === "569683781800296501") {
+      if (msg.guildId === "569683781800296501") {
         await msg_author(msg, helptxt)
         await msg_author(msg, helptxt2)
         await msg_author(msg, helptxt3)
       }
-      else if (msg.guild.id === "840323781066489946") {
+      else if (msg.guildId === "840323781066489946") {
         await msg_author(msg, helptxt_ecg)
         await msg_author(msg, helptxt_ecg2)
         await msg_author(msg, helptxt_ecg3)
@@ -3676,12 +3676,12 @@ client.on('messageCreate',
         }
         if (fnd != -1) {
           grim_links[fnd] = thelink
-          grim_servs[fnd] = msg.guild.id
+          grim_servs[fnd] = msg.guildId
         }
         else {
           grim_setters.push(msg.member)
           grim_links.push(thelink)
-          grim_servs.push(msg.guild.id)
+          grim_servs.push(msg.guildId)
         }
         for (var i = 0; i < grim_links.length; i++) {
           for (var j = i + 1; j < grim_links.length; j++) {
@@ -3787,7 +3787,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*ma" || msg.content.trim().toLowerCase() === "*muteall" || msg.content.trim().toLowerCase() === "*mute-all" || msg.content.trim().toLowerCase() === "*mute all") {
       try {
-        if (msg.guild.id != "840323781066489946") {
+        if (msg.guildId != "840323781066489946") {
           return null
         }
         else if (baseName.trim().length >= 4 &&
@@ -3816,7 +3816,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*uma" || msg.content.trim().toLowerCase() === "*unmuteall" || msg.content.trim().toLowerCase() === "*unmute-all" || msg.content.trim().toLowerCase() === "*umute all") {
       try {
-        if (msg.guild.id != "840323781066489946") {
+        if (msg.guildId != "840323781066489946") {
           return null
         }
         let cid = msg.member.voice.channel
@@ -3833,7 +3833,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase() === "*um" || msg.content.trim().toLowerCase() === "*unmute") {
       try {
-        if (msg.guild.id != "840323781066489946") {
+        if (msg.guildId != "840323781066489946") {
           return null
         }
         msg.member.voice.setMute(false);
@@ -3845,7 +3845,7 @@ client.on('messageCreate',
       await respond(msg, "**<[=+----+={ Travellers Guide }=+----+=]>**\n**Travelers** are a special type of roles given to players who join the game late or have to leave it before it finishes. Typically powerful, their alignment (Good/Evil) is decided by the Storyteller as soon as they join.\n**If Evil**, they learn who the demon is, Evil players do **not learn** if the traveler is evil.\nA traveler cannot be **executed** instead they are **exiled**; Once per day any player, dead or alive, can call for the exile of the traveler, **all players** whether alive, dead or without a dead vote can still vote on the exile, dead votes are not spent when dead players vote on the exile. The majority required is relative to the number of all players, not just the alive ones.")
     }
     else if (msg.content.trim().toLowerCase() === "*feedback") {
-      if (msg.guild.id !== "569683781800296501") {
+      if (msg.guildId !== "569683781800296501") {
         return null
       }
       await respond(msg, "Leave your feedback for the Storyteller by filling the following form:\n<https://docs.google.com/forms/d/e/1FAIpQLSduvl3LXwlenwc-uomQhiMY4iKOtjvSEF4jVezQMJGvATltQQ/viewform>")
@@ -3865,7 +3865,7 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*test2") {
-      if (msg.guild.id != "886493912506716190") {
+      if (msg.guildId != "886493912506716190") {
         return null;
       }
       const strole = await msg.guild.roles.cache.get("1005037278751621131");
