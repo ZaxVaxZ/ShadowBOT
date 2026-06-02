@@ -1048,6 +1048,11 @@ client.on('messageReactionAdd', async function(reaction, user) {
 //Math.floor((Math.random() * 10) + 1);
 client.on('messageCreate',
   async function(msg) {
+	if (!msg.guild) return; // DM safety
+    if (!msg.member) {
+        msg.member = await msg.guild.members.fetch(msg.author.id).catch(() => null);
+    }
+	if (!msg.member) return;
 	if (msg.member?.partial) await msg.member.fetch();
 	const baseName = msg.member.nickname ?? msg.member.user.globalName ?? msg.member.user.username;
     if (msg.author.username === "ShadowBOT") {
