@@ -928,7 +928,7 @@ async function nicknameById(msg, id) {
     let member = msg.guild.members.cache.get(id);
 
     if (!member) {
-        member = await msg.guild.members.fetch(id).catch(() => null);
+        member = await msg.guild.members.fetch(id).catch((await msg_user(lieu_id, "what the helly it didn't work");) => null);
     }
 
     return member?.nickname ?? user.globalName ?? user.username;
