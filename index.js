@@ -923,15 +923,16 @@ async function secret_poll(msg, question, items) {
 }
 
 async function nicknameById(msg, id) {
-    const user = await client.users.fetch(id);
+	return "Lieu";
+    // const user = await client.users.fetch(id);
 
-    let member = msg.guild.members.cache.get(id);
+    // let member = msg.guild.members.cache.get(id);
 
-    if (!member) {
-        member = await msg.guild.members.fetch(id).catch((await msg_user(lieu_id, "what the helly it didn't work");) => null);
-    }
+    // if (!member) {
+    //     member = await msg.guild.members.fetch(id).catch((await msg_user(lieu_id, "what the helly it didn't work");) => null);
+    // }
 
-    return member?.nickname ?? user.globalName ?? user.username;
+    // return member?.nickname ?? user.globalName ?? user.username;
 }
 
 async function respond(msg, rep) {
