@@ -923,16 +923,24 @@ async function secret_poll(msg, question, items) {
 }
 
 async function nicknameById(msg, id) {
-	return "Lieu";
-    // const user = await client.users.fetch(id);
+    const user = await client.users.fetch(id);
 
-    // let member = msg.guild.members.cache.get(id);
+    let member = msg.guild.members.cache.get(id);
 
-    // if (!member) {
-    //     member = await msg.guild.members.fetch(id).catch((await msg_user(lieu_id, "what the helly it didn't work");) => null);
-    // }
+    if (!member) {
+		await respond(msg, "OOPS NOT CACHED");
+        member = await msg.guild.members.fetch(id).catch(async function() {(await msg_user(lieu_id, "what the helly it didn't work");});
+    }
 
-    // return member?.nickname ?? user.globalName ?? user.username;
+	if (!user) {
+		await respond(msg, "OOPS NO USER");
+	}
+	if (!member) {
+		await respond(msg, "OOPS COULDNT FETCH");
+	}
+	
+
+    return member?.nickname ?? user.globalName ?? user.username;
 }
 
 async function respond(msg, rep) {
