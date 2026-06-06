@@ -929,7 +929,7 @@ async function nicknameById(msg, id) {
 
     if (!member) {
 		await respond(msg, "OOPS NOT CACHED");
-        member = await msg.guild.members.fetch(id).catch(async function() {(await msg_user(lieu_id, "what the helly it didn't work");});
+        member = await msg.guild.members.fetch(id).catch(async (err) => {await msg_user(lieu_id, "what the helly it didn't work: " + err.message); return null;});
     }
 
 	if (!user) {
