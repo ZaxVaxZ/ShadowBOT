@@ -928,19 +928,10 @@ async function nicknameById(msg, id) {
     let member = msg.guild.members.cache.get(id);
 
     if (!member) {
-		await respond(msg, "OOPS NOT CACHED");
-        member = await msg.guild.members.fetch(id).catch(async (err) => {await msg_user(lieu_id, "what the helly it didn't work: " + err.message); return null;});
+        member = await msg.guild.members.fetch(id).catch(async (err) => {await msg_user(lieu_id, "what the helly nicknameById didn't work: " + err.message); return null;});
     }
 
-	if (!user) {
-		await respond(msg, "OOPS NO USER");
-	}
-	if (!member) {
-		await respond(msg, "OOPS COULDNT FETCH");
-	}
-	
-
-    return member?.nickname ?? user.globalName ?? user.username;
+    return member?.nickname ?? user.globalName ?? user.username ?? "Unknown User";
 }
 
 async function respond(msg, rep) {
@@ -1624,7 +1615,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_insult = rnd
-      await respond(msg, "*" + await nicknameById(target.id) + compliments[rnd]);
+      await respond(msg, "*" + await nicknameById(msg, target.id) + compliments[rnd]);
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*compliment ") {
       let target = msg.mentions.users.first()
@@ -1651,7 +1642,7 @@ client.on('messageCreate',
         rnd = Math.floor(Math.random() * compliments.length)
       }
       last_compliment = rnd
-      await respond(msg, "*" + await nicknameById(target.id) + compliments[rnd])
+      await respond(msg, "*" + await nicknameById(msg, target.id) + compliments[rnd])
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*complinent ") {
       if (msg.author.username.toLowerCase() !== "zaba" && msg.author.username.toLowerCase() !== "greg") {
