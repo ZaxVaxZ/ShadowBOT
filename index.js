@@ -923,9 +923,15 @@ async function secret_poll(msg, question, items) {
 }
 
 async function nicknameById(msg, id) {
-	const user = await client.users.fetch(id);
-	const memb = await msg.guild.members.cache.get(id);
-	return (memb.nickname ?? user.globalName ?? user.username);
+    const user = await client.users.fetch(id);
+
+    let member = msg.guild.members.cache.get(id);
+
+    if (!member) {
+        member = await msg.guild.members.fetch(id).catch(() => null);
+    }
+
+    return member?.nickname ?? user.globalName ?? user.username;
 }
 
 async function respond(msg, rep) {
@@ -1700,7 +1706,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258" && msg.guildId != "1150494520815910932") {
         return null
       }
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
@@ -1847,7 +1853,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1395748840228917258" && msg.guildId != "1150494520815910932") {
         return null
       }
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && baseName.trim().substring(0, 4).toLowerCase() !== "[st]") {
@@ -2042,7 +2048,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1462191765263224957" && msg.guildId != "1395748840228917258") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1462191765263224957" && msg.guildId != "1395748840228917258" && msg.guildId != "1150494520815910932") {
 
         return null
       }
