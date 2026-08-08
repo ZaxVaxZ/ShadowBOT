@@ -1645,7 +1645,7 @@ client.on('messageCreate',
       await respond(msg, "*" + await nicknameById(msg, target.id) + compliments[rnd])
     }
     else if (msg.content.trim().substring(0, 12).toLowerCase() === "*complinent ") {
-      if (msg.author.username.toLowerCase() !== "zaba" && msg.author.username.toLowerCase() !== "greg") {
+      if (msg.author.id != "950609031393849445" && msg.author.username.toLowerCase() !== "greg") {
         return null
       }
       let target = msg.mentions.users.first()
@@ -2411,19 +2411,19 @@ client.on('messageCreate',
       await respond(msg, txt)
     }
     else if (msg.content.trim().toLowerCase() === "*paper") {
-      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "659428807005962242" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/973703468093173810/1002806322271637554/unknown.png")
     }
     else if (msg.content.trim().toLowerCase() === "*paper2" || msg.content.trim().toLowerCase() === "*papercut") {
-      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "659428807005962242" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://cdn.discordapp.com/attachments/973703468093173810/1002813151051522128/unknown.png")
     }
     else if (msg.content.trim().toLowerCase() === "*paper3" || msg.content.trim().toLowerCase() === "*papers") {
-      if (msg.author.username.toLowerCase() !== "papermaniac" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "659428807005962242" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```I would suggest not executing paper here. Paper is 100% on the good team and she would be an awful kill for town. Also, paper can hard confirm herself good. 🙂```")
@@ -2462,7 +2462,7 @@ client.on('messageCreate',
       await respond(msg, res);
     }
     else if (msg.content.trim().toLowerCase() === "*bri" || msg.content.trim().toLowerCase() === "*bribold" || msg.content.trim().toLowerCase() === "*bribold1") {
-      if (msg.author.username.toLowerCase() !== "bribold1" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "400452577893941280" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```Sadie's evil so bribold1 can't be evil that's just basic math```")
@@ -3173,7 +3173,7 @@ client.on('messageCreate',
       await respond(msg, jinxes)
     }
     else if (msg.content.trim().toLowerCase() === "*grammar" || msg.content.trim().toLowerCase() === "*grammarguru") {
-      if (msg.author.username.toLowerCase() !== "grammarguru" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "700081497159368757" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "Grammar is a Sweetheart!")
@@ -3304,55 +3304,49 @@ client.on('messageCreate',
       await respond(msg, "**Rules for Whale Buffet by papermaniac**\n-------------------------------------------\n1- No Heretic, Atheist, Philosopher, Pit Hag, Engineer, Wraith, Cacklejack (traveler)\n2- Lord of Typhon makes an evil Marionette next to you\n3- Anyone can be the Drunk, the Lunatic, or the Marionette (don't pick those)\n4- Ignore the Magician and Legion jinx\n5- Only minions can pick Summoner (I will turn the demon into the Lunatic. Yes, this can break the Sentinel rule)\n6- If you pick Kazali, you learn which minion is which minion type\n7- If you pick Baron, it will add an additional drunk\n-------------------------------------------\n");
 	}
     else if (msg.content.trim().toLowerCase() === "*kaz") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "410937807239118861" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://tenor.com/view/kaz-sh1g30-gif-21992868")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz2") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "410937807239118861" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-2.discordapp.net/external/B1fOrR4Uljv4SxEMzM2xSmL1XRmho93qO52kYoyKITM/https/ih1.redbubble.net/image.3303932569.5693/poster%2C504x498%2Cf8f8f8-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz3") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "410937807239118861" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-2.discordapp.net/external/jeaqVEpmnK7_N5VvpuRNc2R8ZSq1ZiJzSuaO6e4xeX0/https/ih1.redbubble.net/image.3303847371.3570/poster%2C504x498%2Cf8f8f8-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz4") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "410937807239118861" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-2.discordapp.net/external/E-EdVgW1Z2U5vHYfvfHd58fyS9IRQQbr9viH8bMTo4A/https/c4.wallpaperflare.com/wallpaper/878/833/189/death-rape-meme-sadist-murder-kill-duck-uncle-dolan-1920x1080-animals-ducks-hd-art-wallpaper-preview.jpg")
     }
     else if (msg.content.trim().toLowerCase() === "*kaz5") {
-      if (msg.author.username.toLowerCase() !== "kaz" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "410937807239118861" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://images-ext-1.discordapp.net/external/jr2tAq3yURR5WuxUWXT7CIRrX7rMozLKR_s2PV5EwyA/%3Fr%3DgUndpoJwOFKb3jMbEgFLXRCAuhBvB8HFxTgwMUdTJLBf5EAZjfpKrsyDM3QqGW2-IvmuckiOdujod1nmio2qtIxEDCp800AYklghHuAr6NXHiVz9q0fF4kpKDLdv2v1dO5CzZV_Ae6LZXiHwKRnza9TOS2Tmg78wphlPEvzUIQ0i-jamgHT0TXVo8LA/https/fsb.zobj.net/crop.php?width=233&height=473")
     }
     else if (msg.content.trim().toLowerCase() === "*blue") {
-      if (msg.author.username.toLowerCase() !== "blue" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "112024212725620736" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "https://tenor.com/view/blue-da-ba-dee-eiffel65-gif-14330492")
     }
-    else if (msg.content.trim().toLowerCase() === "*raving") {
-      if (msg.author.username.toLowerCase() !== "ravinglunatic" && msg.author.id !== lieu_id) {
-        return null
-      }
-      await respond(msg, "https://tenor.com/view/james-acaster-bakeoff-james-acaster-bon-appetit-gif-14643809")
-    }
     else if (msg.content.trim().toLowerCase() === "*nine") {
-      if (msg.author.username.toLowerCase() !== "nine" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "908814031870119978" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```arm\nNine could never be the demon 😌\n```")
     }
     else if (msg.content.trim().toLowerCase() === "*9") {
-      if (msg.author.username.toLowerCase() !== "nine" && msg.author.id !== lieu_id) {
+      if (msg.author.id != "908814031870119978" && msg.author.id !== lieu_id) {
         return null
       }
       await respond(msg, "```arm\nNine my beloved 😈\n```")
