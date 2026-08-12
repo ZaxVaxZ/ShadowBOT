@@ -468,9 +468,46 @@ async function connectToGame(gameUrl) {
             try {
                 const message = JSON.parse(data.toString());
                 const [type, payload] = message;
-
+				let script = "Custom Script ✨";
+				if (type === 'edition') {
+					let sid = '';
+                    sid = payload["edition"]["id"];
+					if (sid == "tb")
+						script = "Trouble Brewing 🫟";
+					else if (sid == "bmr")
+						script = "Bad Moon Rising 🌙";
+					else if (sid == "snv")
+						script = "Sects & Violets 🌸";
+					else if (sid == "custom") {
+						let sname = payload["edition"]["name"];
+						let sauth = payload["edition"]["author"];
+						if (sname) {
+							script = sname + " ✨";
+						}
+						if (sauth) {
+							script += " by " + sauth;
+						}
+					}
+                }
                 if (type === 'gs') {
-                    resolve(gameUrl + ': ' + JSON.stringify(payload));
+					let players = payload["gamestate"];
+					let cnt = players.length;
+					let alive = 0;
+					let dead = 0;
+					let travs = 0;
+					for (let i = 0; i < players.length; i++) {
+						if (players[i]["isDead"])
+							dead++;
+						else
+							alive++;
+						if (players[i]["roleId"])
+							travs++;
+					}
+					let resp += '- <' + gameUrl + '> - ' + script + "\n";
+					resp += cnt + " players: " + alive + " alive, " + dead + " dead";
+					if (travs > 0)
+						resp += ", " + travs + "travellers";
+                    resolve(resp);
 
                     // We're done with this socket.
                     ws.close();
@@ -3374,7 +3411,7 @@ client.on('messageCreate',
           await respond(msg, "```No links to a grim have been detected.```")
           return null
         }
-	  let rep = "";
+	  let rep = "**Monitoring the following games:**\n";
       for (let id = 0; id < games.length; id++) {
 		rep += await connectToGame(games[id]);
 	  }
