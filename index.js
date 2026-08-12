@@ -503,7 +503,7 @@ async function connectToGame(gameUrl) {
 						if (players[i]["roleId"])
 							travs++;
 					}
-					let resp += '- <' + gameUrl + '> - ' + script + "\n";
+					let resp = '- <' + gameUrl + '> - ' + script + "\n";
 					resp += cnt + " players: " + alive + " alive, " + dead + " dead";
 					if (travs > 0)
 						resp += ", " + travs + "travellers";
