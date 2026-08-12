@@ -3356,12 +3356,11 @@ client.on('messageCreate',
         await respond(msg, "```No links to a grim have been detected.```")
 		  return null;
       }
-      else {
-        let games = [];
-        for (let i = 0; i < grim_links.length; i++) {
-          if (grim_servs[i] == msg.guildId && grim_links[i].includes(".live")) {
-            games.push_back(grim_links[i]);
-          }
+	  let games = [];
+      for (let i = 0; i < grim_links.length; i++) {
+        if (grim_servs[i] == msg.guildId && grim_links[i].includes(".live")) {
+          games.push_back(grim_links[i]);
+        }
       }
       if (games.length == 0) {
           await respond(msg, "```No links to a grim have been detected.```")
