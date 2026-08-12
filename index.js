@@ -506,9 +506,9 @@ async function connectToGame(gameUrl) {
 					let resp = '- <' + gameUrl + '> - ' + script + "\n";
 					resp += cnt + " players: " + alive + " alive, " + dead + " dead";
 					if (travs == 1)
-						resp += ", " + travs + " traveller";
+						resp += " [1 is a traveller]";
 					else if (travs > 1)
-						resp += ", " + travs + " travellers";
+						resp += " [" + travs + " are travellers]";
                     resolve(resp);
 
                     // We're done with this socket.
