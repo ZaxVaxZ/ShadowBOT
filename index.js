@@ -464,11 +464,11 @@ async function connectToGame(gameUrl) {
             ]));
         });
 
+		let script = "Custom Script ✨";
         ws.on('message', data => {
             try {
                 const message = JSON.parse(data.toString());
                 const [type, payload] = message;
-				let script = "Custom Script ✨";
 				if (type === 'edition') {
 					let sid = '';
                     sid = payload["edition"]["id"];
@@ -505,8 +505,10 @@ async function connectToGame(gameUrl) {
 					}
 					let resp = '- <' + gameUrl + '> - ' + script + "\n";
 					resp += cnt + " players: " + alive + " alive, " + dead + " dead";
-					if (travs > 0)
-						resp += ", " + travs + "travellers";
+					if (travs == 1)
+						resp += ", " + travs + " traveller";
+					else if (travs > 1)
+						resp += ", " + travs + " travellers";
                     resolve(resp);
 
                     // We're done with this socket.
