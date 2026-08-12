@@ -8,6 +8,9 @@ const {
 	Partials
   } = require('discord.js');
 const https = require("https");
+const WebSocket = require('ws');
+const crypto = require('crypto');
+
 // const Database = require("@replit/database");
 // const db = new Database();
 // const repl = require('repl')
@@ -366,7 +369,7 @@ async function scripts_to_txt(teensy, page) {
     scrarr = Array.from(Object.keys(scripts));
   }
   let line = "";
-  for (var i = (page - 1) * 10; i < Math.min((page - 1) * 10 + 10, arr.length); i++) {
+  for (let i = (page - 1) * 10; i < Math.min((page - 1) * 10 + 10, arr.length); i++) {
     // txt += i+1 +"- "+dict[arr[i]]+"\n";
     line = "";
     if (teensy) {
@@ -437,6 +440,48 @@ function createTimer(time) {
 
 }
 
+async function connectToGame(gameUrl) {
+	const session = new URL(gameUrl).hash.substring(1);
+	const playerId = `spy_${crypto.randomBytes(4).toString('hex')}`;
+	
+	const ws = new WebSocket(
+	    `wss://live.clocktower.online:8080/${session}/${playerId}`,
+	    {
+	        rejectUnauthorized: false,
+	        headers: {
+	            Origin: 'https://clocktower.online'
+	        }
+	    }
+	);
+	
+	ws.on('open', () => {
+	    ws.send(JSON.stringify([
+	        'direct',
+	        {
+	            host: ['getGamestate', playerId]
+	        }
+	    ]));
+	});
+	
+	ws.on('message', data => {
+	    try {
+	        const message = JSON.parse(data.toString());
+	        const [type, payload] = message;
+	        if (type === 'gs') {
+	            ws.close();
+				return gameUrl + ": " + JSON.stringify(payload);
+	        }
+	    } catch {
+	        return "";
+	    }
+	});
+	
+	ws.on('close', () => {
+		// Closing remarks
+	});
+	return "";
+}
+
 async function find_consult(msg, categoryid) {
   let channels = await msg.guild.channels.cache.filter(c => c.parentId == categoryid && c.type === ChannelType.GuildVoice);
   for (const [channelID, channel] of channels) {
@@ -467,7 +512,7 @@ async function txt_compare(s1, s2) {
     // }
     // msg_user(lieu_id,"TC1");
     let k = 0;
-    for (var i = 0; i < s1.length && k < s2.length; i++) {
+    for (let i = 0; i < s1.length && k < s2.length; i++) {
       if (s1[i] == s2[k]) {
         k += 1;
         c += 1;
@@ -480,10 +525,10 @@ async function txt_compare(s1, s2) {
     let tem = s1.length;
     let mintem = s1.length;
     k = 0;
-    for (var i = 0; i < s1.length && k < s2.length; i++) {
+    for (let i = 0; i < s1.length && k < s2.length; i++) {
       if (s1[i] == s2[k]) {
         tem -= 1;
-        for (var j = k + 1; j < s2.length; j++) {
+        for (let j = k + 1; j < s2.length; j++) {
           if (i + j - k >= s1.length) {
             break;
           }
@@ -508,7 +553,7 @@ async function txt_compare(s1, s2) {
     }
     // msg_user(lieu_id,"TC2");
     let k = 0;
-    for (var i = 0; i < s2.length && k < s1.length; i++) {
+    for (let i = 0; i < s2.length && k < s1.length; i++) {
 
       if (s2[i] == s1[k]) {
         k += 1;
@@ -522,10 +567,10 @@ async function txt_compare(s1, s2) {
     let tem = s1.length;
     let mintem = s1.length;
     k = 0;
-    for (var i = 0; i < s2.length && k < s1.length; i++) {
+    for (let i = 0; i < s2.length && k < s1.length; i++) {
       if (s2[i] == s1[k]) {
         tem -= 1;
-        for (var j = k + 1; j < s1.length; j++) {
+        for (let j = k + 1; j < s1.length; j++) {
           if (i + j - k >= s2.length) {
             break;
           }
@@ -545,7 +590,7 @@ async function txt_compare(s1, s2) {
   }
   else {
     // msg_user(lieu_id,"TC3");
-    for (var i = 0; i < s1.length; i++) {
+    for (let i = 0; i < s1.length; i++) {
       // msg_user(lieu_id,s1[i] + " " + s2[i]);
       if (s1[i] == s2[i]) {
         c += 1;
@@ -558,7 +603,7 @@ async function txt_compare(s1, s2) {
 
 async function only_letters(s) {
   var s2 = (' ' + s).slice(1);
-  for (var i = 0; i < s2.length; i++) {
+  for (let i = 0; i < s2.length; i++) {
     if (s2.charCodeAt(i) < 65 || (s2.charCodeAt(i) > 90 && s2.charCodeAt(i) < 97) || s2.charCodeAt(i) > 122) {
       s2 = s2.slice(0, i) + s2.slice(i + 1, s2.length);
       i -= 1;
@@ -571,7 +616,7 @@ async function match_role(name, json, id_match = false) {
   let n = await only_letters(name.trim().toLowerCase());
   let mii = 0;
   let mix = -1;
-  for (var i = 0; i < json.length; i++) {
+  for (let i = 0; i < json.length; i++) {
     let nn = await only_letters(json[i][id_match ? "id" : "name"].trim().toLowerCase());
     let vv = await txt_compare(n, nn);
     if (mix == -1) {
@@ -607,7 +652,7 @@ log(member.displayName.trim().toLowerCase()+","+ name.trim().toLowerCase())*/
 
 async function first_word(text) {
   let txt = "";
-  for (var i = 0; i < text.length; i++) {
+  for (let i = 0; i < text.length; i++) {
     if ((text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90) || (text.charCodeAt(i) >= 97 && text.charCodeAt(i) <= 122)) {
       txt += text[i];
     }
@@ -702,7 +747,7 @@ async function ping_players(name, channel) {
   if (channel) {
     txt += "**Channel:** " + channel.name + "\n"
   }
-  for (var i = 0; i < next_game.length; i++) {
+  for (let i = 0; i < next_game.length; i++) {
     txt += "<@" + next_game[i] + "> "
   }
   next_game = []
@@ -728,21 +773,21 @@ async function respolld(msg, custom = false, homebrew = false, selection = []) {
   }
   else {
     cx = 0
-    for (var i = 0; i < selection.length; i++) {
+    for (let i = 0; i < selection.length; i++) {
       if (selection[i] == 1) {
         cx += 1
         desc += "**" + cx + "- **Trouble Brewing\n"
         break
       }
     }
-    for (var i = 0; i < selection.length; i++) {
+    for (let i = 0; i < selection.length; i++) {
       if (selection[i] == 2) {
         cx += 1
         desc += "**" + cx + "- **Sects & Violets\n"
         break
       }
     }
-    for (var i = 0; i < selection.length; i++) {
+    for (let i = 0; i < selection.length; i++) {
       if (selection[i] == 3) {
         cx += 1
         desc += "**" + cx + "- **Bad Moon Rising\n"
@@ -780,7 +825,7 @@ async function respolld(msg, custom = false, homebrew = false, selection = []) {
   // )
   await msg.reply({ embeds: [rep] }).then(async function(msg) {
     let nummojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
-    for (var i = 1; i <= cx; i++) {
+    for (let i = 1; i <= cx; i++) {
       await msg.react(nummojis[i - 1]);
       await new Promise(r => setTimeout(r, 100));
     }
@@ -809,7 +854,7 @@ async function secret_poll(msg, question, items) {
   let desc = "**[]=+---+={ Secret Poll }=+---+=[]**\n\n"
   let cx = 0
   if (hp) {
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       cx += 1
       if (cx > 10) {
         desc += items[i] + " "
@@ -826,7 +871,7 @@ async function secret_poll(msg, question, items) {
   else {
     cx = 0
     desc += "**" + question + "**\n"
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       cx += 1
       if (cx > 10) {
         desc += items[i] + " "
@@ -847,11 +892,11 @@ async function secret_poll(msg, question, items) {
   await msg.reply({ embeds: [rep] }).then(async function(msg2) {
     let nummojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
     reacts = []
-    for (var i = 1; i <= cx; i++) {
+    for (let i = 1; i <= cx; i++) {
       await msg2.react(nummojis[i - 1])
       reacts.push([nummojis[i - 1]])
     }
-    for (var i = 0; i < secret_polls.length; i++) {
+    for (let i = 0; i < secret_polls.length; i++) {
       if (secret_polls[i][1] == msg.author.username) {
         secret_polls.splice(i, 1)
         break
@@ -1025,7 +1070,7 @@ client.on('messageReactionAdd', async function(reaction, user) {
   
   // let mem = reaction.message.guild.members.cache().find(user.id)
   let poll = -1
-  for (var i = 0; i < secret_polls.length; i++) {
+  for (let i = 0; i < secret_polls.length; i++) {
     if (secret_polls[i][0] == reaction.message.id) {
       poll = i
       break
@@ -1035,9 +1080,9 @@ client.on('messageReactionAdd', async function(reaction, user) {
     return
   }
   reaction.message.reactions.resolve(reaction.emoji.name).users.remove(user.id);
-  for (var i = 0; i < secret_polls[poll][2].length; i++) {
+  for (let i = 0; i < secret_polls[poll][2].length; i++) {
     if (secret_polls[poll][2][i][0] != reaction.emoji.name) {
-      for (var j = 1; j < secret_polls[poll][2][i].length; j++) {
+      for (let j = 1; j < secret_polls[poll][2][i].length; j++) {
         if (secret_polls[poll][2][i][j] == user.username) {
           secret_polls[poll][2][i].splice(j, 1)
           break
@@ -1371,7 +1416,7 @@ client.on('messageCreate',
         return null
       }
       let txt = "Players currently waiting for next game:\n"
-      for (var i = 0; i < next_game.length; i++) {
+      for (let i = 0; i < next_game.length; i++) {
         let usr = client.users.cache.find(user => user.id === next_game[i])
         if (!usr) { continue }
         txt += usr.username
@@ -1385,7 +1430,7 @@ client.on('messageCreate',
       if (msg.guildId !== "569683781800296501") {
         return null
       }
-      for (var i = 0; i < next_game.length; i++) {
+      for (let i = 0; i < next_game.length; i++) {
         if (next_game[i] == msg.author.id) {
           await msg_author(msg, "```You are already in the ping list for next game```")
           await new Promise(r => setTimeout(r, 1000));
@@ -1402,7 +1447,7 @@ client.on('messageCreate',
       if (msg.guildId !== "569683781800296501") {
         return null
       }
-      for (var i = 0; i < next_game.length; i++) {
+      for (let i = 0; i < next_game.length; i++) {
         if (next_game[i] == msg.author.id) {
           next_game.splice(i, 1)
           i--
@@ -1556,7 +1601,7 @@ client.on('messageCreate',
         return null
       }
       let rep = "";
-      for (var i = 0; i < medic[msg.author.username].length; i++) {
+      for (let i = 0; i < medic[msg.author.username].length; i++) {
         if (stdic[medic[msg.author.username][i].user.username] != msg.author.username) {
           medic[msg.author.username].splice(i, 1)
           i--
@@ -1663,7 +1708,7 @@ client.on('messageCreate',
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*vote ") {
       let name = msg.content.trim().substring(6)
       let fnd = -1
-      for (var i = 0; i < nicks.length; i++) {
+      for (let i = 0; i < nicks.length; i++) {
         if (nicks[i][0] == msg.author.username) {
           fnd = i
           break
@@ -1677,7 +1722,7 @@ client.on('messageCreate',
       await msg.delete().catch(e => { msg_user(lieu_id, "" + e); })
     }
     else if (msg.content.trim().toLowerCase() === "*unvote") {
-      for (var i = 0; i < nicks.length; i++) {
+      for (let i = 0; i < nicks.length; i++) {
         if (nicks[i][0] == msg.author.username) {
           await rename(msg, nicks[i][1]);
           nicks.splice(i, 1)
@@ -1756,15 +1801,15 @@ client.on('messageCreate',
         }
       }
       // let txt = "Storytellers: ";
-      // for (var i = 0; i < sts.length; i++) {
+      // for (let i = 0; i < sts.length; i++) {
       //   txt += sts[i].displayName + " "
       // }
       // txt += "\nPlayers: "
-      // for (var i = 0; i < players.length; i++) {
+      // for (let i = 0; i < players.length; i++) {
       //   txt += players[i].displayName + " "
       // }
       // txt += "\nSpectators: "
-      // for (var i = 0; i < spects.length; i++) {
+      // for (let i = 0; i < spects.length; i++) {
       //   txt += spects[i].displayName + " "
       // }
       // txt += "\n"
@@ -1777,10 +1822,10 @@ client.on('messageCreate',
         return null;
       }
       channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; j++) {
+      for (let j = 0; j < tmp.length; j++) {
         let minc = 0;
         let mini = channels.get(tmp[0]).position;
-        for (var i = 1; i < tmp.length; i++) {
+        for (let i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
           if (xc < mini) {
             minc = i;
@@ -1798,7 +1843,7 @@ client.on('messageCreate',
         start = 2;
       }
       let mpc = 0;
-      for (var i = 0; i < spects.length; i++) {
+      for (let i = 0; i < spects.length; i++) {
         await spects[i].voice.setChannel(spechan.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) });
         mpc += 1;
         // responding = false;
@@ -1810,7 +1855,7 @@ client.on('messageCreate',
           // responding = true;
         }
       }
-      for (var i = 0; i < sts.length; i++) {
+      for (let i = 0; i < sts.length; i++) {
         await sts[i].voice.setChannel(stchan.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) });
         mpc += 1;
         // responding = false;
@@ -1823,8 +1868,8 @@ client.on('messageCreate',
         }
       }
       let membarr = null;
-      for (var q = 0; q < players.length; q++) {
-        for (var i = start; i < channelsarr.length; i++) {
+      for (let q = 0; q < players.length; q++) {
+        for (let i = start; i < channelsarr.length; i++) {
           membarr = Array.from(channels.get(channelsarr[i]).members.keys());
           if (membarr.length == 0) {
             await players[q].voice.setChannel(channelsarr[i]).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) });
@@ -1880,7 +1925,7 @@ client.on('messageCreate',
       channelsarr = Array.from(channels.keys());
       let mc = channelsarr[0];
       let mic = channels.get(mc).position;
-      for (var i = 1; i < channelsarr.length; i++) {
+      for (let i = 1; i < channelsarr.length; i++) {
         if (channels.get(channelsarr[i]).position < mic) {
           mic = channels.get(channelsarr[i]).position;
           mc = channelsarr[i];
@@ -1892,10 +1937,10 @@ client.on('messageCreate',
       channels = await msg.guild.channels.cache.filter(c => c.parentId === night.id && c.type === ChannelType.GuildVoice);
       let tmp = Array.from(channels.keys());
       channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; j++) {
+      for (let j = 0; j < tmp.length; j++) {
         let minc = 0;
         let mini = channels.get(tmp[0]).position;
-        for (var i = 1; i < tmp.length; i++) {
+        for (let i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
           if (xc == mini) {
             msg_user(lieu_id, "WOOPS");
@@ -1910,10 +1955,10 @@ client.on('messageCreate',
       }
       let membarr = null;
       let mvc = 0;
-      for (var i = 0; i < channelsarr.length; i++) {
+      for (let i = 0; i < channelsarr.length; i++) {
         membarr = Array.from(channels.get(channelsarr[i]).members.keys());
         // msg_user(lieu_id,i+", "+membarr);
-        for (var j = 0; j < membarr.length; j++) {
+        for (let j = 0; j < membarr.length; j++) {
           await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```\n\n" + e) });
           mvc += 1;
           // responding = false;
@@ -1957,7 +2002,7 @@ client.on('messageCreate',
       channelsarr = Array.from(channels.keys());
       let mc = channelsarr[0];
       let mic = channels.get(mc).position;
-      for (var i = 1; i < channelsarr.length; i++) {
+      for (let i = 1; i < channelsarr.length; i++) {
         if (channels.get(channelsarr[i]).position < mic) {
           mic = channels.get(channelsarr[i]).position;
           mc = channelsarr[i];
@@ -1966,10 +2011,10 @@ client.on('messageCreate',
       town = channels.get(mc);
       let tmp = Array.from(channels.keys());
       channelsarr.length = 0;
-      for (var j = 0; j < tmp.length; j++) {
+      for (let j = 0; j < tmp.length; j++) {
         let minc = 0;
         let mini = channels.get(tmp[0]).position;
-        for (var i = 1; i < tmp.length; i++) {
+        for (let i = 1; i < tmp.length; i++) {
           xc = channels.get(tmp[i]).position;
           if (xc == mini) {
             msg_user(lieu_id, "WOOPS");
@@ -1984,10 +2029,10 @@ client.on('messageCreate',
       }
       let membarr = null;
       let mvc = 0;
-      for (var i = 0; i < channelsarr.length; i++) {
+      for (let i = 0; i < channelsarr.length; i++) {
         membarr = Array.from(channels.get(channelsarr[i]).members.keys());
         // msg_user(lieu_id,i+", "+membarr);
-        for (var j = 0; j < membarr.length; j++) {
+        for (let j = 0; j < membarr.length; j++) {
           await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```\n\n" + e) });
           mvc += 1;
           // responding = false;
@@ -2065,7 +2110,7 @@ client.on('messageCreate',
       }
       let time = msg.content.trim().substring(7)
       let crt = 0;
-      for (var i = 0; i < time.length; i++) {
+      for (let i = 0; i < time.length; i++) {
         if (time.charCodeAt(i) < 48 || time.charCodeAt(i) > 57) {
           if (time[i] != ".") {
             await respond(msg, "```The command must be followed by the number of minutes in the range:\n0.5, 1, 1.5, ... , 9.5, 10```")
@@ -2210,10 +2255,10 @@ client.on('messageCreate',
       }
       // let membarr = null;
       // let mvc = 0;
-      // for (var i = 0; i < channelsarr.length; i++) {
+      // for (let i = 0; i < channelsarr.length; i++) {
       //   membarr = Array.from(channels.get(channelsarr[i]).members.keys());
       //   // msg_user(lieu_id,i+", "+membarr);
-      //   for (var j = 0; j < membarr.length; j++) {
+      //   for (let j = 0; j < membarr.length; j++) {
       //     await channels.get(channelsarr[i]).members.get(membarr[j]).voice.setChannel(town.id).catch(async function(e) { msg_user(lieu_id,"```An Error has occured while using the command```\n\n" + e) });
       //     mvc += 1;
       //     responding = false;
@@ -2237,7 +2282,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().toLowerCase().substring(0, 8) === "*results") {
       let poll = -1
-      for (var i = 0; i < secret_polls.length; i++) {
+      for (let i = 0; i < secret_polls.length; i++) {
         if (secret_polls[i][1] == msg.author.username) {
           poll = i
           break
@@ -2248,9 +2293,9 @@ client.on('messageCreate',
         return null
       }
       let results = "**The results to the poll:**\n" + secret_polls[poll][3] + "\n--------------------\n"
-      for (var i = 0; i < secret_polls[poll][2].length; i++) {
+      for (let i = 0; i < secret_polls[poll][2].length; i++) {
         results += "**" + (secret_polls[poll][2][i].length - 1) + " People reacted to " + secret_polls[poll][2][i][0] + ":**\n"
-        for (var j = 1; j < secret_polls[poll][2][i].length; j++) {
+        for (let j = 1; j < secret_polls[poll][2][i].length; j++) {
           results += secret_polls[poll][2][i][j] + "\n"
         }
       }
@@ -2303,7 +2348,7 @@ client.on('messageCreate',
         return null;
       }
       let rol = msg.content.trim().substring(9);
-      for (var i = 0; i < pinfo.length; i++) {
+      for (let i = 0; i < pinfo.length; i++) {
         if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guildId) {
           pinfo[i][2] = rol;
           return null;
@@ -2317,7 +2362,7 @@ client.on('messageCreate',
         return null;
       }
       let rol = msg.mentions.users.first()
-      for (var i = 0; i < pinfo.length; i++) {
+      for (let i = 0; i < pinfo.length; i++) {
         if (pinfo[i][0] == rol.username && pinfo[i][1] == msg.guildId) {
           await respond(msg, "**" + rol.username + "**\n**- Role: **" + pinfo[i][2]);
           return null;
@@ -2335,7 +2380,7 @@ client.on('messageCreate',
         return null;
       }
       let rol = msg.content.trim().substring(9);
-      for (var i = 0; i < pinfo.length; i++) {
+      for (let i = 0; i < pinfo.length; i++) {
         if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guildId) {
           pinfo[i][3] = rol;
           return null;
@@ -2354,7 +2399,7 @@ client.on('messageCreate',
         return null;
       }
       let rol = msg.content.trim().substring(9);
-      for (var i = 0; i < pinfo.length; i++) {
+      for (let i = 0; i < pinfo.length; i++) {
         if (pinfo[i][0] == msg.author.username && pinfo[i][1] == msg.guildId) {
           if (pinfo[i][3] != "undefined") {
             pinfo[i][3] += rol;
@@ -2373,7 +2418,7 @@ client.on('messageCreate',
         return null;
       }
       let rol = msg.mentions.users.first()
-      for (var i = 0; i < pinfo.length; i++) {
+      for (let i = 0; i < pinfo.length; i++) {
         if (pinfo[i][0] == rol.username && pinfo[i][1] == msg.guildId) {
           await respond(msg, "**" + rol.username + "**\n**- Role: **" + pinfo[i][2] + "\n**- Info: **" + pinfo[i][3]);
           return null;
@@ -2387,7 +2432,7 @@ client.on('messageCreate',
       }
       let txt = "**Round Robin:**\n";
       let c = 0;
-      for (var i = 0; i < pinfo.length; i++) {
+      for (let i = 0; i < pinfo.length; i++) {
         if (pinfo[i][1] == msg.guildId && pinfo[i][2] != "undefined") {
           txt += "**" + pinfo[i][0] + ":** " + pinfo[i][2] + "\n";
           c += 1;
@@ -2405,7 +2450,7 @@ client.on('messageCreate',
         return null;
       }
       let txt = "Queue:\n"
-      for (var i = 0; i < next_game.length; i++) {
+      for (let i = 0; i < next_game.length; i++) {
         txt += next_game[i] + ","
       }
       await respond(msg, txt)
@@ -2502,7 +2547,7 @@ client.on('messageCreate',
         return null
       }
       let fnd = -1
-      for (var i = 0; i < nicks.length; i++) {
+      for (let i = 0; i < nicks.length; i++) {
         if (nicks[i][0] == msg.author.username) {
           fnd = i
           break
@@ -2519,7 +2564,7 @@ client.on('messageCreate',
       if (msg.author.username.toLowerCase() !== "hauptmann24" && msg.author.id !== lieu_id) {
         return null
       }
-      for (var i = 0; i < nicks.length; i++) {
+      for (let i = 0; i < nicks.length; i++) {
         if (nicks[i][0] == msg.author.username) {
           await rename(msg, nicks[i][1]);
           nicks.splice(i, 1)
@@ -2534,7 +2579,7 @@ client.on('messageCreate',
         baseName.trim().toLowerCase().indexOf("(n)") > -1) {
         let nick = baseName;
         let q = 0;
-        for (var i = 0; i < nick.length; i++) {
+        for (let i = 0; i < nick.length; i++) {
           if (nick[i] == "[" || nick[i] == "(") {
             q = 1;
           }
@@ -2602,7 +2647,7 @@ client.on('messageCreate',
     else if (msg.content.trim().toLowerCase().substring(0, 7) === "*get t ") {
       var rest = msg.content.trim().toLowerCase().substring(7)
       var tmp = ""
-      for (var i = 0; i < rest.length; i++) {
+      for (let i = 0; i < rest.length; i++) {
         if (rest.charCodeAt(i) < 48 || rest.charCodeAt(i) > 57) {
           await respond(msg, "```Please type a positive integer for the script id```")
           return null
@@ -2623,7 +2668,7 @@ client.on('messageCreate',
     else if (msg.content.trim().toLowerCase().substring(0, 5) === "*get ") {
       var rest = msg.content.trim().toLowerCase().substring(5)
       var tmp = ""
-      for (var i = 0; i < rest.length; i++) {
+      for (let i = 0; i < rest.length; i++) {
         if (rest.charCodeAt(i) < 48 || rest.charCodeAt(i) > 57) {
           await respond(msg, "```Please type a positive integer for the script id```")
           return null
@@ -2645,7 +2690,7 @@ client.on('messageCreate',
       var txt = ""
       if (msg.content.trim().indexOf(" ") > -1) {
         var tmp = ""
-        for (var i = msg.content.trim().indexOf(" ") + 1; i < msg.content.length; i++) {
+        for (let i = msg.content.trim().indexOf(" ") + 1; i < msg.content.length; i++) {
           if (msg.content.charCodeAt(i) < 48 || msg.content.charCodeAt(i) > 57) {
             await respond(msg, "```Please type a positive integer for the page number```")
             return null
@@ -2668,7 +2713,7 @@ client.on('messageCreate',
       var txt = ""
       if (msg.content.trim().indexOf(" ") > -1) {
         var tmp = ""
-        for (var i = msg.content.trim().indexOf(" ") + 1; i < msg.content.length; i++) {
+        for (let i = msg.content.trim().indexOf(" ") + 1; i < msg.content.length; i++) {
           if (msg.content.charCodeAt(i) < 48 || msg.content.charCodeAt(i) > 57) {
             await respond(msg, "```Please type a positive integer for the page number```")
             return null
@@ -3204,7 +3249,7 @@ client.on('messageCreate',
       }).catch(async function(err) { await respond(msg, "```Error while creating town```") })
       await new Promise(r => setTimeout(r, 250));
       await msg.guild.channels.create(tn + " Cottages", { type: "GUILD_CATEGORY" }).then(async function(CategoryChannel) {
-        for (var i = 0; i < 20; i++) {
+        for (let i = 0; i < 20; i++) {
           await msg.guild.channels.create('Cottage ' + (i + 1), { type: ChannelType.GuildVoice, parent: CategoryChannel }).catch(async function(err) { await respond(msg, "```Error while creating cottage " + (i + 1) + "```") })
           await new Promise(r => setTimeout(r, 500));
         }
@@ -3303,6 +3348,31 @@ client.on('messageCreate',
 	else if (msg.content.trim().toLowerCase() === "*wbr") {
       await respond(msg, "**Rules for Whale Buffet by papermaniac**\n-------------------------------------------\n1- No Heretic, Atheist, Philosopher, Pit Hag, Engineer, Wraith, Cacklejack (traveler)\n2- Lord of Typhon makes an evil Marionette next to you\n3- Anyone can be the Drunk, the Lunatic, or the Marionette (don't pick those)\n4- Ignore the Magician and Legion jinx\n5- Only minions can pick Summoner (I will turn the demon into the Lunatic. Yes, this can break the Sentinel rule)\n6- If you pick Kazali, you learn which minion is which minion type\n7- If you pick Baron, it will add an additional drunk\n-------------------------------------------\n");
 	}
+    else if (msg.content.trim().toLowerCase() === "*spy") {
+      if (msg.guildId !== "569683781800296501") {
+        return null
+      }
+	  if (grim_link == -1 && grim_links.length == 0) {
+        await respond(msg, "```No links to a grim have been detected.```")
+		  return null;
+      }
+      else {
+        let games = [];
+        for (let i = 0; i < grim_links.length; i++) {
+          if (grim_servs[i] == msg.guildId && grim_links[i].includes(".live")) {
+            games.push_back(grim_links[i]);
+          }
+      }
+      if (games.length == 0) {
+          await respond(msg, "```No links to a grim have been detected.```")
+          return null
+        }
+	  let rep = "";
+      for (let id = 0; id < games.length; id++) {
+		rep += await connectToGame(games[id]);
+	  }
+      await respond(msg, rep);
+    }
     else if (msg.content.trim().toLowerCase() === "*kaz") {
       if (msg.author.id != "410937807239118861" && msg.author.id !== lieu_id) {
         return null
@@ -3393,7 +3463,7 @@ client.on('messageCreate',
         let txt = msg.content.trim().substring(msg.content.trim().indexOf(" ") + 1)
         let tmp = ""
         let open = false
-        for (var i = 0; i < txt.length; i++) {
+        for (let i = 0; i < txt.length; i++) {
           if (txt[i] == "\"") {
             open = !open
             if (!open && question.length == 0 && tmp.length > 0) {
@@ -3505,7 +3575,7 @@ client.on('messageCreate',
         grim_setter = -1
         grim_serv = -1
         let fnd = -1
-        for (var i = 0; i < grim_setters.length; i++) {
+        for (let i = 0; i < grim_setters.length; i++) {
           if (grim_setters[i].user.username === msg.author.username) {
             fnd = i
           }
@@ -3525,8 +3595,8 @@ client.on('messageCreate',
           grim_links.push(msg.content.trim().substring(6))
           grim_servs.push(msg.guildId)
         }
-        for (var i = 0; i < grim_links.length; i++) {
-          for (var j = i + 1; j < grim_links.length; j++) {
+        for (let i = 0; i < grim_links.length; i++) {
+          for (let j = i + 1; j < grim_links.length; j++) {
             if (grim_links[i] == grim_links[j] && grim_servs[i] == grim_servs[j]) {
               grim_links.splice(i, 1)
               grim_setters.splice(i, 1)
@@ -3542,7 +3612,7 @@ client.on('messageCreate',
       }
       else {
         x = msg.content.trim().substring(6)
-        for (var i = 0; i < grim_links.length; i++) {
+        for (let i = 0; i < grim_links.length; i++) {
           if (grim_links[i] == x) {
             // return null
           }
@@ -3568,7 +3638,7 @@ client.on('messageCreate',
       }
       else {
         let rep = ""
-        for (var i = 0; i < grim_links.length; i++) {
+        for (let i = 0; i < grim_links.length; i++) {
           // if (grim_servs[i] == msg.guildId) {
           rep += "-> Grim link provided by " + grim_setters[i].displayName + ":\n"
           rep += "<" + grim_links[i] + ">\n"
@@ -3592,7 +3662,7 @@ client.on('messageCreate',
       }
       else {
         let rep = ""
-        for (var i = 0; i < grim_links.length; i++) {
+        for (let i = 0; i < grim_links.length; i++) {
           if (grim_servs[i] == msg.guildId) {
             rep += "-> Grim link provided by " + grim_setters[i].displayName + ":\n"
             rep += "<" + grim_links[i] + ">\n"
@@ -3612,7 +3682,7 @@ client.on('messageCreate',
     else if (msg.content.trim().toLowerCase() === "*report") {
       if (msg.author.id === lieu_id) {
         var rep = "Report:\n"
-        for (var key in medic) {
+        for (let key in medic) {
           if (medic[key] !== undefined) {
             if (medic[key] == -1) {
               rep += "- " + key + ": Do Not Disturb\n"
@@ -3620,7 +3690,7 @@ client.on('messageCreate',
           }
         }
         rep += "\n"
-        for (var key in stdic) {
+        for (let key in stdic) {
           if (stdic[key] !== undefined) {
             rep += "- " + key + ": Shadowing " + stdic[key] + "\n"
           }
@@ -3656,7 +3726,7 @@ client.on('messageCreate',
       else {
         // msg_user(lieu_id,"CAUGHT ST LINK");
         thelink = ""
-        for (var i = msg.content.trim().toLowerCase().indexOf("https://clocktower."); i < msg.content.trim().length; i++) {
+        for (let i = msg.content.trim().toLowerCase().indexOf("https://clocktower."); i < msg.content.trim().length; i++) {
           if (msg.content.trim()[i] == " ") {
             break
           }
@@ -3668,7 +3738,7 @@ client.on('messageCreate',
         grim_serv = -1
         // }
         let fnd = -1
-        for (var i = 0; i < grim_setters.length; i++) {
+        for (let i = 0; i < grim_setters.length; i++) {
           if (grim_setters[i].user.username === msg.author.username) {
             fnd = i
           }
@@ -3688,8 +3758,8 @@ client.on('messageCreate',
           grim_links.push(thelink)
           grim_servs.push(msg.guildId)
         }
-        for (var i = 0; i < grim_links.length; i++) {
-          for (var j = i + 1; j < grim_links.length; j++) {
+        for (let i = 0; i < grim_links.length; i++) {
+          for (let j = i + 1; j < grim_links.length; j++) {
             if (grim_links[i] === grim_links[j]) {
               grim_links.splice(i, 1)
               grim_setters.splice(i, 1)
@@ -3861,7 +3931,7 @@ client.on('messageCreate',
       if (msg.author.id != lieu_id) {
         return null;
       }
-      for (var i = 1; i <= 25; i++) {
+      for (let i = 1; i <= 25; i++) {
         await send_message(msg, "test " + i);
         await new Promise(r => setTimeout(r, 200));
         if (i % 5 == 0) {
@@ -3919,7 +3989,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     {
       let movs = 0;
       var specs = medic[newState.member.user.username]
-      for (var i = 0; i < specs.length; i++) {
+      for (let i = 0; i < specs.length; i++) {
         if (stdic[specs[i].user.username] == newState.member.user.username)//(Object.keys(stdic).indexOf(specs[i].user.username) != -1 && stdic[specs[i].user.username] == newState.member.user.username)
         {
           if (specs[i].displayName.charAt(0) != '!' && specs[i].displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && specs[i].displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && specs[i].displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)" && specs[i].user.id != "297585199519105024") {
@@ -3962,13 +4032,13 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     // }
   }
   if (newState.channelId === null) {
-    for (var i = 0; i < pinfo.length; i++) {
+    for (let i = 0; i < pinfo.length; i++) {
       if (newState.member.user.username === pinfo[i][0] && newState.member.guild.id === pinfo[i][1]) {
         pinfo.splice(i, 1);
         i--;
       }
     }
-    for (var i = 0; i < grim_setters.length; i++) {
+    for (let i = 0; i < grim_setters.length; i++) {
       if (newState.member.user.username === grim_setters[i].user.username) {
         // grim_setter = grim_setters[i]
         // grim_link = grim_links[i]
@@ -3982,7 +4052,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
     if (medic[newState.member.user.username] !== undefined && medic[newState.member.user.username] != -1)//(Object.keys(medic).indexOf(newState.member.user.username) != -1)
     {
       var specs = medic[newState.member.user.username]
-      for (var i = 0; i < specs.length; i++) {
+      for (let i = 0; i < specs.length; i++) {
         if (stdic[specs[i].user.username] == newState.member.user.username) {
           delete stdic[specs[i].user.username]
         }
@@ -4000,7 +4070,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
     return null
   }
   if (oldMember.displayName.trim().charAt(0) != '!' && newMember.displayName.trim().charAt(0) == '!') {
-    for (var i = 0; i < pinfo.length; i++) {
+    for (let i = 0; i < pinfo.length; i++) {
       if (pinfo[i][0] == newMember.user.username && pinfo[i][1] == newMember.guild.id) {
         pinfo.splice(i, 1);
         i--;
@@ -4023,7 +4093,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
       delete stdic[newMember.user.username]
     } //tofix: comment out part below
     // if (oldMember.displayName.trim().substring(0, 4).toLowerCase() === "(st)" && newMember.displayName.trim().substring(0, 4).toLowerCase() !== "(st)") {
-    //   for (var i = 0; i < grim_setters.length; i++) {
+    //   for (let i = 0; i < grim_setters.length; i++) {
     //     if (grim_setters[i].user.username === oldMember.user.username) {
     //       grim_setters.splice(i, 1)
     //       grim_links.splice(i, 1)
@@ -4087,7 +4157,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
         if (newMember.voice.channel) {
           txt += "**Channel:** " + newMember.voice.channel.name + "\n"
         }
-        for (var i = 0; i < next_game.length; i++) {
+        for (let i = 0; i < next_game.length; i++) {
           txt += "<@" + next_game[i] + "> "
         }
         next_game = []
@@ -4098,7 +4168,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
       }
     }
     if ((oldMember.displayName.trim().substring(0, 4).toLowerCase() === "(st)" || oldMember.displayName.trim().substring(0, 6).toLowerCase() === "(cost)" || oldMember.displayName.trim().substring(0, 7).toLowerCase() === "(co-st)") && (newMember.displayName.trim().substring(0, 4).toLowerCase() !== "(st)" && newMember.displayName.trim().substring(0, 6).toLowerCase() !== "(cost)" && newMember.displayName.trim().substring(0, 7).toLowerCase() !== "(co-st)")) {
-      for (var i = 0; i < grim_setters.length; i++) {
+      for (let i = 0; i < grim_setters.length; i++) {
         if (grim_setters[i].user.username === oldMember.user.username) {
           grim_setters.splice(i, 1)
           grim_links.splice(i, 1)
