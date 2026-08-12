@@ -3359,7 +3359,7 @@ client.on('messageCreate',
 	  let games = [];
       for (let i = 0; i < grim_links.length; i++) {
         if (grim_servs[i] == msg.guildId && grim_links[i].includes(".live")) {
-          games.push_back(grim_links[i]);
+          games.push(grim_links[i]);
         }
       }
       if (games.length == 0) {
@@ -3756,6 +3756,7 @@ client.on('messageCreate',
           grim_setters.push(msg.member)
           grim_links.push(thelink)
           grim_servs.push(msg.guildId)
+		 
         }
         for (let i = 0; i < grim_links.length; i++) {
           for (let j = i + 1; j < grim_links.length; j++) {
