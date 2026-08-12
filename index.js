@@ -441,45 +441,53 @@ function createTimer(time) {
 }
 
 async function connectToGame(gameUrl) {
-	const session = new URL(gameUrl).hash.substring(1);
-	const playerId = `spy_${crypto.randomBytes(4).toString('hex')}`;
-	
-	const ws = new WebSocket(
-	    `wss://live.clocktower.online:8080/${session}/${playerId}`,
-	    {
-	        rejectUnauthorized: false,
-	        headers: {
-	            Origin: 'https://clocktower.online'
-	        }
-	    }
-	);
-	
-	ws.on('open', () => {
-	    ws.send(JSON.stringify([
-	        'direct',
-	        {
-	            host: ['getGamestate', playerId]
-	        }
-	    ]));
-	});
-	
-	ws.on('message', data => {
-	    try {
-	        const message = JSON.parse(data.toString());
-	        const [type, payload] = message;
-	        if (type === 'gs') {
-	            ws.close();
-				return gameUrl + ": " + JSON.stringify(payload);
-	        }
-	    } catch {
-	        return "";
-	    }
-	});
-	
-	ws.on('close', () => {
-		// Closing remarks
-	});
-	return "";
+    const session = new URL(gameUrl).hash.substring(1);
+    const playerId = `spy_${crypto.randomBytes(4).toString('hex')}`;
+
+    return new Promise((resolve, reject) => {
+        const ws = new WebSocket(
+            `wss://clocktower.live:8001/${session}/${playerId}`,
+            {
+                rejectUnauthorized: false,
+                headers: {
+                    Origin: 'https://clocktower.live'
+                }
+            }
+        );
+
+        ws.on('open', () => {
+            ws.send(JSON.stringify([
+                'direct',
+                {
+                    host: ['getGamestate', playerId]
+                }
+            ]));
+        });
+
+        ws.on('message', data => {
+            try {
+                const message = JSON.parse(data.toString());
+                const [type, payload] = message;
+
+                if (type === 'gs') {
+                    resolve(gameUrl + ': ' + JSON.stringify(payload));
+
+                    // We're done with this socket.
+                    ws.close();
+                }
+            } catch (err) {
+                // Ignore messages that aren't valid JSON.
+            }
+        });
+
+        ws.on('error', err => {
+            reject(err);
+        });
+
+        ws.on('close', () => {
+            // Socket has closed.
+        });
+    });
 }
 
 async function find_consult(msg, categoryid) {
