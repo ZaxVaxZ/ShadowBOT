@@ -98,6 +98,7 @@ var grim_setter = -1
 var grim_servs = []
 var grim_links = []
 var grim_setters = []
+var grim_channel = []
 
 var next_game = []
 
@@ -440,7 +441,7 @@ function createTimer(time) {
 
 }
 
-async function connectToGame(gameUrl) {
+async function connectToGame(gameUrl, gameChannel) {
     const session = new URL(gameUrl).hash.substring(1);
     const playerId = `spy_${crypto.randomBytes(4).toString('hex')}`;
 
@@ -503,7 +504,7 @@ async function connectToGame(gameUrl) {
 						if (players[i]["roleId"])
 							travs++;
 					}
-					let resp = '- <' + gameUrl + '> - ' + script + "\n";
+					let resp = '- <#' + gameChannel + '>\n<' + gameUrl + '> - ' + script + "\n";
 					resp += cnt + " players: " + alive + " alive, " + dead + " dead";
 					if (travs == 1)
 						resp += " [1 is a traveller]";
@@ -3406,7 +3407,7 @@ client.on('messageCreate',
 	  let games = [];
       for (let i = 0; i < grim_links.length; i++) {
         if (grim_servs[i] == msg.guildId && grim_links[i].includes(".live")) {
-          games.push(grim_links[i]);
+          games.push(i);
         }
       }
       if (games.length == 0) {
@@ -3415,7 +3416,7 @@ client.on('messageCreate',
         }
 	  let rep = "**Monitoring the following games:**\n";
       for (let id = 0; id < games.length; id++) {
-		rep += await connectToGame(games[id]);
+		rep += await connectToGame(grim_links[games[id]], grim_channel[games[id]]);
 	  }
       await respond(msg, rep);
     }
@@ -3629,17 +3630,20 @@ client.on('messageCreate',
             grim_links.splice(i, 1)
             grim_setters.splice(i, 1)
             grim_servs.splice(i, 1)
+			grim_channel.splice(i, 1)
             i--
           }
         }
         if (fnd != -1) {
           grim_links[fnd] = msg.content.trim().substring(6)
           grim_servs[fnd] = msg.guildId
+		  grim_channel[fnd] = msg.channelId
         }
         else {
           grim_setters.push(msg.member)
           grim_links.push(msg.content.trim().substring(6))
           grim_servs.push(msg.guildId)
+		  grim_channel.push(msg.channelId)
         }
         for (let i = 0; i < grim_links.length; i++) {
           for (let j = i + 1; j < grim_links.length; j++) {
@@ -3647,6 +3651,7 @@ client.on('messageCreate',
               grim_links.splice(i, 1)
               grim_setters.splice(i, 1)
               grim_servs.splice(i, 1)
+			  grim_channel.splice(i, 1)
               i--
             }
           }
@@ -3687,12 +3692,12 @@ client.on('messageCreate',
         for (let i = 0; i < grim_links.length; i++) {
           // if (grim_servs[i] == msg.guildId) {
           rep += "-> Grim link provided by " + grim_setters[i].displayName + ":\n"
-          rep += "<" + grim_links[i] + ">\n"
+          rep += "<" + grim_links[i] + "> - <#" + grim_channel[i] + ">\n"
           // }
         }
         // if (grim_serv == msg.guildId) {
-        rep += "-> Grim link provided by " + grim_setter + ":\n"
-        rep += "<" + grim_link + ">\n"
+		rep += "-> Grim link provided by " + grim_setter + ":\n"
+		rep += "<" + grim_link + ">\n"
         // }
         if (rep.length == 0) {
           await respond(msg, "```No links to a grim are currently added.\nUsers can add a link to a grim as such:\n*grim <link>```")
@@ -3702,7 +3707,6 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase() === "*grim" || msg.content.trim().toLowerCase() === "*link") {
-
       if (grim_link == -1 && grim_links.length == 0) {
         await respond(msg, "```No links to a grim are currently added.\nUsers can add a link to a grim as such:\n*grim <link>```")
       }
@@ -3711,7 +3715,7 @@ client.on('messageCreate',
         for (let i = 0; i < grim_links.length; i++) {
           if (grim_servs[i] == msg.guildId) {
             rep += "-> Grim link provided by " + grim_setters[i].displayName + ":\n"
-            rep += "<" + grim_links[i] + ">\n"
+            rep += "<" + grim_links[i] + "> - <#" + grim_channel[i] + ">\n"
           }
         }
         if (grim_serv == msg.guildId) {
@@ -3792,18 +3796,20 @@ client.on('messageCreate',
             grim_links.splice(i, 1)
             grim_setters.splice(i, 1)
             grim_servs.splice(i, 1)
+		    grim_channel.splice(i, 1)
             i--
           }
         }
         if (fnd != -1) {
           grim_links[fnd] = thelink
           grim_servs[fnd] = msg.guildId
+		  grim_channel[fnd] = msg.channelId
         }
         else {
           grim_setters.push(msg.member)
           grim_links.push(thelink)
           grim_servs.push(msg.guildId)
-		 
+		  grim_channel.push(msg.channelId)
         }
         for (let i = 0; i < grim_links.length; i++) {
           for (let j = i + 1; j < grim_links.length; j++) {
@@ -3811,6 +3817,7 @@ client.on('messageCreate',
               grim_links.splice(i, 1)
               grim_setters.splice(i, 1)
               grim_servs.splice(i, 1)
+			  grim_channel.splice(i, 1)
               i--
             }
           }
@@ -4092,6 +4099,7 @@ client.on('voiceStateUpdate', async function(oldState, newState) {
         grim_setters.splice(i, 1)
         grim_links.splice(i, 1)
         grim_servs.splice(i, 1)
+		grim_channel.splice(i, 1)
         break
       }
     }
@@ -4220,6 +4228,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
           grim_setters.splice(i, 1)
           grim_links.splice(i, 1)
           grim_servs.splice(i, 1)
+		  grim_channel.splice(i, 1)
           i--
         }
       }
