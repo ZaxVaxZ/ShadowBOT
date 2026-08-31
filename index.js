@@ -113,6 +113,9 @@ var pinfo = []
 var st_list = []
 var stlc = 0;
 
+const moonsties_id = "1273651260003844108";
+const shovel_id = "1146523171999207465";
+
 var comps = [[3, 0, 1, 1],
 [3, 1, 1, 1],
 [5, 0, 1, 1],
@@ -2141,7 +2144,7 @@ client.on('messageCreate',
         return null
       }
       // return null
-      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1462191765263224957" && msg.guildId != "1395748840228917258" && msg.guildId != "1150494520815910932") {
+      if (msg.guildId != "840323781066489946" && msg.guildId != "569683781800296501" && msg.guildId != "996462531038171136" && msg.guildId != "1102746173120462939" && msg.guildId != "1462191765263224957" && msg.guildId != "1395748840228917258" && msg.guildId != "1150494520815910932" && msg.guildId != moonsties_id && msg.guildId != shovel_id) {
 
         return null
       }
@@ -3397,9 +3400,6 @@ client.on('messageCreate',
       await respond(msg, "**Rules for Whale Buffet by papermaniac**\n-------------------------------------------\n1- No Heretic, Atheist, Philosopher, Pit Hag, Engineer, Wraith, Cacklejack (traveler)\n2- Lord of Typhon makes an evil Marionette next to you\n3- Anyone can be the Drunk, the Lunatic, or the Marionette (don't pick those)\n4- Ignore the Magician and Legion jinx\n5- Only minions can pick Summoner (I will turn the demon into the Lunatic. Yes, this can break the Sentinel rule)\n6- If you pick Kazali, you learn which minion is which minion type\n7- If you pick Baron, it will add an additional drunk\n-------------------------------------------\n");
 	}
     else if (msg.content.trim().toLowerCase() === "*spy") {
-      if (msg.guildId !== "569683781800296501") {
-        return null
-      }
 	  if (grim_link == -1 && grim_links.length == 0) {
         await respond(msg, "```No links to a grim have been detected.```")
 		  return null;
