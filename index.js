@@ -11,21 +11,6 @@ const https = require("https");
 const WebSocket = require('ws');
 const crypto = require('crypto');
 
-// const Database = require("@replit/database");
-// const db = new Database();
-// const repl = require('repl')
-// repl.start({
-//   input: process.stdin,
-//   output: process.stdout
-// })
-// process.on('beforeExit', (code) => {
-//   process.nextTick(function() {
-//     repl.start({
-//       input: process.stdin,
-//       output: process.stdout
-//     });
-//   });
-// });
 const client = new Client({
 	intents: [
 	  GatewayIntentBits.Guilds,
