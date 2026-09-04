@@ -3714,25 +3714,6 @@ client.on('messageCreate',
         await respond(msg, rep)
       }
     }
-    else if (msg.content.trim().toLowerCase() === "*report") {
-      if (msg.author.id === lieu_id) {
-        var rep = "Report:\n"
-        for (let key in medic) {
-          if (medic[key] !== undefined) {
-            if (medic[key] == -1) {
-              rep += "- " + key + ": Do Not Disturb\n"
-            }
-          }
-        }
-        rep += "\n"
-        for (let key in stdic) {
-          if (stdic[key] !== undefined) {
-            rep += "- " + key + ": Shadowing " + stdic[key] + "\n"
-          }
-        }
-        msg.author.send(rep).catch(async function(err) { await respond(msg, "```Error while sending report```") })
-      }
-    }
     else if (msg.content.trim().toLowerCase() === "*help") {
       await respond(msg, "```The list of commands has been sent to you in a direct message.```")
       if (msg.guildId === "569683781800296501") {
