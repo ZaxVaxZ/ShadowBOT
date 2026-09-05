@@ -2344,7 +2344,7 @@ client.on('messageCreate',
       }
     }
     else if (msg.content.trim().toLowerCase().substring(0, 6) === "*move ") {
-      if (msg.guildId != "569683781800296501")
+      if (msg.guildId != "569683781800296501" && msg.guildId != moonsties_id)
           return null;
       if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
         await respond(msg, "```Only Storytellers and Staff can use this command```")
@@ -2353,6 +2353,7 @@ client.on('messageCreate',
       if (move_blacklist.includes(msg.author.id)) {
         await respond(msg, "```You are BLACKLISTED from using this command, please contact the Doomsayer Mods and ask them to remove you from it```")
       }
+	  
       let target = msg.mentions.users.first()
       if (!target) {
         return null
@@ -2371,7 +2372,14 @@ client.on('messageCreate',
       if (!tvc) {
         return null
       }
-      await target.voice.setChannel("623058156058181633").catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) })
+      if (msg.guildId == moonsties_id)
+	  {
+		await target.voice.setChannel("1283040233167913032").catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) })
+	  }
+	  else
+	  {
+		await target.voice.setChannel("623058156058181633").catch(async function(e) { msg_user(lieu_id, "```An Error has occured while using the command```" + e) })
+	  }
       await respond(msg, "```Player moved to AFK channel```")
     }
     else if (msg.content.trim().toLowerCase().substring(0, 9) === "*setrole ") {
