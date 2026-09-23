@@ -2348,10 +2348,13 @@ client.on('messageCreate',
           return null;
 	  if (msg.guildId == moonsties_id && msg.author.id == "845519108456185866")
 		  return null;
-      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
-        await respond(msg, "```Only Storytellers and Staff can use this command```")
-        return null
-      }
+	  if (!(msg.guildId == moonsties_id && msg.author.id == "1194403683300032612"))
+	  {
+	      if (msg.author.id != msg.guild.ownerId && baseName.trim().substring(0, 4).toLowerCase() !== "(st)" && !msg.member.roles.cache.has("1046984192405282897") && !msg.member.roles.cache.has("1289243075981344892") && !msg.member.roles.cache.has("569684377496190996") && msg.member.user.id != "549986826794827786") {
+	        await respond(msg, "```Only Storytellers and Staff can use this command```")
+	        return null
+	      }
+	  }
       if (move_blacklist.includes(msg.author.id)) {
         await respond(msg, "```You are BLACKLISTED from using this command, please contact the Doomsayer Mods and ask them to remove you from it```")
       }
