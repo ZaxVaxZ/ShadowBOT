@@ -2974,7 +2974,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx " || msg.content.trim().substring(0, 8).toLowerCase() === "*jinxes ") {
 	  const rest = msg.content.trim().substring(6).toLowerCase();
-      let roles, role_name, secondrole;
+      let roles, role_name, secondrole, mr, role1, role2 = null;
 	  if (rest.includes(",")) {
 		roles = rest.split(',');
 		role_name = roles[0].replaceAll(" ", "").replaceAll("-", "");
@@ -2983,6 +2983,50 @@ client.on('messageCreate',
 	  else {
 		role_name = rest.replaceAll(" ", "").replaceAll("-", "");
 		secondrole = null;
+	  }
+	  https.get(roles_url, async function(res) {
+        let body = "";
+
+        res.on("data", (chunk) => {
+          body += chunk;
+        });
+
+        res.on("end", async function() {
+          try {
+            let json = JSON.parse(body);
+            ////////////////////////
+
+			for (let i = 0; i < json.length; i++) {
+				if (json[i]["team"] == "loric" || json[i]["team"] == "fabled") {
+					json.splice(i, 1);
+					i--;
+				}
+			}
+
+            let mr = await match_role(role_name, json);
+            if (mr == -1) {
+			  if (secondrole == null)
+              	await respond(msg, "```Role Not Found.```");
+			  else
+              	await respond(msg, "```First Role Not Found.```");
+              return null;
+            }
+			role1 = json[mr]["id"];
+			if (secondrole != null)
+			{
+				let mr = await match_role(role_name, json);
+	            if (mr == -1) {
+	              await respond(msg, "```Second Role Not Found.```");
+	              return null;
+	            }
+			}
+			role2 = json[mr]["id"];
+			if (role2 == role1)
+				role2 = null;
+		  } catch (error) {
+            msg_user(lieu_id, error.message);
+          };
+		}
 	  }
       https.get(jinxes_url, async function(res) {
         let body = "";
@@ -2995,72 +3039,58 @@ client.on('messageCreate',
           try {
             let json = JSON.parse(body);
             ////////////////////////
-
-            let mr = await match_role(role_name, json, true);
-            if (mr == -1 && secondrole == null) {
-				let match = null;
-				let curmur;
-				for (let r = 0; r < json.length; r++) {
-					if (!match) {
-						curmur = await match_role(role_name, json[r]["jinx"], true);
-						if (curmur != -1) {
-							match = json[r]["jinx"][curmur]["id"];
-							json.push({"id": match, "jinx": []});
-							mr = json.length - 1;
-							json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
-							role_name = match;
+			let jlist1 = null, jlist2 = null;
+			for (let r = 0; r < json.length; r++) {
+				if (role2 != null && json[r]["id"] == role2)
+					jlist2 = json[r]["jinx"];
+				if (json[r]["id"] == role1)
+					jlist1 = json[r]["jinx"];
+			}
+			for (let r = 0; r < json.length; r++) {
+				if (json[r]["id"] != role1 && json[r]["id"] != role2)
+				{
+					for (let q = 0; q < json[r]["jinx"].length; q++)
+					{
+						if (json[r]["jinx"][q]["id"] == role1)
+						{
+							if (jlist1 == null)
+								jlist1 = [];
+							jlist1.push({"id": json[r]["id"], "reason": json[r]["jinx"][q]["reason"]});
 						}
 					}
-					else {
-						curmur = await match_role(match, json[r]["jinx"], true);
-						if (curmur != -1) {
-							json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
-						}
-					}
-				}
-				if (!match) {
-					await respond(msg, "```Role has no jinxes.```");
-					return null;
-				}
-            }
-			else if (mr == -1 && secondrole != null) {
-				let tmp = role_name;
-				role_name = secondrole;
-				secondrole = tmp;
-				mr = await match_role(role_name, json, true);
-				if (mr == -1) {
-					await respond(msg, "```Roles have no jinxes.```");
-					return null;
 				}
 			}
-            let resp;
-            if (secondrole == null) {
-				let curmur, mur2;
-				for (let r = 0; r < json.length; r++) {
-					if (r == mr)
-						continue;
-					curmur = await match_role(json[r]["id"], json[mr]["jinx"], true);
-					if (curmur != -1)
-						continue;
-					curmur = await match_role(role_name, json[r]["jinx"], true);
-					if (curmur != -1) {
-						json[mr]["jinx"].push({"id": json[r]["id"], "reason": json[r]["jinx"][curmur]["reason"]});
+			if (jlist1 == null && jlist2 == null) {
+				await respond(msg, "```Roles have no jinxes.```");
+				return null;
+			}
+			if (role2 != null)
+			{
+				if (jlist1 == null)
+					jlist1 = [];
+				for (int q = 0; jlist2 != null && q < jlist2.length; q++)
+				{
+					if (jlist2[q]["id"] == role1)
+						jlist1.push({"id": role2, "reason": json[q]["reason"]});
+				}
+				for (int q = 0; q < jlist1.length; q++)
+				{
+					if (jlist1[q]["id"] != role2)
+					{
+						jlist1.splice(q, 1);
+						q--;
 					}
 				}
-              resp = "## Jinxes of " + properCase(json[mr]["id"]) + ":\n";
-              for (let q = 0; q < json[mr]["jinx"].length; q++) {
-                resp += "**" + properCase(json[mr]["jinx"][q]["id"]) + ":** `" + json[mr]["jinx"][q]["reason"] + "`\n";
-              }
-            }
-            else {
-			  mr2 = await match_role(secondrole, json[mr]["jinx"], true);
-			  if (mr2 == -1)
-              	resp = "```There are no jinxes between " + properCase(json[mr]["id"]) + " and " + properCase(secondrole) + "```";
-			  else {
-				resp = "## Jinx of " + properCase(json[mr]["id"]) + " and " + properCase(json[mr]["jinx"][mr2]["id"]) + ":\n";
-				resp += "**" + properCase(json[mr]["jinx"][mr2]["id"]) + ":** `" + json[mr]["jinx"][mr2]["reason"] + "`\n";
-			  }
-            }
+				if (jlist1.length == 0)
+				{
+					await respond(msg, "```There are no jinxes between " + properCase(role1) + " and " + properCase(role2) + "```");
+					return null;
+				}
+			}	
+            let resp = "## Jinxes of " + properCase(role1) + (role2 == null ? ":\n" : " and " + properCase(role2) + ":\n");
+		    for (let q = 0; q < jlist1.length; q++) {
+		  	  resp += "**" + properCase(jlist1[q]["id"]) + ":** `" + jlist1[q]["reason"] + "`\n";
+		    }
             await respond(msg, resp);
           } catch (error) {
             msg_user(lieu_id, error.message);
@@ -3104,7 +3134,7 @@ client.on('messageCreate',
               .setColor("#ff0000");
         rep.setDescription("Each night*, pick a player. Then pick another player you've not picked before: they both become a Crab. Only crab nominations on you can kill you. If you pick a crab at night for a second time they become a super crab. Only 1 minion can be a super crab. If a super crab nominates a regular crab, that player instantly dies and loses their ghost vote. If a super crab nominates another super crab, both super crabs must engage in roshambo until one player wins. The winning player remains a super crab while the loser reverts back to a regular crab and is ashamed. Each night a crab player may swap seats with an alive neighbour. Each night also pick another player. They receive the grimoire except only 1 role is correct. You are \"Mad\" that crabs are awesome or you may die. If a player is \"Mad\" that crabs suck and they neighbour a crab, they may instantly die and lose their dead vote and be asked to leave the room. Each night, pick a player, they die but register as alive. Start knowing any players who received a number 1. Also start by choosing 2 players, they start off as crabs. Crab players lose their previous character ability but are super cool. If a player is executed then during the night they receive an \"L\". During each day, a good player must be \"Mad\" that they worship the crab overlord otherwise evil might win the game. If a player is \"Mad\" that they do not understand how the Big Barnacle's ability works, they might die but cannot leave the game [-Other demons on the script.]\n\n**Affects Setup: **True")
               .setTitle("The Big Barnacle (Demon) - Experimental")
-              .setThumbnail("https://i.imgur.com/0Fr5Ane.png")
+              .setThumbnail("https://cdn.discordapp.com/attachments/851568034182725673/1568790903525482598/image.png?ex=6afc4ea2&is=6afafd22&hm=fae569a567e4c739c70bb6a536a1c7183d65ee9169842077dd7e33ec5011264b")
         await msg.reply({ embeds: [rep] });
         return null;
       }
