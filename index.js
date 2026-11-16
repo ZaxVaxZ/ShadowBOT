@@ -3000,7 +3000,7 @@ client.on('messageCreate',
               }
             }
 
-            let mr = await match_role(role_name, json);
+            let mr = await match_role(role_name, json, true);
             if (mr == -1) {
               if (secondrole == null)
                 await respond(msg, "```Role Not Found.```");
@@ -3010,13 +3010,13 @@ client.on('messageCreate',
             }
             role1 = json[mr]["id"];
             if (secondrole != null) {
-              mr = await match_role(secondrole, json);
+              mr = await match_role(secondrole, json, true);
               if (mr == -1) {
                 await respond(msg, "```Second Role Not Found.```");
                 return null;
               }
+              role2 = json[mr]["id"];
             }
-            role2 = json[mr]["id"];
             if (role2 == role1)
               role2 = null;
 			await respond(msg, role1 + " " + role2);
