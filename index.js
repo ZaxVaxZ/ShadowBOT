@@ -3024,6 +3024,8 @@ client.on('messageCreate',
           };
         });
       });
+	  await respond(msg, role1 + " " + role2);
+		return null;
       https.get(jinxes_url, async function (res) {
         let body = "";
 
@@ -3054,7 +3056,7 @@ client.on('messageCreate',
               }
             }
             if (jlist1 == null && jlist2 == null) {
-              await respond(msg, "```Roles have no jinxes.```");
+              await respond(msg, "```Role has no jinxes.```");
               return null;
             }
             if (role2 != null) {
