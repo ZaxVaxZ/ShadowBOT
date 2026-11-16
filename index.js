@@ -2971,7 +2971,7 @@ client.on('messageCreate',
     }
     else if (msg.content.trim().substring(0, 6).toLowerCase() === "*jinx " || msg.content.trim().substring(0, 8).toLowerCase() === "*jinxes ") {
       const rest = msg.content.trim().substring(6).toLowerCase();
-      let roles, role_name, secondrole, mr, role1, role2 = null;
+      let roles, role_name, secondrole, role1, role2 = null;
       if (rest.includes(",")) {
         roles = rest.split(',');
         role_name = roles[0].replaceAll(" ", "").replaceAll("-", "");
@@ -3010,7 +3010,7 @@ client.on('messageCreate',
             }
             role1 = json[mr]["id"];
             if (secondrole != null) {
-              let mr = await match_role(role_name, json);
+              mr = await match_role(secondrole, json);
               if (mr == -1) {
                 await respond(msg, "```Second Role Not Found.```");
                 return null;
@@ -3019,12 +3019,7 @@ client.on('messageCreate',
             role2 = json[mr]["id"];
             if (role2 == role1)
               role2 = null;
-          } catch (error) {
-            msg_user(lieu_id, error.message);
-          };
-        });
-      });
-	  await respond(msg, role1 + " " + role2);
+			await respond(msg, role1 + " " + role2);
 		return null;
       https.get(jinxes_url, async function (res) {
         let body = "";
@@ -3087,6 +3082,11 @@ client.on('messageCreate',
           } catch (error) {
             msg_user(lieu_id, error.message);
           }; 
+        });
+      });
+          } catch (error) {
+            msg_user(lieu_id, error.message);
+          };
         });
       });
     }
