@@ -3019,8 +3019,6 @@ client.on('messageCreate',
             }
             if (role2 == role1)
               role2 = null;
-			await respond(msg, role1 + " " + role2);
-		return null;
       https.get(jinxes_url, async function (res) {
         let body = "";
 
