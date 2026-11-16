@@ -3058,7 +3058,7 @@ client.on('messageCreate',
               for (let q = 0; jlist2 != null && q < jlist2.length; q++)
               {
                 if (jlist2[q]["id"] == role1)
-                  jlist1.push({ "id": role2, "reason": json[q]["reason"] });
+                  jlist1.push({ "id": role2, "reason": jlist2[q]["reason"] });
               }
               for (let q = 0; q < jlist1.length; q++)
               {
